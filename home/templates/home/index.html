@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Home | Elah Tastyhub
+{% endblock %}
+
+{% block content %}
+  <!-- Hero / Banner Section -->
+  <div class="hero-section mb-5" style="background: url('{% static 'images/hero-banner.jpg' %}') center/cover no-repeat; height: 400px; border-radius: 12px;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <h1 class="text-white fw-bold display-4 text-center shadow-soft p-3" style="background: rgba(0,0,0,0.5); border-radius: 12px;">Welcome to Elah Tastyhub</h1>
+    </div>
+  </div>
+
+  <!-- Categories Section -->
+  <section class="mb-5">
+    <h2 class="fw-bold mb-4 text-center">Explore Our Categories</h2>
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card menu-card shadow-soft">
+          <img src="{% static 'images/categories/breakfast.jpg' %}" class="card-img-top" alt="Breakfast" />
+          <div class="card-body text-center">
+            <h5 class="card-title">Breakfast</h5>
+            <a href="{% url 'menu' %}?category=Breakfast" class="btn btn-warning btn-sm">Browse</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card menu-card shadow-soft">
+          <img src="{% static 'images/categories/lunch.jpg' %}" class="card-img-top" alt="Lunch" />
+          <div class="card-body text-center">
+            <h5 class="card-title">Lunch</h5>
+            <a href="{% url 'menu' %}?category=Lunch" class="btn btn-warning btn-sm">Browse</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card menu-card shadow-soft">
+          <img src="{% static 'images/categories/grill.jpg' %}" class="card-img-top" alt="Grill" />
+          <div class="card-body text-center">
+            <h5 class="card-title">Grill</h5>
+            <a href="{% url 'menu' %}?category=Grill" class="btn btn-warning btn-sm">Browse</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card menu-card shadow-soft">
+          <img src="{% static 'images/categories/drinks.jpg' %}" class="card-img-top" alt="Drinks" />
+          <div class="card-body text-center">
+            <h5 class="card-title">Drinks</h5>
+            <a href="{% url 'menu' %}?category=Drinks" class="btn btn-warning btn-sm">Browse</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Dishes Section -->
+  <section class="mb-5">
+    <h2 class="fw-bold mb-4 text-center">Featured Dishes</h2>
+    <div class="row g-4">
+      {% for dish in featured_dishes %}
+        <div class="col-md-3">
+          <div class="card menu-card shadow-soft">
+            {% if dish.image %}
+              <img src="{{ dish.image.url }}" class="card-img-top" alt="{{ dish.name }}" />
+            {% else %}
+              <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="No image" />
+            {% endif %}
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ dish.name }}</h5>
+              <p class="card-text text-muted">${{ dish.price }}</p>
+              <a href="{% url 'dish_detail' dish.id %}" class="btn btn-warning btn-sm mb-2">View</a>
+              <form method="POST" action="{% url 'add_to_bag' dish.id %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-secondary btn-sm">Add to Bag</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center text-muted">No featured dishes available right now.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="text-center mb-5">
+    <div class="p-5 bg-warning rounded shadow-soft">
+      <h3 class="fw-bold mb-3">Hungry? Order your favorite meals now!</h3>
+      <a href="{% url 'menu' %}" class="btn btn-dark btn-lg">Browse Menu</a>
+    </div>
+  </section>
+{% endblock %}
