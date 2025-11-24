@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>
+      {% block title %}
+        Elah Tastyhub
+      {% endblock %}
+    </title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    {% block extra_css %}
+    {% endblock %}
+  </head>
+
+  <body>
+    <!-- 🚀 Pass flag so navbar can show bag count -->
+    {% include 'includes/main-nav.html' with show_bag_count=True %}
+
+    {% include 'includes/mobile-top-header.html' %}
+
+    <main class="py-3">
+      {% block content %}
+      {% endblock %}
+    </main>
+
+    <!-- Toast Container -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 2000;">
+      <div id="toast-container"></div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% block extra_js %}
+    {% endblock %}
+
+    <!-- Django messages → Bootstrap Toasts -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      {% if messages %}
+        {% for message in messages %}
+          const toastEl = document.createElement('div');
+          toastEl.className = 'toast align-items-center text-bg-{{ message.tags }} border-0 mb-2';
+          toastEl.setAttribute('role', 'alert');
+          toastEl.setAttribute('aria-live', 'assertive');
+          toastEl.setAttribute('aria-atomic', 'true');
+
+          toastEl.innerHTML = `
+            <div class="d-flex">
+              <div class="toast-body">{{ message|escape }}</div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                      data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          `;
+
+          document.getElementById('toast-container').appendChild(toastEl);
+          new bootstrap.Toast(toastEl).show();
+        {% endfor %}
+      {% endif %}
+    });
+  </script>
+  </body>
+</html>
