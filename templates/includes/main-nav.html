@@ -1,0 +1,78 @@
+{% load static %}
+{% load dishes_extras %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm d-none d-lg-block">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="{% url 'home' %}">Tarh Tastyhub</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <!-- Left Nav -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+
+        <!-- Dishes Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dishesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dishes</a>
+
+          <ul class="dropdown-menu" aria-labelledby="dishesDropdown">
+            {% if categories %}
+              {% for category in categories %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'dishes_by_category' category.slug %}">{{ category.name }}</a>
+                </li>
+              {% endfor %}
+            {% else %}
+              <!-- Safe fallback avoids template errors if context missing -->
+              <li>
+                <span class="dropdown-item disabled text-muted">No categories</span>
+              </li>
+            {% endif %}
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'apps' %}">Apps</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'checkout' %}">Checkout</a>
+        </li>
+      </ul>
+
+      <!-- Right Nav -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-user"></i> {{ user.username }}</a>
+
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              <li>
+                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+              </li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+        {% endif %}
+
+        <!-- Bag Icon -->
+        <li class="nav-item ms-3 position-relative">
+          <a class="nav-link position-relative" href="{% url 'bag' %}">
+            <i class="fa-solid fa-shopping-bag fs-4"></i>
+
+            <span id="bag-count" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size: 0.75rem;">{{ bag_count|default:0 }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

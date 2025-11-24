@@ -1,0 +1,77 @@
+{% load static %}
+{% load dishes_extras %}
+
+<!-- Mobile Header -->
+<div class="d-lg-none bg-warning py-2 px-3 shadow-sm sticky-top">
+  <div class="d-flex justify-content-between align-items-center">
+    <!-- Logo -->
+    <a href="{% url 'home' %}" class="fw-bold text-dark fs-5 text-decoration-none">Tarhh Tastyhub</a>
+
+    <div class="d-flex align-items-center">
+      <!-- Mobile Bag Count -->
+      <a href="{% url 'view_bag' %}" class="position-relative text-dark me-3">
+        <i class="fa-solid fa-shopping-bag fs-5"></i>
+
+        <span id="bag-count-mobile" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-warning" style="font-size: 0.75rem;">{{ bag_count|default:0 }}</span>
+      </a>
+
+      <!-- Menu Button -->
+      <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Side Menu -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title fw-bold">Menu</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <ul class="list-unstyled">
+      <li>
+        <a class="d-block py-2" href="{% url 'home' %}">Home</a>
+      </li>
+
+      <!-- Categories -->
+      <li class="mt-2">
+        <strong>Dishes</strong>
+
+        {% if categories %}
+          <ul class="ps-3">
+            {% for category in categories %}
+              <li>
+                <a class="d-block py-1" href="{% url 'dish_list_by_category' category.slug %}">{{ category.name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted small ps-1">No categories available</p>
+        {% endif %}
+      </li>
+
+      <!-- Other pages -->
+      <li>
+        <a class="d-block py-2" href="{% url 'dish_list' %}">Menu</a>
+      </li>
+      <li>
+        <a class="d-block py-2" href="{% url 'checkout' %}">Checkout</a>
+      </li>
+
+      <!-- Auth -->
+      {% if user.is_authenticated %}
+        <li>
+          <a class="d-block py-2" href="{% url 'profile' %}">Profile</a>
+        </li>
+        <li>
+          <a class="d-block py-2" href="{% url 'logout' %}">Logout</a>
+        </li>
+      {% else %}
+        <li>
+          <a class="d-block py-2" href="{% url 'login' %}">Login</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
