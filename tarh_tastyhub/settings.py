@@ -94,6 +94,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'bag.context_processors.bag_contents',
+                'dishes.context_processors.menu_dishes',
                 'dishes.context_processors.categories_nav',
             ],
             'builtins': [
