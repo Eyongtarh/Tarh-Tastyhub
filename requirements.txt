@@ -1,6 +1,8 @@
 asgiref==3.11.0
 Django==5.2.8
 django-allauth==65.13.1
+django-crispy-forms==2.5
+django-htmx-messages==0.1.1
 setuptools==80.9.0
 sqlparse==0.5.3
 wheel==0.45.1

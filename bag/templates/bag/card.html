@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <h2 class="mb-4 text-center">🛍️ Your Bag</h2>
+
+  {% if items %}
+    <div class="row g-4">
+      <!-- Bag Items -->
+      <div class="col-md-8">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          {% for item in items %}
+            <div class="col">
+              <div class="card shadow-sm h-100">
+                <!-- Image -->
+                {% if item.portion.dish.image %}
+                  <img src="{{ item.portion.dish.image.url }}" class="card-img-top" alt="{{ item.portion.dish.name }}" />
+                {% else %}
+                  <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="No Image" />
+                {% endif %}
+
+                <div class="card-body">
+                  <h5 class="card-title">{{ item.portion.dish.name }}</h5>
+
+                  <p class="text-muted small mb-1">
+                    Portion: <strong>{{ item.portion.size }}</strong>
+                  </p>
+
+                  <p class="card-text">{{ item.portion.dish.description|truncatewords:20 }}</p>
+
+                  <!-- Price -->
+                  <p class="fw-bold mb-2">₦{{ item.portion.price }}</p>
+
+                  <!-- Quantity Controls -->
+                  <div class="d-flex align-items-center gap-2">
+                    <!-- Minus -->
+                    <form method="POST" action="{% url 'bag:adjust_bag' item.portion.id %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}" />
+                      <button class="btn btn-outline-secondary btn-sm">–</button>
+                    </form>
+
+                    <span class="fw-bold">{{ item.quantity }}</span>
+
+                    <!-- Plus -->
+                    <form method="POST" action="{% url 'bag:add_to_bag' item.portion.id %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="quantity" value="1" />
+                      <button class="btn btn-outline-secondary btn-sm">+</button>
+                    </form>
+                  </div>
+
+                  <!-- Line Total -->
+                  <p class="mt-2 mb-0">
+                    Total: <strong>₦{{ item.line_total }}</strong>
+                  </p>
+                </div>
+
+                <!-- Remove Button -->
+                <div class="card-footer bg-white border-0">
+                  <form method="POST" action="{% url 'bag:remove_from_bag' item.portion.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-danger w-100">Remove</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm">
+          <h5 class="fw-bold">Order Summary</h5>
+          <p class="mb-1">Subtotal: ₦{{ bag_total }}</p>
+          <p class="mb-1">Delivery: ₦{{ delivery_fee }}</p>
+          <hr />
+          <h5>Total: ₦{{ grand_total }}</h5>
+
+          <a href="{% url 'checkout' %}" class="btn btn-warning w-100 mt-3 fw-bold">Proceed to Checkout</a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-center text-muted mt-5">Your bag is empty. 🍽️</p>
+
+    <div class="text-center mt-3">
+      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Browse Dishes</a>
+    </div>
+  {% endif %}
+{% endblock %}
