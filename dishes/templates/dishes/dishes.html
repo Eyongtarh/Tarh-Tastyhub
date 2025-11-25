@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-  Menu | Tarh Tastyhub
+  Tarh Tastyhub
 {% endblock %}
 
 {% block content %}
   <div class="container py-5">
-    <h2 class="fw-bold text-center mb-4">🍽 Our Menu</h2>
+    <h2 class="fw-bold text-center mb-4">Our Dishes</h2>
 
     <!-- Search -->
     <form method="GET" class="d-flex justify-content-center mb-4">
@@ -16,10 +16,10 @@
 
     <!-- Category Filter -->
     <div class="text-center mb-4">
-      <a href="{% url 'menu' %}" class="badge bg-dark text-white mx-1 px-3 py-2">All</a>
+      <a href="{% url 'dish_list' %}" class="badge bg-dark text-white mx-1 px-3 py-2">All</a>
 
       {% for category in categories %}
-        <a href="{% url 'menu' %}?category={{ category }}" class="badge bg-light text-secondary mx-1 px-3 py-2
+        <a href="{% url 'dish_list' %}?category={{ category }}" class="badge bg-light text-secondary mx-1 px-3 py-2
        {% if current_category == category %} border border-warning {% endif %}">{{ category }}</a>
       {% endfor %}
     </div>

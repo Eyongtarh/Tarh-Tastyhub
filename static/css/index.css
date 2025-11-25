@@ -1,0 +1,43 @@
+/* index.css */
+
+/* Full-page hero section, background only for this page */
+.hero-section {
+  min-height: 100vh;
+  background-image: url("../images/food-hero.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  margin: 3%;
+}
+
+/* Overlay to make text readable */
+.hero-overlay {
+  background-color: rgba(39, 143, 106, 0.843);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+}
+
+/* order button */
+.shop-now-button {
+  border-radius: 12px;
+  background-color: #ff6b35;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.shop-now-button:hover {
+  background-color: #e55b2c;
+  color: #fff;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .hero-overlay {
+    max-width: 100%;
+  }
+}
