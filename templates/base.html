@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>
       {% block title %}
-        Elah Tastyhub
+        Tarhh Tastyhub
       {% endblock %}
     </title>
 
@@ -17,8 +17,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Custom -->
-    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     {% block extra_css %}
+
     {% endblock %}
   </head>
 
@@ -30,6 +31,7 @@
 
     <main class="py-3">
       {% block content %}
+
       {% endblock %}
     </main>
 
@@ -38,10 +40,10 @@
       <div id="toast-container"></div>
     </div>
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/base.js' %}"></script>
 
     {% block extra_js %}
+
     {% endblock %}
 
     <!-- Django messages → Bootstrap Toasts -->
