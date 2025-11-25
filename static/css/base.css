@@ -1,8 +1,16 @@
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+
 body {
-    background-color: #f8f9fa;
+    background-color: rgba(39, 143, 106, 0.843);
     font-family: 'Poppins', 'Segoe UI', sans-serif;
     color: #212529;
 }
+
 
 /* Navbar */
 .navbar-brand {
@@ -16,7 +24,7 @@ body {
 }
 
 .nav-link:hover {
-    color: #ffc107 !important;
+    color: rgba(39, 143, 106, 0.843);
 }
 
 /* Dropdown */
@@ -30,7 +38,7 @@ body {
 
 .dropdown-item:hover {
     background-color: #ffc107;
-    color: #000 !important;
+    color: #000;
 }
 
 /* Navbar Bag Badge */
@@ -61,6 +69,7 @@ body {
 .hero h1 { font-size: 3rem; font-weight: 700; }
 .hero p { font-size: 1.2rem; }
 
+
 /* Cards */
 .card {
     border-radius: 12px;
@@ -80,7 +89,7 @@ body {
 
 /* Buttons */
 .btn-warning {
-    color: #000 !important;
+    color: #000;
     font-weight: 600;
 }
 
@@ -93,3 +102,51 @@ body {
     border-color: #ffc107;
     box-shadow: 0 0 5px rgba(255,193,7,0.5);
 }
+
+/* Flying Bag Animation */
+#flying-image {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    pointer-events: none;
+    border-radius: 8px;
+    z-index: 9999;
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Search Dropdown */
+#search-results,
+#mobile-search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    background: white;
+    border: 1px solid #ddd;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 5px;
+}
+
+/* Toast  */
+#notification-toast {
+    min-width: 260px;
+    border-radius: 12px;
+}
+
+/* Footer */
+footer {
+    background-color: #212529;
+    color: white;
+    padding: 20px;
+    font-size: 0.9rem;
+}
+
+/* Mobile  */
+@media (max-width:768px){
+    .hero h1 { font-size: 2rem; }
+    .hero p { font-size: 1rem; }
+}
+

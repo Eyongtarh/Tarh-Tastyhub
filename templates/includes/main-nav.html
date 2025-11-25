@@ -35,11 +35,11 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'apps' %}">Apps</a>
+          <a class="nav-link" href="{% url 'dish_list' %}">Browse Dishes</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'checkout' %}">Checkout</a>
+          <a class="nav-link" href="{#% url 'checkout' %#}">Checkout</a>
         </li>
       </ul>
 
@@ -51,16 +51,16 @@
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
               <li>
-                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                <a class="dropdown-item" href="{#% url 'profile' %#}">Profile</a>
               </li>
               <li>
-                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                <a class="dropdown-item" href="{#% url 'logout' %#}">Logout</a>
               </li>
             </ul>
           </li>
         {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-link" href="{#% url 'login' %#}">Login</a>
           </li>
         {% endif %}
 

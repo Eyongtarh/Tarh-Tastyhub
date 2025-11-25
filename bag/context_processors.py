@@ -8,15 +8,22 @@ logger = logging.getLogger(__name__)
 def bag_contents(request):
     """
     Global cart/bag context processor.
-    Safely loads Bag items from session, validates quantity & IDs,
-    prevents client-side price manipulation, and minimizes DB queries.
+    Fully corrected & secured version:
+    - Validates session structure
+    - Cleans invalid IDs/quantities
+    - Loads all DishPortion objects in ONE query
+    - Removes items missing from DB
+    - Prevents client-side price manipulation
     """
 
     session_bag = request.session.get("bag", {})
+
     if not isinstance(session_bag, dict):
         session_bag = {}
-        invalid_keys = []
-        normalized = {}
+
+    invalid_keys = []
+    normalized = {}
+
     for raw_id, raw_qty in session_bag.items():
         try:
             portion_id = int(raw_id)
@@ -24,6 +31,7 @@ def bag_contents(request):
         except Exception:
             invalid_keys.append(raw_id)
             continue
+
         normalized[str(portion_id)] = qty
 
     if invalid_keys:
@@ -32,32 +40,33 @@ def bag_contents(request):
         request.session["bag"] = session_bag
         request.session.modified = True
 
-        portion_ids = [int(pid) for pid in normalized.keys()]
-        portions = (
-            DishPortion.objects
-            .select_related("dish")
-            .filter(id__in=portion_ids)
-        )
+    portion_ids = [int(pid) for pid in normalized.keys()]
+    portions = (
+        DishPortion.objects
+        .select_related("dish")
+        .filter(id__in=portion_ids)
+    )
 
-        portion_map = {p.id: p for p in portions}
-        items = []
-        total = Decimal("0.00")
-        count = 0
-        removed_missing_items = False
+    portion_map = {p.id: p for p in portions}
+
+    items = []
+    total = Decimal("0.00")
+    count = 0
+    removed_missing_items = False
 
     for pid_str, qty in normalized.items():
         pid = int(pid_str)
         portion = portion_map.get(pid)
 
         if not portion:
-            logger.warning(f"Bag contains missing DishPortion id={pid}, removing it.")
+            logger.warning(f"Bag contains missing DishPortion id={pid}; removing.")
             session_bag.pop(pid_str, None)
             removed_missing_items = True
             continue
 
         qty = max(1, int(qty))
-
         line_total = portion.price * qty
+
         total += line_total
         count += qty
 
@@ -73,8 +82,8 @@ def bag_contents(request):
     if removed_missing_items:
         request.session["bag"] = session_bag
         request.session.modified = True
-        delivery_fee = Decimal("0.00")
-        grand_total = total + delivery_fee
+    delivery_fee = Decimal("0.00")
+    grand_total = total + delivery_fee
 
     return {
         "items": items,

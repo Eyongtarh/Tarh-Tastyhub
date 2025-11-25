@@ -47,17 +47,9 @@ class DishManager(models.Manager):
 
 
 class Category(models.Model):
-    MENU_TYPES = (
-        ('Breakfast', 'Breakfast'),
-        ('Lunch', 'Lunch'),
-        ('Dinner', 'Dinner'),
-        ('Grill', 'Grill'),
-        ('Drinks', 'Drinks'),
-    )
-
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
-    menu_type = models.CharField(max_length=50, choices=MENU_TYPES, default='Breakfast')
+    menu_type = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     icon = models.ImageField(upload_to='category_icons/', blank=True, null=True)
 
