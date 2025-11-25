@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <!-- Image -->
+      <div class="col-md-6 dish-card">
+        {% if dish.image %}
+          <img src="{{ dish.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ dish.name }}" />
+        {% endif %}
+      </div>
+
+      <!-- Dish Details -->
+      <div class="col-md-6">
+        <h2 class="fw-bold">{{ dish.name }}</h2>
+        <p class="text-muted">{{ dish.category.name }}</p>
+        <h4 class="text-warning fw-bold mb-4">${{ dish.price }}</h4>
+
+        <p>{{ dish.description }}</p>
+
+        <!-- Quantity Controls -->
+        <div class="d-flex align-items-center mb-3">
+          <button type="button" id="dish-qty-decrement" class="btn btn-outline-secondary">−</button>
+          <input type="number" id="dish-qty" value="1" min="1" class="form-control mx-3" style="width:70px;" />
+          <button type="button" id="dish-qty-increment" class="btn btn-outline-secondary">+</button>
+        </div>
+
+        <button class="btn btn-warning fw-bold mt-3" id="add-dish-to-bag" data-id="{{ dish.id }}">Add to Bag</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -80,7 +80,7 @@ ROOT_URLCONF = 'tarh_tastyhub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,10 +88,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'bag.context_processors.bag_contents',
+                'dishes.context_processors.categories_nav',
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'tarh_tastyhub.wsgi.application'
 

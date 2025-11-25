@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container py-5">
+    <h2 class="fw-bold mb-4">{{ category.name }}</h2>
+
+    <div class="row">
+      {% if dishes %}
+        {% for dish in dishes %}
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm dish-card">
+              {% if dish.image %}
+                <img src="{{ dish.image.url }}" class="card-img-top" alt="{{ dish.name }}" />
+              {% endif %}
+
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ dish.name }}</h5>
+                <p class="card-text">{{ dish.description|truncatewords:20 }}</p>
+
+                <div class="mt-auto">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-warning">${{ dish.price }}</span>
+                    <a href="{{ dish.get_absolute_url }}" class="btn btn-outline-dark btn-sm">View</a>
+                  </div>
+
+                  <!-- Quantity Controls -->
+                  <div class="d-flex align-items-center mb-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary dish-qty-decrement">−</button>
+                    <input type="number" value="1" min="1" class="form-control form-control-sm mx-2 dish-qty" style="width:50px;" />
+                    <button type="button" class="btn btn-sm btn-outline-secondary dish-qty-increment">+</button>
+                  </div>
+
+                  <button class="btn btn-warning btn-sm w-100 fw-bold add-to-bag" data-id="{{ dish.id }}">Add to Bag</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">No dishes available in this category yet.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
