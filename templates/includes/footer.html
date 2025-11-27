@@ -1,0 +1,68 @@
+<footer class="tarhh-footer text-light pt-5 pb-4 mt-5">
+  <div class="container">
+    <div class="row gy-4">
+      <!-- Brand -->
+      <div class="col-12 col-md-4">
+        <h4 class="logo-font fw-bold">Tarh Tastyhub</h4>
+        <p class="mt-2 small">Fresh home-style meals delivered fast. Enjoy delicious dishes prepared with love and the finest ingredients.</p>
+        <ul class="list-unstyled small">
+          <li>
+            <a class="footer-link" href="{% url 'home' %}">Home</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dishes Section -->
+      <div class="col-6 col-md-2">
+        <h6 class="fw-bold mb-3">Dishes</h6>
+        <ul class="list-unstyled small">
+          {% if categories %}
+            {% for category in categories %}
+              <li>
+                <a class="footer-link" href="{% url 'dishes_by_category' category.slug %}">{{ category.name }}</a>
+              </li>
+            {% endfor %}
+          {% else %}
+            <li>
+              <span class="text-muted small">No categories</span>
+            </li>
+          {% endif %}
+          <li>
+            <a class="footer-link" href="{% url 'dish_list' %}">Browse Dishes</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Help Section -->
+      <div class="col-6 col-md-2">
+        <h6 class="fw-bold mb-3">Help</h6>
+        <ul class="list-unstyled small">
+          <li>
+            <a href="#" class="footer-link">Contact</a>
+          </li>
+          <li>
+            <a href="#" class="footer-link">Delivery Info</a>
+          </li>
+          <li>
+            <a href="#" class="footer-link">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#" class="footer-link">Terms & Conditions</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social Section -->
+      <div class="col-12 col-md-4">
+        <h6 class="fw-bold mb-3">Follow Us</h6>
+        <div class="d-flex gap-3">
+          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p class="small mt-3 mb-0">&copy; {{ now|date:'Y' }} Tarh Tastyhub. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
