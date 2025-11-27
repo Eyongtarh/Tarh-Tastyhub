@@ -139,6 +139,45 @@ main {
     border-radius: 12px;
 }
 
+/* Base style for all Font Awesome icons using .fa-icon */
+
+.fa-icon {
+  font-size: 1.6rem;
+  color: #ffff;  
+  transition: 0.3s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0rem 0.5rem;
+}
+
+ /* Font awesome */
+.fa-icon:hover {
+  transform: scale(1.15);
+  color: #353232; 
+}
+
+/* Title icon (utensils) - larger */
+.page-title .fa-icon {
+  font-size: 1.4rem;
+  color: #353232;
+}
+
+/* Search button icon */
+.btn .fa-icon {
+  font-size: 1rem;
+}
+
+
+/* Optional: soft background hover */
+.fa-icon.hover-circle:hover {
+  background: rgba(255, 193, 7, 0.1);
+  padding: 6px;
+  border-radius: 50%;
+}
+
+
+
 /* Footer */
 footer {
     align-items: center;
