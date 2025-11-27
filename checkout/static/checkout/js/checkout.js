@@ -117,3 +117,49 @@ form.addEventListener('submit', function(ev) {
         location.reload();
     })
 });
+
+(function () {
+      const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
+      const orderNumber = '{{ order.order_number }}'
+      const orderSocket = new WebSocket(wsProtocol + '://' + window.location.host + '/ws/order/' + orderNumber + '/')
+    
+      const progressEl = document.getElementById('order-progress')
+      orderSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data)
+        const progress = data.progress || 0
+        const status = data.status || ''
+        if (progressEl) {
+          progressEl.style.width = progress + '%'
+          progressEl.textContent = status
+        }
+      }
+      orderSocket.onclose = () => console.warn('Order websocket closed')
+    })();
+
+
+;(function () {
+      const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
+      const orderNumber = '{{ order.order_number }}'
+      const orderSocket = new WebSocket(wsProtocol + '://' + window.location.host + '/ws/order/' + orderNumber + '/')
+    
+      orderSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data)
+        const progress = data.progress || 0
+        const status = data.status || ''
+        const progressEl = document.getElementById('order-progress')
+        if (progressEl) {
+          progressEl.style.width = progress + '%'
+          progressEl.textContent = status
+        }
+      }
+    
+      orderSocket.onclose = () => console.warn('Order tracking websocket closed')
+    })();
+
+const adminSocket = new WebSocket('ws://' + window.location.host + '/ws/admin/');
+
+  adminSocket.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    const statusCell = document.querySelector(`#order-${data.id} td:nth-child(4)`);
+    if (statusCell) statusCell.textContent = data.status;
+  };

@@ -10,25 +10,7 @@
 
     <p class="mt-3 text-muted">We’ll update you live when your meal is being prepared 🍳, out for delivery 🚗, or ready for pickup 🍱.</p>
   </div>
-
-  <script>
-    ;(function () {
-      const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
-      const orderNumber = '{{ order.order_number }}'
-      const orderSocket = new WebSocket(wsProtocol + '://' + window.location.host + '/ws/order/' + orderNumber + '/')
-    
-      orderSocket.onmessage = (e) => {
-        const data = JSON.parse(e.data)
-        const progress = data.progress || 0
-        const status = data.status || ''
-        const progressEl = document.getElementById('order-progress')
-        if (progressEl) {
-          progressEl.style.width = progress + '%'
-          progressEl.textContent = status
-        }
-      }
-    
-      orderSocket.onclose = () => console.warn('Order tracking websocket closed')
-    })()
-  </script>
+{% endblock %}
+{% block postloadjs %}
+  <script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}

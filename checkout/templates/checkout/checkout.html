@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% load dishes_extras %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
+{% endblock %}
+
 {% block content %}
   <div class="container my-4">
     <h2 class="text-center mb-4">Checkout</h2>
@@ -82,5 +88,5 @@
   {{ block.super }}
   {{ stripe_public_key|json_script:'id_stripe_public_key' }}
   {{ client_secret|json_script:'id_client_secret' }}
-  <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+  <script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}
