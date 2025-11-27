@@ -49,7 +49,7 @@ class DishManager(models.Manager):
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
-    menu_type = models.CharField(max_length=50, blank=True, null=True)
+    menu_type = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True, null=True)
     icon = models.ImageField(upload_to='category_icons/', blank=True, null=True)
 

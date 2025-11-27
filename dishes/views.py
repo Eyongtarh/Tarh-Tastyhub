@@ -164,7 +164,7 @@ def edit_dish(request, slug):
         form = DishForm(request.POST, request.FILES, instance=dish)
         if form.is_valid():
             form.save()
-            cache.delete(f"dish_detail_{slug}")  # Invalidate cache
+            cache.delete(f"dish_detail_{slug}")
             return redirect("dish_detail", slug=dish.slug)
     else:
         form = DishForm(instance=dish)
@@ -179,7 +179,7 @@ def delete_dish(request, slug):
 
     if request.method == "POST":
         dish.delete()
-        cache.delete(f"dish_detail_{slug}")  # Invalidate cache
+        cache.delete(f"dish_detail_{slug}")
         return redirect("dish_list")
 
     return render(request, "dishes/delete_dish.html", {"dish": dish})
