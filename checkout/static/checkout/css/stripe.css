@@ -1,0 +1,82 @@
+/* Stripe input styling */
+.StripeElement,
+.stripe-style-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+  font-size: 16px;
+}
+
+/* Focus state */
+.StripeElement--focus,
+.stripe-style-input:focus,
+.stripe-style-input:active {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Autofill */
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+/* Placeholder color */
+.stripe-style-input::placeholder {
+  color: #aab7c4;
+}
+
+/* Labels */
+.fieldset-label {
+  position: relative;
+  right: 0.5rem;
+  font-weight: 500;
+}
+
+/* Form control overrides */
+#payment-form .form-control,
+#card-element {
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 0;
+  height: 44px;
+}
+
+/* Select input styling */
+select,
+select option {
+  color: #000;
+}
+
+select:invalid,
+select option[value=""] {
+  color: #aab7c4 !important;
+}
+
+/* Loading overlay */
+#loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(23, 162, 184, 0.85);
+  z-index: 9999;
+}
+
+/* Center spinner inside overlay */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+}
+
