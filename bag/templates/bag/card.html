@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <h2 class="mb-4 text-center">Your Bag</h2>
+  <h2 class="mb-4 text-center"><span class="fa-icon"><i class="fa-solid fa-cart-shopping"></i></span>Your Bag</h2>
 
   {% if items %}
     <div class="row g-4">
@@ -36,7 +36,7 @@
                     <form method="POST" action="{% url 'bag:adjust_bag' item.portion.id %}">
                       {% csrf_token %}
                       <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}" />
-                      <button class="btn btn-outline-secondary btn-sm"></button>
+                      <button class="btn btn-outline-secondary btn-sm">-</button>
                     </form>
 
                     <span class="fw-bold">{{ item.quantity }}</span>
@@ -82,7 +82,9 @@
       </div>
     </div>
   {% else %}
-    <p class="text-center text-muted mt-5">Your bag is empty</p>
+    <p class="text-center text-muted mt-5">
+      Your bag is empty<span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
+    </p>
 
     <div class="text-center mt-3">
       <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Browse Dishes</a>
