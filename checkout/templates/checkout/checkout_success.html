@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
+{% endblock %}
 {% block content %}
   <div class="container py-5">
     <div class="text-center mb-5">
@@ -58,24 +63,7 @@
       <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping 🍔</a>
     </div>
   </div>
-
-  <script>
-    ;(function () {
-      const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
-      const orderNumber = '{{ order.order_number }}'
-      const orderSocket = new WebSocket(wsProtocol + '://' + window.location.host + '/ws/order/' + orderNumber + '/')
-    
-      const progressEl = document.getElementById('order-progress')
-      orderSocket.onmessage = (e) => {
-        const data = JSON.parse(e.data)
-        const progress = data.progress || 0
-        const status = data.status || ''
-        if (progressEl) {
-          progressEl.style.width = progress + '%'
-          progressEl.textContent = status
-        }
-      }
-      orderSocket.onclose = () => console.warn('Order websocket closed')
-    })()
-  </script>
+{% endblock %}
+{% block postloadjs %}
+  <script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}
