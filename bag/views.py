@@ -119,7 +119,7 @@ def adjust_bag(request, portion_id):
         })
 
     messages.success(request, message)
-    return redirect("view_bag")
+    return redirect("bag")
 
 
 def remove_from_bag(request, portion_id):
@@ -154,4 +154,4 @@ def remove_from_bag(request, portion_id):
         })
 
     messages.success(request, message)
-    return redirect("view_bag")
+    return redirect("bag")
