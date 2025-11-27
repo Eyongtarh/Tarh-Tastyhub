@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-success mb-2"><span class="fa-icon"><i class="fa-solid fa-check"></i></span></h2>
+      <p class="text-muted">
+        Thank you, {{ order.full_name }} your meal is on the way<span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
+      </p>
+      <p>
+        Delivery Type: <strong>{{ order.delivery_type|title }}</strong>
+      </p>
+      {% if order.delivery_type == 'pickup' and order.pickup_time %}
+        <p>
+          Pickup Time: <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="mb-4">
+      <div class="progress" style="height: 30px;">
+        <div id="order-progress" class="progress-bar progress-bar-striped bg-warning" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">Order Summary</h5>
+        <table class="table table-borderless align-middle">
+          <thead class="border-bottom">
+            <tr>
+              <th>Dish</th>
+              <th class="text-center">Qty</th>
+              <th class="text-end">Price</th>
+              <th class="text-end">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in order.lineitems.all %}
+              <tr>
+                <td>{{ item.dish.name }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-end">${{ item.dish.price }}</td>
+                <td class="text-end fw-bold">${{ item.lineitem_total }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot class="border-top">
+            <tr>
+              <td colspan="3" class="text-end fw-bold">Grand Total:</td>
+              <td class="text-end fw-bold text-warning">${{ order.grand_total }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping 🍔</a>
+    </div>
+  </div>
+
+  <script>
+    ;(function () {
+      const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
+      const orderNumber = '{{ order.order_number }}'
+      const orderSocket = new WebSocket(wsProtocol + '://' + window.location.host + '/ws/order/' + orderNumber + '/')
+    
+      const progressEl = document.getElementById('order-progress')
+      orderSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data)
+        const progress = data.progress || 0
+        const status = data.status || ''
+        if (progressEl) {
+          progressEl.style.width = progress + '%'
+          progressEl.textContent = status
+        }
+      }
+      orderSocket.onclose = () => console.warn('Order websocket closed')
+    })()
+  </script>
+{% endblock %}
