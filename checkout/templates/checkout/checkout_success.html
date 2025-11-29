@@ -42,17 +42,17 @@
           <tbody>
             {% for item in order.lineitems.all %}
               <tr>
-                <td>{{ item.dish.name }}</td>
+                <td>{{ item.portion.dish.name }}</td>
                 <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-end">${{ item.dish.price }}</td>
-                <td class="text-end fw-bold">${{ item.lineitem_total }}</td>
+                <td class="text-end">₦{{ item.price }}</td>
+                <td class="text-end fw-bold">₦{{ item.lineitem_total }}</td>
               </tr>
             {% endfor %}
           </tbody>
           <tfoot class="border-top">
             <tr>
               <td colspan="3" class="text-end fw-bold">Grand Total:</td>
-              <td class="text-end fw-bold text-warning">${{ order.grand_total }}</td>
+              <td class="text-end fw-bold text-warning">₦{{ order.grand_total }}</td>
             </tr>
           </tfoot>
         </table>

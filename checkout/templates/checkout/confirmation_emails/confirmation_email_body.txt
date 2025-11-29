@@ -1,18 +1,18 @@
 Hi {{ order.full_name }},
 
-Thanks for ordering from Tarh Tastyhub!<span class="fa-icon"><i class="fa-solid fa-person-praying"></i></span>
+Thanks for ordering from Tarh Tastyhub!
 
 Your order #{{ order.order_number }} has been received and is being processed.
 We’ll notify you when it’s out for delivery.
 
-Order Total: ${{ order.grand_total }}
+Order Total: ₦{{ order.grand_total }}
 Delivery Address:
 {{ order.street_address1 }}
 {% if order.street_address2 %}{{ order.street_address2 }}{% endif %}
-{{ order.town_or_city }}, {{ order.county }}
+{{ order.town_or_city }},{% if order.county %} {{ order.county }}{% endif %}
 {{ order.local }}
 
 If you have any questions, contact us at {{ contact_email }}.
 
-Bon appétit!<span class="fa-icon"><i class="fa-solid fa-pizza-slice"></i></span>
+Bon appétit!
 The Tarh Tastyhub Team

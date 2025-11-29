@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load dishes_extras %}
 {% block title %}
   Tarh Tastyhub
 {% endblock %}
@@ -11,7 +10,7 @@
 
     <!-- Search -->
     <form method="GET" class="d-flex justify-content-center mb-4">
-      <input type="text" name="q" value="{{ search_term }}" placeholder="Search dishes..." class="form-control w-50 me-2" />
+      <input id="search-input" type="text" name="q" value="{{ search_term }}" placeholder="Search dishes..." class="form-control w-50 me-2" />
       <button class="btn btn-warning fw-bold"><span class="fa-icon"><i class="fas fa-search"></i></span></button>
     </form>
 
@@ -20,8 +19,9 @@
       <a href="{% url 'dish_list' %}" class="badge bg-dark text-white mx-1 px-3 py-2">All</a>
 
       {% for category in categories %}
-        <a href="{% url 'dish_list' %}?category={{ category }}" class="badge bg-light text-secondary mx-1 px-3 py-2
-       {% if current_category == category %} border border-warning {% endif %}">{{ category }}</a>
+        <a href="{% url 'dish_list' %}?category={{ category.slug }}" class="badge bg-light text-secondary mx-1 px-3 py-2{% if current_category and current_category.slug == category.slug %} border border-warning{% endif %}">
+          {{ category.name }}
+        </a>
       {% endfor %}
     </div>
 
@@ -41,7 +41,8 @@
               <p class="text-muted small">{{ dish.description|truncatewords:12 }}</p>
               <p class="fw-bold text-warning">${{ dish.price }}</p>
 
-              <a href="{% url 'dish_detail' dish.id %}" class="btn btn-outline-dark btn-sm w-100 mb-2">View Details</a>
+              <!-- Use slug (dish_detail expects slug) -->
+              <a href="{% url 'dish_detail' dish.slug %}" class="btn btn-outline-dark btn-sm w-100 mb-2">View Details</a>
 
               <!-- Quantity Controls -->
               <div class="d-flex justify-content-center align-items-center mb-2">
@@ -50,7 +51,8 @@
                 <button type="button" class="btn btn-sm btn-outline-secondary dish-qty-increment">+</button>
               </div>
 
-              <button class="btn btn-warning btn-sm w-100 fw-bold add-to-bag" data-id="{{ dish.id }}">Add to Bag</button>
+              <!-- NOTE: Use portion id when available. Fall back to dish id if necessary -->
+              <button class="btn btn-warning btn-sm w-100 fw-bold add-to-bag" data-id="{{ dish.id }}" data-portion-id="{{ dish.portions.first.id if dish.portions.all|length > 0 else '' }}">Add to Bag</button>
             </div>
           </div>
         </div>
@@ -59,4 +61,7 @@
       {% endfor %}
     </div>
   </div>
+
+  <!-- Search dropdown container -->
+  <div id="search-results" class="dropdown-menu" style="display:none;"></div>
 {% endblock %}
