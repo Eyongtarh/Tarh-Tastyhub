@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Delete Account | Elah Tastyhub
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    <h2 class="fw-bold text-center mb-4 text-danger">⚠️ Delete Account</h2>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center bg-white p-4 rounded shadow-sm">
+        <p class="mb-4">
+          Are you sure you want to permanently delete your account?<br />
+          <strong>This action cannot be undone.</strong>
+        </p>
+
+        <!-- Delete Button triggers modal -->
+        <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="fa-solid fa-trash me-1"></i> Yes, delete my account</button>
+
+        <a href="{% url 'profile' %}" class="btn btn-secondary ms-2">Cancel</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title fw-bold" id="confirmDeleteModalLabel">Confirm Account Deletion</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-3">Deleting your account will remove all personal information and order history from our system.</p>
+          <p class="fw-bold text-danger mb-0">Are you absolutely sure?</p>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger fw-bold"><i class="fa-solid fa-trash me-1"></i> Delete Permanently</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

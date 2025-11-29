@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  My Profile | Elah Tastyhub
+{% endblock %}
+{% block content %}
+  <div class="container py-4">
+    <h2 class="fw-bold text-center mb-4">👤 My Profile</h2>
+
+    <div class="row g-4">
+      <!-- Left: Profile Info -->
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3">🧾 Default Delivery Information</h5>
+            <form method="POST" novalidate>
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="mb-3">
+                  {{ field.label_tag }}
+                  {{ field }}
+                  {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-warning fw-bold w-100 mt-2">Update Profile</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="{% url 'password_change' %}" class="btn btn-outline-secondary btn-sm">Change Password</a>
+          <a href="{% url 'delete_account' %}" class="btn btn-outline-danger btn-sm ms-2">Delete Account</a>
+        </div>
+      </div>
+
+      <!-- Right: Orders -->
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3">📦 My Orders</h5>
+            {% if orders %}
+              <ul class="list-group list-group-flush">
+                {% for order in orders %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'order_history' order.order_number %}">Order #{{ order.order_number }}</a>
+                    <span class="text-muted small">{{ order.date|date:'M d, Y' }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">You haven’t placed any orders yet.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
