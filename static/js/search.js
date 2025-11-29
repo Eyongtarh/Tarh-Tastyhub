@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch(`/search-dishes/?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`/dishes/search-dishes/?q=${encodeURIComponent(query)}`);
             const data = await res.json();
             box.innerHTML = '';
 
@@ -50,10 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const box = document.getElementById(resultsId);
         if (!input || !box) return;
 
-        input.addEventListener('input', debounce(() => search(input.value, box)));
+        input.addEventListener('input', debounce(() => search(input.value.trim(), box)));
 
         document.addEventListener('click', e => {
-            if (!input.contains(e.target) && !box.contains(e.target)) box.style.display = 'none';
+            const target = e.target;
+            if (target === input || box.contains(target)) return;
+            box.style.display = 'none';
         });
     });
 });

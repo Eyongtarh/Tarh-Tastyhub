@@ -22,11 +22,10 @@
             {% if categories %}
               {% for category in categories %}
                 <li>
-                  <a class="dropdown-item" href="{% url 'dishes_by_category' category.slug %}">{{ category.name }}</a>
+                  <a class="dropdown-item" href="{% url 'dish_list_by_category' category.slug %}">{{ category.name }}</a>
                 </li>
               {% endfor %}
             {% else %}
-              <!-- Safe fallback avoids template errors if context missing -->
               <li>
                 <span class="dropdown-item disabled text-muted">No categories</span>
               </li>

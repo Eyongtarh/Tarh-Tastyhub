@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% load dishes_extras %}
 
 {% block extra_css %}
@@ -26,7 +25,7 @@
                     <div>
                       <strong>{{ item.portion.dish.name }}</strong>
                       <br />
-                      Portion: {{ item.portion.name }}
+                      Portion: {{ item.portion.size }}
                       <br />
                       Quantity: {{ item.quantity }}
                     </div>
@@ -40,7 +39,7 @@
               <h4 class="text-end">Total: ₦{{ grand_total }}</h4>
 
               <div class="text-center mt-3">
-                <a href="{% url 'view_bag' %}" class="btn btn-outline-secondary">Modify Bag</a>
+                <a href="{% url 'dish_list' %}" class="btn btn-outline-secondary">Modify Bag</a>
               </div>
             </div>
           </div>
@@ -60,6 +59,7 @@
 
                 {% for field in form %}
                   <div class="mb-3">
+                    {# labels are suppressed in form __init__, but keep semantic markup #}
                     <label class="form-label">{{ field.label }}</label>
                     {{ field }}
                     {% if field.help_text %}
@@ -79,7 +79,7 @@
       <div class="alert alert-warning text-center">
         Your bag is empty.
         <br /><br />
-        <a href="{% url 'menu' %}" class="btn btn-primary">Browse Menu</a>
+        <a href="{% url 'dish_list' %}" class="btn btn-primary">Browse Dishes</a>
       </div>
     {% endif %}
   </div>
