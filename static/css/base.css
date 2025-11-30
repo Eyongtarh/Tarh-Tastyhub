@@ -5,17 +5,14 @@
 }
 
 
+/* --------------------- Body & Typography -------------------- */
 body {
-    background-color: rgba(39, 143, 106, 0.843);
+    background-color:  rgba(39, 143, 106, 0.843);
     font-family: 'Poppins', 'Segoe UI', sans-serif;
     color: #212529;
 }
 
-main {
-    flex: 1 0 auto;
-}
-
-/* Navbar */
+/* --------------------- Navbar -------------------- */
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: 700;
@@ -27,9 +24,14 @@ main {
 }
 
 .nav-link:hover {
-    color: rgba(39, 143, 106, 0.843);
+    color: #ffc107 !important;
 }
 
+.fa-icon {
+    color: #ffffff;
+    font-size: x-large;
+    padding: 0px 5px;
+}
 /* Dropdown */
 .dropdown-menu {
     background-color: #ffffff;
@@ -41,13 +43,12 @@ main {
 
 .dropdown-item:hover {
     background-color: #ffc107;
-    color: #000;
+    color: #000 !important;
 }
 
-/* Navbar Bag Badge */
-.navbar .badge,
-.offcanvas .badge {
-    font-size: 0.75rem;
+/* Navbar Bag Badge - scoped only to bag-count */
+.bag-count {
+    font-size: 0.75rem !important;
     padding: 3px 6px;
     background-color: #dc3545;
     color: #fff;
@@ -55,9 +56,11 @@ main {
     position: absolute;
     top: -5px;
     right: -10px;
+    min-width: 1.6rem;
+    text-align: center;
 }
 
-/* Hero Section */
+/* --------------------- Hero Section -------------------- */
 .hero {
     background: url('/static/images/banner.jpg') center center / cover no-repeat;
     height: 400px;
@@ -72,16 +75,16 @@ main {
 .hero h1 { font-size: 3rem; font-weight: 700; }
 .hero p { font-size: 1.2rem; }
 
-
-/* Cards */
+/* --------------------- Cards -------------------- */
 .card {
     border-radius: 12px;
-    transition: transform 0.3s;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     overflow: hidden;
 }
 
 .card:hover {
     transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .card img {
@@ -90,13 +93,13 @@ main {
     object-fit: cover;
 }
 
-/* Buttons */
+/* --------------------- Buttons -------------------- */
 .btn-warning {
-    color: #000;
+    color: #000 !important;
     font-weight: 600;
 }
 
-/* Forms  */
+/* --------------------- Forms -------------------- */
 .form-control {
     border-radius: 8px;
 }
@@ -106,7 +109,7 @@ main {
     box-shadow: 0 0 5px rgba(255,193,7,0.5);
 }
 
-/* Flying Bag Animation */
+/* --------------------- Flying Bag Animation -------------------- */
 #flying-image {
     position: fixed;
     width: 50px;
@@ -114,10 +117,10 @@ main {
     pointer-events: none;
     border-radius: 8px;
     z-index: 9999;
-    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s;
 }
 
-/* Search Dropdown */
+/* --------------------- Search Dropdown -------------------- */
 #search-results,
 #mobile-search-results {
     position: absolute;
@@ -133,84 +136,54 @@ main {
     border-radius: 5px;
 }
 
-/* Toast  */
+/* --------------------- Toast -------------------- */
 #notification-toast {
     min-width: 260px;
     border-radius: 12px;
 }
 
-/* Base style for all Font Awesome icons using .fa-icon */
-
-.fa-icon {
-  font-size: 1.6rem;
-  color: #ffff;  
-  transition: 0.3s ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0rem 0.5rem;
-}
-
- /* Font awesome */
-.fa-icon:hover {
-  transform: scale(1.15);
-  color: #353232; 
-}
-
-/* Title icon (utensils) - larger */
-.page-title .fa-icon {
-  font-size: 1.4rem;
-  color: #353232;
-}
-
-/* Search button icon */
-.btn .fa-icon {
-  font-size: 1rem;
-}
-
-
-/* Optional: soft background hover */
-.fa-icon.hover-circle:hover {
-  background: rgba(255, 193, 7, 0.1);
-  padding: 6px;
-  border-radius: 50%;
-}
-
-
-
-/* Footer */
+/* --------------------- Footer -------------------- */
 footer {
-    align-items: center;
+    background-color:transparent;
+    color: white;
+    padding: 20px;
+    font-size: 0.9rem;
+    margin: 0% 5%;
 }
 
-.tarh-footer {
-  background: #111;
-  color: #f5f5f5;
+.tarh-footer .footer-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.footer-link {
-  color: #ccc;
-  text-decoration: none;
+.tarh-footer .footer-link:hover {
+    color: #e55b2c; 
 }
 
-.footer-link:hover {
-  color: #ff6b35;
+.tarh-footer .social-icon {
+    color: #ffffff;
+    font-size: 1.25rem;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.social-icon {
-  font-size: 1.3rem;
-  color: #ccc;
-  transition: 0.3s ease;
+.tarh-footer .social-icon:hover {
+    color: #e55b2c; 
+    transform: translateY(-3px);
 }
 
-.social-icon:hover {
-  color: #ff6b35;
+.tarh-footer h6,
+.tarh-footer h4 {
+    color: #ffffff;
 }
 
+/* Remove extra spacing from lists */
+.tarh-footer ul li {
+    margin-bottom: 6px;
+}
 
-/* Mobile  */
+/* --------------------- Mobile -------------------- */
 @media (max-width:768px){
     .hero h1 { font-size: 2rem; }
     .hero p { font-size: 1rem; }
 }
-

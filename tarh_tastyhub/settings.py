@@ -24,16 +24,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-    # 3rd-party
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'django_htmx_messages',
     'crispy_forms',
     'crispy_bootstrap5',
-
-    # Local apps
     'home',
     'dishes',
     'bag',
@@ -44,7 +40,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none"  # removed duplicate
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
