@@ -1,77 +1,87 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+  Your Bag - Tarh Tastyhub
+{% endblock %}
+
 {% block content %}
-  <h2 class="mb-4 text-center"><span class="fa-icon"><i class="fa-solid fa-cart-shopping"></i></span>Your Bag</h2>
+  <div class="container py-5">
+    <h2 class="mb-4 text-center">
+      <span class="fa-icon"><i class="fa-solid fa-cart-shopping"></i></span>
+      Your Bag
+    </h2>
 
-  {% if items %}
-    <div class="row g-4">
-      <!-- Bag Items -->
-      <div class="col-md-8">
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-          {% for item in items %}
-            <div class="col">
-              <div class="card shadow-sm h-100">
-                <!-- Image -->
-                {% if item.portion.dish.image %}
-                  <img src="{{ item.portion.dish.image.url }}" class="card-img-top" alt="{{ item.portion.dish.name }}" />
-                {% else %}
-                  <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="No Image" />
-                {% endif %}
+    {% if items %}
+      <div class="row g-4">
+        <!-- Bag Items -->
+        <div class="col-md-8">
+          <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for item in items %}
+              <div class="col">
+                <div class="card shadow-sm h-100 bag-item">
+                  <!-- Dish Image -->
+                  {% if item.portion.dish.image %}
+                    <img src="{{ item.portion.dish.image.url }}" class="card-img-top" alt="{{ item.portion.dish.name }}" />
+                  {% else %}
+                    <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="No Image" />
+                  {% endif %}
 
-                <div class="card-body">
-                  <h5 class="card-title">{{ item.portion.dish.name }}</h5>
-                  <p class="text-muted small mb-1">
-                    Portion: <strong>{{ item.portion.size }}</strong>
-                  </p>
-                  <p class="card-text">{{ item.portion.dish.description|truncatewords:20 }}</p>
-                  <p class="fw-bold mb-2">₦{{ item.portion.price }}</p>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ item.portion.dish.name }}</h5>
+                    <p class="text-muted small mb-1">
+                      Portion: <strong>{{ item.portion.size }}</strong>
+                    </p>
+                    <p class="card-text">{{ item.portion.dish.description|truncatewords:20 }}</p>
+                    <p class="fw-bold mb-2">₦{{ item.portion.price }}</p>
 
-                  <!-- Quantity Controls -->
-                  <div class="d-flex align-items-center gap-2">
-                    <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-decrement" data-portion-id="{{ item.portion.id }}">-</button>
+                    <!-- Quantity Controls -->
+                    <div class="d-flex align-items-center gap-2">
+                      <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-decrement" data-portion-id="{{ item.portion.id }}">-</button>
+                      <input type="number" class="form-control form-control-sm dish-qty" value="{{ item.quantity }}" min="0" style="width:60px;" data-portion-id="{{ item.portion.id }}" />
+                      <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-increment" data-portion-id="{{ item.portion.id }}">+</button>
+                    </div>
 
-                    <input type="number" class="form-control form-control-sm dish-qty" value="{{ item.quantity }}" min="0" style="width:60px;" data-portion-id="{{ item.portion.id }}" />
-
-                    <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-increment" data-portion-id="{{ item.portion.id }}">+</button>
+                    <!-- Line Total -->
+                    <p class="mt-2 mb-0 line-total" data-portion-id="{{ item.portion.id }}">
+                      Total: <strong>₦{{ item.line_total }}</strong>
+                    </p>
                   </div>
 
-                  <!-- Line Total -->
-                  <p class="mt-2 mb-0 line-total">
-                    Total: <strong>₦{{ item.line_total }}</strong>
-                  </p>
-                </div>
-
-                <!-- Remove Button -->
-                <div class="card-footer bg-white border-0">
-                  <button class="btn btn-danger w-100 remove-from-bag" data-portion-id="{{ item.portion.id }}">Remove</button>
+                  <!-- Remove Button -->
+                  <div class="card-footer bg-white border-0">
+                    <button class="btn btn-danger w-100 remove-from-bag" data-portion-id="{{ item.portion.id }}">Remove</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-md-4">
+          <div class="card p-3 shadow-sm">
+            <h5 class="fw-bold">Order Summary</h5>
+            <p class="mb-1">
+              Subtotal: <span id="bag-subtotal">₦{{ bag_total }}</span>
+            </p>
+            <p class="mb-1">
+              Delivery: <span id="bag-delivery">₦{{ delivery_fee }}</span>
+            </p>
+            <hr />
+            <h5>Total: <span id="grand-total">₦{{ grand_total }}</span></h5>
+
+            <a href="{% url 'checkout' %}" class="btn btn-warning w-100 mt-3 fw-bold">Proceed to Checkout</a>
+          </div>
         </div>
       </div>
-
-      <!-- Order Summary -->
-      <div class="col-md-4">
-        <div class="card p-3 shadow-sm">
-          <h5 class="fw-bold">Order Summary</h5>
-          <p class="mb-1">Subtotal: ₦{{ bag_total }}</p>
-          <p class="mb-1">Delivery: ₦{{ delivery_fee }}</p>
-          <hr />
-          <h5>Total: <span id="grand-total">₦{{ grand_total }}</span></h5>
-
-          <a href="{% url 'checkout' %}" class="btn btn-warning w-100 mt-3 fw-bold">Proceed to Checkout</a>
-        </div>
+    {% else %}
+      <p class="text-center text-muted mt-5">
+        Your bag is empty <span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
+      </p>
+      <div class="text-center mt-3">
+        <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Browse Dishes</a>
       </div>
-    </div>
-  {% else %}
-    <p class="text-center text-muted mt-5">
-      Your bag is empty <span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
-    </p>
-
-    <div class="text-center mt-3">
-      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Browse Dishes</a>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 {% endblock %}
