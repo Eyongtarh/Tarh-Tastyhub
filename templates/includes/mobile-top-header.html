@@ -59,19 +59,19 @@
         <a class="d-block py-2" href="{% url 'checkout' %}">Checkout</a>
       </li>
       <li>
-        <a class="d-block py-2" href="{% url 'feedback' %}">Contact</a>
+        <a class="d-block py-2" href="{#% url 'feedback' %#}">Contact</a>
       </li>
       <!-- Auth -->
       {% if user.is_authenticated %}
         <li>
-          <a class="d-block py-2" href="{% url 'profile' %}">Profile</a>
+          <a class="d-block py-2" href="{#% url 'profile' %#}">Profile</a>
         </li>
         <li>
-          <a class="d-block py-2" href="{% url 'logout' %}">Logout</a>
+          <a class="d-block py-2" href="{% url 'account_logout' %}">Logout</a>
         </li>
       {% else %}
         <li>
-          <a class="d-block py-2" href="{% url 'login' %}">Login</a>
+          <a class="d-block py-2" href="{% url 'account_login' %}">Login</a>
         </li>
       {% endif %}
     </ul>

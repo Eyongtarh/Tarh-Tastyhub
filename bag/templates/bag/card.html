@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
   <h2 class="mb-4 text-center"><span class="fa-icon"><i class="fa-solid fa-cart-shopping"></i></span>Your Bag</h2>
 
@@ -20,47 +21,30 @@
 
                 <div class="card-body">
                   <h5 class="card-title">{{ item.portion.dish.name }}</h5>
-
                   <p class="text-muted small mb-1">
                     Portion: <strong>{{ item.portion.size }}</strong>
                   </p>
-
                   <p class="card-text">{{ item.portion.dish.description|truncatewords:20 }}</p>
-
-                  <!-- Price -->
                   <p class="fw-bold mb-2">₦{{ item.portion.price }}</p>
 
                   <!-- Quantity Controls -->
                   <div class="d-flex align-items-center gap-2">
-                    <!-- Minus -->
-                    <form method="POST" action="{% url 'bag:adjust_bag' item.portion.id %}">
-                      {% csrf_token %}
-                      <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}" />
-                      <button class="btn btn-outline-secondary btn-sm">-</button>
-                    </form>
+                    <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-decrement" data-portion-id="{{ item.portion.id }}">-</button>
 
-                    <span class="fw-bold">{{ item.quantity }}</span>
+                    <input type="number" class="form-control form-control-sm dish-qty" value="{{ item.quantity }}" min="0" style="width:60px;" data-portion-id="{{ item.portion.id }}" />
 
-                    <!-- Plus -->
-                    <form method="POST" action="{% url 'bag:add_to_bag' item.portion.id %}">
-                      {% csrf_token %}
-                      <input type="hidden" name="quantity" value="1" />
-                      <button class="btn btn-outline-secondary btn-sm">+</button>
-                    </form>
+                    <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-increment" data-portion-id="{{ item.portion.id }}">+</button>
                   </div>
 
                   <!-- Line Total -->
-                  <p class="mt-2 mb-0">
+                  <p class="mt-2 mb-0 line-total">
                     Total: <strong>₦{{ item.line_total }}</strong>
                   </p>
                 </div>
 
                 <!-- Remove Button -->
                 <div class="card-footer bg-white border-0">
-                  <form method="POST" action="{% url 'bag:remove_from_bag' item.portion.id %}">
-                    {% csrf_token %}
-                    <button class="btn btn-danger w-100">Remove</button>
-                  </form>
+                  <button class="btn btn-danger w-100 remove-from-bag" data-portion-id="{{ item.portion.id }}">Remove</button>
                 </div>
               </div>
             </div>
@@ -75,7 +59,7 @@
           <p class="mb-1">Subtotal: ₦{{ bag_total }}</p>
           <p class="mb-1">Delivery: ₦{{ delivery_fee }}</p>
           <hr />
-          <h5>Total: ₦{{ grand_total }}</h5>
+          <h5>Total: <span id="grand-total">₦{{ grand_total }}</span></h5>
 
           <a href="{% url 'checkout' %}" class="btn btn-warning w-100 mt-3 fw-bold">Proceed to Checkout</a>
         </div>
@@ -83,7 +67,7 @@
     </div>
   {% else %}
     <p class="text-center text-muted mt-5">
-      Your bag is empty<span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
+      Your bag is empty <span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
     </p>
 
     <div class="text-center mt-3">

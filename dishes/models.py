@@ -1,4 +1,3 @@
-# dishes/models.py
 from io import BytesIO
 from decimal import Decimal
 from django.core.files.base import ContentFile
@@ -49,7 +48,17 @@ class DishManager(models.Manager):
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
-    menu_type = models.CharField(max_length=50, unique=True)
+    menu_type = models.CharField(
+        max_length=50,
+        choices=(
+            ('Breakfast', 'Breakfast'),
+            ('Lunch', 'Lunch'),
+            ('Dinner', 'Dinner'),
+            ('Grill', 'Grill'),
+            ('Drinks', 'Drinks'),
+        ),
+        default='Breakfast'  # <-- added default to fix migration
+    )
     description = models.TextField(blank=True, null=True)
     icon = models.ImageField(upload_to='category_icons/', blank=True, null=True)
 

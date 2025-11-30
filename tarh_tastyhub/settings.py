@@ -7,9 +7,12 @@ if os.path.isfile('env.py'):
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEBUG = True
+
+
 # Security
 SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-development-key')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # Applications
@@ -35,7 +38,7 @@ INSTALLED_APPS = [
     'dishes',
     'bag',
     'checkout',
-    'profiles',
+    # 'profiles',
 ]
 
 SITE_ID = 1

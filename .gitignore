@@ -1,4 +1,3 @@
 .venv
 mythings.sh
 env.py
-db.sqlite3

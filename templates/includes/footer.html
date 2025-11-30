@@ -19,7 +19,7 @@
           {% if categories %}
             {% for category in categories %}
               <li>
-                <a class="footer-link" href="{% url 'dishes_by_category' category.slug %}">{{ category.name }}</a>
+                <a class="footer-link" href="{% url 'dish_list_by_category' category.slug %}">{{ category }}</a>
               </li>
             {% endfor %}
           {% else %}

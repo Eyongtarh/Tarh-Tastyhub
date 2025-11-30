@@ -22,6 +22,7 @@
     {% endblock %}
 
     {% block extra_css %}
+
     {% endblock %}
 
     {% block corejs %}
@@ -36,6 +37,7 @@
     {% endblock %}
 
     {% block extra_js %}
+
     {% endblock %}
   </head>
 
@@ -53,6 +55,7 @@
     </header>
     <main class="py-3">
       {% block content %}
+
       {% endblock %}
     </main>
 
@@ -89,5 +92,8 @@
         {% endif %}
     });
     </script>
+    {% block postloadjs %}
+
+    {% endblock %}
   </body>
 </html>
