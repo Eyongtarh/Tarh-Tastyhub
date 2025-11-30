@@ -21,7 +21,7 @@ def checkout(request):
 
     if not bag:
         messages.error(request, "Your bag is empty. Add items before checkout.")
-        return redirect('view_bag')
+        return redirect('bag')
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
