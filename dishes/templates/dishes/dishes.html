@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
   Tarh Tastyhub
 {% endblock %}
 
 {% block content %}
   <div class="container py-5">
-    <h2 class="fw-bold text-center mb-4"><span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>Our Dishes</h2>
+    <h2 class="fw-bold text-center mb-4">
+      <span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
+      Our Dishes
+    </h2>
 
     <!-- Search -->
     <form method="GET" class="d-flex justify-content-center mb-4">
@@ -17,11 +21,8 @@
     <!-- Category Filter -->
     <div class="text-center mb-4">
       <a href="{% url 'dish_list' %}" class="badge bg-dark text-white mx-1 px-3 py-2">All</a>
-
       {% for category in categories %}
-        <a href="{% url 'dish_list' %}?category={{ category.slug }}" class="badge bg-light text-secondary mx-1 px-3 py-2{% if current_category and current_category.slug == category.slug %} border border-warning{% endif %}">
-          {{ category.name }}
-        </a>
+        <a href="{% url 'dish_list' %}?category={{ category.slug }}" class="badge bg-light text-secondary mx-1 px-3 py-2{% if current_category and current_category.slug == category.slug %} border border-warning{% endif %}">{{ category.name }}</a>
       {% endfor %}
     </div>
 
@@ -41,7 +42,7 @@
               <p class="text-muted small">{{ dish.description|truncatewords:12 }}</p>
               <p class="fw-bold text-warning">${{ dish.price }}</p>
 
-              <!-- Use slug (dish_detail expects slug) -->
+              <!-- Detail Button -->
               <a href="{% url 'dish_detail' dish.slug %}" class="btn btn-outline-dark btn-sm w-100 mb-2">View Details</a>
 
               <!-- Quantity Controls -->
@@ -51,8 +52,8 @@
                 <button type="button" class="btn btn-sm btn-outline-secondary dish-qty-increment">+</button>
               </div>
 
-              <!-- NOTE: Use portion id when available. Fall back to dish id if necessary -->
-              <button class="btn btn-warning btn-sm w-100 fw-bold add-to-bag" data-id="{{ dish.id }}" data-portion-id="{{ dish.portions.first.id if dish.portions.all|length > 0 else '' }}">Add to Bag</button>
+              <!-- Portion-safe Add to Bag button -->
+              <button class="btn btn-warning btn-sm w-100 fw-bold add-to-bag" data-id="{{ dish.id }}" data-portion-id="{% if dish.portions.all %}{{ dish.portions.first.id }}{% endif %}">Add to Bag</button>
             </div>
           </div>
         </div>
@@ -64,4 +65,7 @@
 
   <!-- Search dropdown container -->
   <div id="search-results" class="dropdown-menu" style="display:none;"></div>
+{% endblock %}
+{% block postloadjs %}
+  <script src="{% static 'dishes/js/dish.js' %}"></script>
 {% endblock %}

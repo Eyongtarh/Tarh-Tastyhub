@@ -13,7 +13,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from .models import Order, OrderLineItem
-from profiles.models import UserProfile
+#from profiles.models import UserProfile
 from dishes.models import DishPortion
 
 logger = logging.getLogger(__name__)

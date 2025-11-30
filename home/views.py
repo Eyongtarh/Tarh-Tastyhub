@@ -1,21 +1,22 @@
 from django.shortcuts import render
-from dishes.models import Dish
-
+from dishes.models import Dish, Category
 
 def index(request):
     """
     Home page view for Tarh Tastyhub.
-
-    Shows:
-    - Up to 4 unique dish categories (string values from Dish.category choices)
-    - Up to 8 latest available dishes
     """
 
-    # Extract 4 unique category names
-    categories = Dish.objects.values_list('category', flat=True).distinct()[:4]
+    # Get 4 valid categories only (with slug)
+    categories = Category.objects.filter(
+        slug__isnull=False
+    ).exclude(
+        slug__exact=''
+    ).order_by('name')[:4]
 
     # Featured dishes
-    featured_dishes = Dish.objects.filter(available=True).order_by('-id')[:8]
+    featured_dishes = Dish.objects.filter(
+        available=True
+    ).order_by('-id')[:8]
 
     context = {
         'categories': categories,

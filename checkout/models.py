@@ -1,5 +1,5 @@
 from django.db import models
-from profiles.models import UserProfile
+# from profiles.models import UserProfile
 from dishes.models import DishPortion
 import uuid
 from decimal import Decimal
@@ -23,7 +23,7 @@ class Order(models.Model):
         ('Cancelled', 'Cancelled'),
     )
 
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
+    # user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     order_number = models.CharField(max_length=32, unique=True, default=generate_order_number)
     full_name = models.CharField(max_length=50)
     email = models.EmailField()
