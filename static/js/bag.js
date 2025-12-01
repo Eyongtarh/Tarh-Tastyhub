@@ -6,18 +6,18 @@ if (window.dishBagJSLoaded) {
     document.addEventListener('DOMContentLoaded', () => {
         const csrftoken = window.getCSRFToken ? window.getCSRFToken() : null;
 
-        const updateBagUI = (data, input=null) => {
+        const updateBagUI = (data, input = null) => {
             if (!data) return;
 
             // Update subtotal, delivery, grand total
             const subtotalEl = document.querySelector('#bag-subtotal');
-            if (subtotalEl) subtotalEl.textContent = `₦${data.subtotal}`;
+            if (subtotalEl) subtotalEl.textContent = `$${parseFloat(data.subtotal).toFixed(2)}`;
 
             const deliveryEl = document.querySelector('#bag-delivery');
-            if (deliveryEl) deliveryEl.textContent = `₦${data.delivery_fee}`;
+            if (deliveryEl) deliveryEl.textContent = `$${parseFloat(data.delivery_fee).toFixed(2)}`;
 
             const grandTotalEl = document.querySelector('#grand-total');
-            if (grandTotalEl) grandTotalEl.textContent = `₦${data.grand_total}`;
+            if (grandTotalEl) grandTotalEl.textContent = `$${parseFloat(data.grand_total).toFixed(2)}`;
 
             // Update bag count
             document.querySelectorAll('.bag-count').forEach(el => el.textContent = data.bag_count);
@@ -27,7 +27,7 @@ if (window.dishBagJSLoaded) {
                 const card = input.closest('.card-body, .bag-item, .col-md-6');
                 if (!card) return;
                 const lineTotalEl = card.querySelector('.line-total');
-                if (lineTotalEl) lineTotalEl.innerHTML = `Total: <strong>₦${data.line_total}</strong>`;
+                if (lineTotalEl) lineTotalEl.innerHTML = `Total: <strong>$${parseFloat(data.line_total).toFixed(2)}</strong>`;
             }
         };
 
@@ -39,7 +39,7 @@ if (window.dishBagJSLoaded) {
             return res.json();
         };
 
-        const handleQuantityChange = async (input, increment=0) => {
+        const handleQuantityChange = async (input, increment = 0) => {
             if (!input) return;
             const portionId = input.dataset.portionId || input.dataset.id;
             if (!portionId) return;

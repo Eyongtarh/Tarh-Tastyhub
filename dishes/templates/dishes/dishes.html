@@ -46,15 +46,15 @@
               <select class="form-select form-select-sm mb-2 portion-select">
                 {% for portion in dish.portions.all %}
                   <option value="{{ portion.id }}" {% if forloop.first %}selected{% endif %}>
-                    {{ portion.size }} - ₦{{ portion.price }}
+                    {{ portion.size }} - ${{ portion.price }}
                   </option>
                 {% endfor %}
               </select>
-              <p class="fw-bold text-warning dish-price mb-2">₦{{ dish.portions.first.price }}</p>
+              <p class="fw-bold text-warning dish-price mb-2">${{ dish.portions.first.price }}</p>
 
               <input type="hidden" class="dish-portion-id" value="{{ dish.portions.first.id }}">
             {% else %}
-              <p class="fw-bold text-warning dish-price mb-2">₦{{ dish.price }}</p>
+              <p class="fw-bold text-warning dish-price mb-2">${{ dish.price }}</p>
               <input type="hidden" class="dish-portion-id" value="{{ dish.id }}">
             {% endif %}
 

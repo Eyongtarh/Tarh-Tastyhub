@@ -8,9 +8,21 @@ class OrderForm(forms.ModelForm):
         widget=forms.DateTimeInput(
             attrs={
                 'type': 'datetime-local',
-                'class': 'form-control mb-2'
+                'class': 'form-control mb-2 stripe-style-input',
+                'placeholder': 'Select pickup time',
             }
         )
+    )
+
+    DELIVERY_CHOICES = [
+        ('delivery', 'Delivery'),
+        ('pickup', 'Pickup'),
+    ]
+
+    delivery_type = forms.ChoiceField(
+        choices=DELIVERY_CHOICES,
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        label='',
     )
 
     class Meta:
@@ -29,30 +41,37 @@ class OrderForm(forms.ModelForm):
             'pickup_time',
         ]
         widgets = {
-            'delivery_type': forms.Select(attrs={'class': 'form-control mb-2'}),
-            'local': forms.Select(attrs={'class': 'form-control mb-2'}),
+            'local': forms.Select(attrs={
+                'class': 'form-control mb-2 stripe-style-input',
+            }),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Apply bootstrap formatting and hide labels
+        # Apply global styling to all fields
         for name, field in self.fields.items():
-            # Add class if widget does not have one
-            existing_classes = field.widget.attrs.get('class', '')
-            field.widget.attrs['class'] = (existing_classes + ' form-control mb-2').strip()
-
-            # Hide labels (correct way)
+            css = field.widget.attrs.get('class', '')
+            if not isinstance(field.widget, forms.RadioSelect):
+                field.widget.attrs['class'] = (
+                    css + ' form-control mb-2 stripe-style-input'
+                ).strip()
+            # Placeholder for text inputs
+            if not isinstance(field.widget, forms.Select) and not isinstance(field.widget, forms.RadioSelect):
+                field.widget.attrs.setdefault(
+                    'placeholder',
+                    name.replace('_', ' ').title()
+                )
             field.label = ''
-
-            # Add placeholder text
-            field.widget.attrs.setdefault('placeholder', name.replace('_', ' ').title())
 
     def clean(self):
         cleaned = super().clean()
 
-        # Require pickup_time if delivery_type == "pickup"
+        # Require pickup_time if delivery_type is pickup
         if cleaned.get('delivery_type') == 'pickup' and not cleaned.get('pickup_time'):
-            self.add_error('pickup_time', 'Pickup time is required for pickup orders.')
+            self.add_error(
+                'pickup_time',
+                'Pickup time is required for pickup orders.'
+            )
 
         return cleaned

@@ -1,150 +1,109 @@
-/*
-    Core logic/payment flow for this comes from here:
-    https://stripe.com/docs/payments/accept-a-payment
-*/
+document.addEventListener("DOMContentLoaded", function () {
+  // Hide overlay initially
+  const loadingOverlay = document.getElementById("loading-overlay");
+  if (loadingOverlay) loadingOverlay.style.display = "none";
 
-var stripePublicKey = document.getElementById('id_stripe_public_key') ? document.getElementById('id_stripe_public_key').textContent : '';
-var clientSecret = document.getElementById('id_client_secret') ? document.getElementById('id_client_secret').textContent : '';
-try { stripePublicKey = JSON.parse(stripePublicKey); } catch(e) {}
-try { clientSecret = JSON.parse(clientSecret); } catch(e) {}
+  // Stripe setup
+  const stripePublicKey = JSON.parse(document.getElementById("id_stripe_public_key")?.textContent || '""');
+  const clientSecret = JSON.parse(document.getElementById("id_client_secret")?.textContent || '""');
 
-var stripe = Stripe(stripePublicKey);
-var elements = stripe.elements();
-var style = {
+  if (!stripePublicKey || !clientSecret) {
+    console.error("Stripe keys missing!");
+    return;
+  }
+
+  const stripe = Stripe(stripePublicKey);
+  const elements = stripe.elements();
+
+  const style = {
     base: {
-        color: '#000',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-            color: '#aab7c4'
-        }
+      color: "#000",
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSize: "16px",
+      "::placeholder": { color: "#aab7c4" },
     },
     invalid: {
-        color: '#dc3545',
-        iconColor: '#dc3545'
-    }
-};
-var card = elements.create('card', {style: style});
-if (document.getElementById('card-element')) {
-    card.mount('#card-element');
-}
-
-// Handle realtime validation errors on the card element
-if (card) {
-    card.addEventListener('change', function (event) {
-        var errorDiv = document.getElementById('card-errors');
-        if (event.error) {
-            var html = `
-                <span class="icon" role="alert">
-                    <i class="fas fa-times"></i>
-                </span>
-                <span>${event.error.message}</span>
-            `;
-            $(errorDiv).html(html);
-        } else {
-            errorDiv.textContent = '';
-        }
-    });
-}
-
-// Handle form submit
-var form = document.getElementById('payment-form');
-
-if (form) {
-    form.addEventListener('submit', function(ev) {
-        ev.preventDefault();
-        card.update({ 'disabled': true});
-        $('#submit-button').attr('disabled', true);
-        $('#payment-form').fadeToggle(100);
-        $('#loading-overlay').fadeToggle(100);
-
-        var saveInfo = Boolean($('#id-save-info').attr('checked'));
-        var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-        var postData = {
-            'csrfmiddlewaretoken': csrfToken,
-            'client_secret': clientSecret,
-            'save_info': saveInfo,
-            'email': $.trim(form.email.value),
-        };
-
-        var url = '/checkout/cache_checkout_data/';
-
-        $.post(url, postData).done(function () {
-            stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: card,
-                    billing_details: {
-                        name: $.trim(form.full_name.value),
-                        phone: $.trim(form.phone_number.value),
-                        email: $.trim(form.email.value),
-                        address:{
-                            line1: $.trim(form.street_address1.value),
-                            line2: $.trim(form.street_address2.value),
-                            city: $.trim(form.town_or_city.value),
-                            country: $.trim(form.local ? form.local.value : ''),
-                            state: $.trim(form.county.value),
-                        }
-                    }
-                },
-                shipping: {
-                    name: $.trim(form.full_name.value),
-                    phone: $.trim(form.phone_number.value),
-                    address: {
-                        line1: $.trim(form.street_address1.value),
-                        line2: $.trim(form.street_address2.value),
-                        city: $.trim(form.town_or_city.value),
-                        country: $.trim(form.local ? form.local.value : ''),
-                        postal_code: $.trim(form.postcode.value),
-                        state: $.trim(form.county.value),
-                    }
-                },
-            }).then(function(result) {
-                if (result.error) {
-                    var errorDiv = document.getElementById('card-errors');
-                    var html = `
-                        <span class="icon" role="alert">
-                        <i class="fas fa-times"></i>
-                        </span>
-                        <span>${result.error.message}</span>`;
-                    $(errorDiv).html(html);
-                    $('#payment-form').fadeToggle(100);
-                    $('#loading-overlay').fadeToggle(100);
-                    card.update({ 'disabled': false});
-                    $('#submit-button').attr('disabled', false);
-                } else {
-                    if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-                        form.submit();
-                    }
-                }
-            });
-        }).fail(function () {
-            location.reload();
-        })
-    });
-}
-
-// Order tracking websocket (only if order present and element exists)
-(function () {
-  const progressEl = document.getElementById('order-progress');
-  if (!progressEl) return;
-
-  const orderNumberEl = document.querySelector('[data-order-number]');
-  const orderNumber = orderNumberEl ? orderNumberEl.dataset.orderNumber : (window.ORDER_NUMBER || null);
-
-  if (!orderNumber) return;
-
-  const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  const orderSocket = new WebSocket(wsProtocol + '://' + window.location.host + '/ws/order/' + orderNumber + '/');
-
-  orderSocket.onmessage = (e) => {
-    const data = JSON.parse(e.data);
-    const progress = data.progress || 0;
-    const status = data.status || '';
-    if (progressEl) {
-      progressEl.style.width = progress + '%';
-      progressEl.textContent = status;
-    }
+      color: "#dc3545",
+      iconColor: "#dc3545",
+    },
   };
-  orderSocket.onclose = () => console.warn('Order websocket closed');
-})();
+
+  const cardElementDiv = document.getElementById("card-element");
+  if (!cardElementDiv) return;
+
+  const card = elements.create("card", { style });
+  card.mount("#card-element");
+
+  card.on("change", function (event) {
+    const errorDiv = document.getElementById("card-errors");
+    errorDiv.textContent = event.error ? event.error.message : "";
+  });
+
+  // Pickup Time Toggle
+  const deliveryRadios = document.querySelectorAll('input[name="delivery_type"]');
+  const pickupTimeContainer = document.getElementById('pickup-time-container');
+
+  function togglePickupTime() {
+    const selected = document.querySelector('input[name="delivery_type"]:checked')?.value;
+    if (pickupTimeContainer) pickupTimeContainer.style.display = selected === 'pickup' ? 'block' : 'none';
+  }
+
+  togglePickupTime();
+  deliveryRadios.forEach(radio => radio.addEventListener('change', togglePickupTime));
+
+  // Form submit
+  const form = document.getElementById("payment-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+
+    const submitBtn = document.getElementById("submit-button");
+    loadingOverlay.style.display = "flex";
+    submitBtn.disabled = true;
+
+    const saveInfo = document.getElementById("id-save-info")?.checked || false;
+    const csrfToken = document.querySelector("input[name='csrfmiddlewaretoken']").value;
+
+    const postData = new FormData();
+    postData.append("csrfmiddlewaretoken", csrfToken);
+    postData.append("client_secret", clientSecret);
+    postData.append("save_info", saveInfo);
+    postData.append("email", form.email.value.trim());
+
+    try {
+      // Cache checkout data
+      await fetch("/checkout/cache_checkout_data/", { method: "POST", body: postData });
+
+      // Confirm card payment
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: form.full_name.value.trim(),
+            phone: form.phone_number.value.trim(),
+            email: form.email.value.trim(),
+            address: {
+              line1: form.street_address1.value.trim(),
+              line2: form.street_address2.value.trim(),
+              city: form.town_or_city.value.trim(),
+              state: form.county.value.trim(),
+              country: form.local?.value.trim() || "",
+            },
+          },
+        },
+      });
+
+      if (result.error) {
+        document.getElementById("card-errors").textContent = result.error.message;
+        loadingOverlay.style.display = "none";
+        submitBtn.disabled = false;
+      } else if (result.paymentIntent?.status === "succeeded") {
+        form.submit();
+      }
+    } catch (error) {
+      console.error(error);
+      location.reload();
+    }
+  });
+});

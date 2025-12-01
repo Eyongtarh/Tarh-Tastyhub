@@ -27,16 +27,16 @@
         <select class="form-select mb-2 portion-select" aria-label="Select portion">
           {% for portion in dish.portions.all %}
             <option value="{{ portion.id }}" data-price="{{ portion.price }}" {% if forloop.first %}selected{% endif %}>
-              {{ portion.size }} - ₦{{ portion.price }}
+              {{ portion.size }} - ${{ portion.price }}
             </option>
           {% endfor %}
         </select>
-        <p class="fw-bold text-warning dish-price">₦{{ dish.portions.first.price }}</p>
+        <p class="fw-bold text-warning dish-price">$ {{ dish.portions.first.price }}</p>
         {% with portion_id=dish.portions.first.id %}
           {% comment %}Used in data-portion-id for JS{% endcomment %}
         {% endwith %}
       {% else %}
-        <p class="fw-bold text-warning dish-price">₦{{ dish.price }}</p>
+        <p class="fw-bold text-warning dish-price">$ {{ dish.price }}</p>
         {% with portion_id=dish.id %}
         {% endwith %}
       {% endif %}
