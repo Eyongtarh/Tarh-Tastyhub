@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Customer Feedback | Tarh Tastyhub
+{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <h2 class="fw-bold text-center mb-4">Customer Feedback</h2>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          {% if request.user.is_authenticated %}
+            <p class="text-muted small mb-3">
+              Logged in as <strong>{{ request.user.username }}</strong><br />
+              Name & email auto-filled from your profile.
+            </p>
+          {% endif %}
+
+          {% for field in form %}
+            {# Render honeypot as hidden input but do not show label #}
+            {% if field.name == 'honeypot' %}
+              {{ field }}
+            {% elif request.user.is_authenticated and field.name in 'name email'|split:' ' %}
+              {{ field.as_hidden }}
+            {% else %}
+              <div class="mb-3">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                  <small class="text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.errors %}
+                  <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <button type="submit" class="btn btn-warning fw-bold w-100 mt-3">Submit Feedback</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
