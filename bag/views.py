@@ -7,12 +7,7 @@ from decimal import Decimal
 from dishes.models import DishPortion
 from bag.context_processors import bag_contents
 
-
-DELIVERY_FEE = Decimal("200.00")
-
-
-def view_bag(request):
-    return render(request, 'bag/card.html')
+DELIVERY_FEE = Decimal("30.00")
 
 
 def _get_bag_totals(request):
@@ -34,6 +29,33 @@ def _get_bag_totals(request):
     }
 
 
+def view_bag(request):
+    """
+    Render the bag page with all items and totals.
+    """
+    bag = request.session.get("bag", {})
+    items = []
+
+    for pid, qty in bag.items():
+        portion = get_object_or_404(DishPortion.objects.select_related("dish"), pk=pid)
+        line_total = portion.price * qty
+        items.append({
+            "portion": portion,
+            "quantity": qty,
+            "line_total": line_total
+        })
+
+    totals = _get_bag_totals(request)
+
+    context = {
+        "items": items,
+        "bag_total": totals["subtotal"],
+        "delivery_fee": totals["delivery_fee"],
+        "grand_total": totals["grand_total"]
+    }
+    return render(request, 'bag/card.html', context)
+
+
 def add_to_bag(request, portion_id):
     """
     Adds a portion to the bag with the exact quantity from input.
@@ -44,7 +66,6 @@ def add_to_bag(request, portion_id):
 
     portion = get_object_or_404(DishPortion.objects.select_related("dish"), pk=portion_id)
 
-    # Parse quantity, enforce minimum 1
     try:
         quantity = int(request.POST.get("quantity", 1))
     except (TypeError, ValueError):
@@ -52,7 +73,6 @@ def add_to_bag(request, portion_id):
     if quantity < 1:
         quantity = 1
 
-    # Set exact quantity (overwrite)
     bag = request.session.get("bag", {})
     bag[str(portion_id)] = quantity
     request.session["bag"] = bag
@@ -60,19 +80,18 @@ def add_to_bag(request, portion_id):
 
     message = f"Added {portion.dish.name} ({portion.size}) × {quantity} to your bag"
 
-    # AJAX response
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
-        ctx = bag_contents(request)
+        totals = _get_bag_totals(request)
         line_total = portion.price * quantity
 
         return JsonResponse({
             "success": True,
             "message": message,
-            "bag_count": ctx["bag_count"],
+            "bag_count": sum(bag.values()),
             "line_total": f"{line_total:.2f}",
-            "subtotal": f"{ctx['bag_total']:.2f}",
-            "delivery_fee": f"{ctx['delivery_fee']:.2f}",
-            "grand_total": f"{ctx['grand_total']:.2f}",
+            "subtotal": f"{totals['subtotal']:.2f}",
+            "delivery_fee": f"{totals['delivery_fee']:.2f}",
+            "grand_total": f"{totals['grand_total']:.2f}",
         })
 
     messages.success(request, message)
@@ -80,6 +99,10 @@ def add_to_bag(request, portion_id):
 
 
 def adjust_bag(request, portion_id):
+    """
+    Adjusts the quantity of a portion in the bag.
+    Removes it if quantity is zero.
+    """
     if request.method != "POST":
         return HttpResponseBadRequest("Invalid method")
 
@@ -101,8 +124,8 @@ def adjust_bag(request, portion_id):
     request.session["bag"] = bag
     request.session.modified = True
 
-    line_total = portion.price * quantity if quantity > 0 else Decimal("0.00")
     totals = _get_bag_totals(request)
+    line_total = portion.price * quantity if quantity > 0 else Decimal("0.00")
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         return JsonResponse({
@@ -118,6 +141,9 @@ def adjust_bag(request, portion_id):
 
 
 def remove_from_bag(request, portion_id):
+    """
+    Removes a portion from the bag entirely.
+    """
     if request.method != "POST":
         return HttpResponseBadRequest("Invalid method")
 

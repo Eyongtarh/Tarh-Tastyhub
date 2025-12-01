@@ -182,7 +182,108 @@ footer {
     margin-bottom: 6px;
 }
 
-/* --------------------- Mobile -------------------- */
+/* --------------------- Mobile Header -------------------- */
+.<!-- --------------------- Mobile Header-------------------- -->
+/* Header Container */
+.d-lg-none.bg-warning {
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1050; /* above content */
+}
+
+/* Hamburger Button */
+.btn-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.05);
+    color: #000;
+    font-size: 1.25rem;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.btn-hamburger:hover,
+.btn-hamburger:focus {
+    background-color: rgba(0,0,0,0.15);
+    color: #000;
+}
+
+/* Rotate icon when offcanvas is open */
+.offcanvas.show + .btn-hamburger i,
+.offcanvas.show i {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+}
+
+/* Bag Icon & Count */
+.d-lg-none .d-flex.align-items-center.gap-2 > * {
+    display: flex;
+    align-items: center;
+}
+.bag-count {
+    font-size: 0.75rem !important;
+    padding: 3px 6px;
+    background-color: #dc3545;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    min-width: 1.6rem;
+    text-align: center;
+}
+
+/* Offcanvas Menu */
+.offcanvas-body {
+    padding: 1rem;
+    background-color: #ffffff;
+}
+.offcanvas-body ul {
+    list-style: none;
+    padding-left: 0;
+}
+.offcanvas-body li {
+    margin-bottom: 0.5rem;
+}
+.offcanvas-body a {
+    color: #212529;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    display: block;
+    transition: color 0.2s, background-color 0.2s;
+}
+.offcanvas-body a:hover {
+    color: #ffc107;
+    background-color: rgba(255,193,7,0.1);
+    border-radius: 5px;
+}
+/* Nested Categories */
+.offcanvas-body ul ul li a {
+    padding-left: 1rem;
+    font-weight: 400;
+    font-size: 0.95rem;
+}
+/* Offcanvas Header */
+.offcanvas-header {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+    .btn-hamburger {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+    .offcanvas-body a {
+        font-size: 0.95rem;
+    }
+}
+
 @media (max-width:768px){
     .hero h1 { font-size: 2rem; }
     .hero p { font-size: 1rem; }

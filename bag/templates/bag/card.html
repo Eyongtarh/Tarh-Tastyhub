@@ -33,7 +33,7 @@
                       Portion: <strong>{{ item.portion.size }}</strong>
                     </p>
                     <p class="card-text">{{ item.portion.dish.description|truncatewords:20 }}</p>
-                    <p class="fw-bold mb-2">₦{{ item.portion.price }}</p>
+                    <p class="fw-bold mb-2">${{ item.portion.price }}</p>
 
                     <!-- Quantity Controls -->
                     <div class="d-flex align-items-center gap-2">
@@ -44,7 +44,7 @@
 
                     <!-- Line Total -->
                     <p class="mt-2 mb-0 line-total" data-portion-id="{{ item.portion.id }}">
-                      Total: <strong>₦{{ item.line_total }}</strong>
+                      Total: <strong>${{ item.line_total }}</strong>
                     </p>
                   </div>
 
@@ -63,13 +63,13 @@
           <div class="card p-3 shadow-sm">
             <h5 class="fw-bold">Order Summary</h5>
             <p class="mb-1">
-              Subtotal: <span id="bag-subtotal">₦{{ bag_total }}</span>
+              Subtotal: <span id="bag-subtotal">${{ bag_total }}</span>
             </p>
             <p class="mb-1">
-              Delivery: <span id="bag-delivery">₦{{ delivery_fee }}</span>
+              Delivery: <span id="bag-delivery">${{ delivery_fee }}</span>
             </p>
             <hr />
-            <h5>Total: <span id="grand-total">₦{{ grand_total }}</span></h5>
+            <h5>Total: <span id="grand-total">${{ grand_total }}</span></h5>
 
             <a href="{% url 'checkout' %}" class="btn btn-warning w-100 mt-3 fw-bold">Proceed to Checkout</a>
           </div>

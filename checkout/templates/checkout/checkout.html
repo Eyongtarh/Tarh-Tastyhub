@@ -7,44 +7,39 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container my-4">
+  <div class="container my-5">
     <h2 class="text-center mb-4">Checkout</h2>
 
     {% if bag_items %}
-      <div class="row">
+      <div class="row g-4">
         <!-- BAG SUMMARY -->
-        <div class="col-md-6">
-          <div class="card shadow-sm mb-4">
+        <div class="col-12 col-lg-5">
+          <div class="card shadow-sm checkout-card">
             <div class="card-header bg-dark text-white">
               <h5 class="mb-0">Your Order</h5>
             </div>
             <div class="card-body">
-              <ul class="list-group">
+              <ul class="list-group mb-3">
                 {% for item in bag_items %}
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start">
                     <div>
                       <strong>{{ item.portion.dish.name }}</strong><br />
                       Portion: {{ item.portion.size }}<br />
                       Quantity: {{ item.quantity }}
                     </div>
-                    <span>₦{{ item.line_total }}</span>
+                    <span class="mt-2 mt-md-0">${{ item.line_total }}</span>
                   </li>
                 {% endfor %}
               </ul>
-
               <hr />
-              <h4 class="text-end">Total: ₦{{ grand_total }}</h4>
-
-              <div class="text-center mt-3">
-                <a href="{% url 'dish_list' %}" class="btn btn-outline-secondary">Modify Bag</a>
-              </div>
+              <h5 class="text-end">Total: ${{ grand_total }}</h5>
             </div>
           </div>
         </div>
 
         <!-- CHECKOUT FORM -->
-        <div class="col-md-6">
-          <div class="card shadow-sm">
+        <div class="col-12 col-lg-7">
+          <div class="card shadow-sm checkout-card position-relative">
             <div class="card-header bg-primary text-white">
               <h5 class="mb-0">Enter Your Details</h5>
             </div>
@@ -53,36 +48,57 @@
                 {% csrf_token %}
                 {{ form.non_field_errors }}
 
-                {% for field in form %}
-                  <div class="mb-3">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.help_text %}
-                      <small class="text-muted">{{ field.help_text }}</small>
+                <div class="row">
+                  {% for field in form %}
+                    {% if field.name != 'delivery_type' and field.name != 'pickup_time' %}
+                      <div class="col-12 col-md-6 mb-3">
+                        {{ field }}
+                        <div class="text-danger">{{ field.errors }}</div>
+                      </div>
                     {% endif %}
-                    <div class="text-danger">{{ field.errors }}</div>
-                  </div>
-                {% endfor %}
+                  {% endfor %}
+                </div>
 
-                <!-- STRIPE CARD ELEMENT -->
+                <!-- DELIVERY / PICKUP -->
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <label class="form-label fw-bold">Delivery Type</label>
+                    <div class="d-flex flex-column flex-md-row gap-3">
+                      {% for choice in form.delivery_type %}
+                        <div class="form-check">
+                          {{ choice.tag }}
+                          <label class="form-check-label">{{ choice.choice_label }}</label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <!-- PICKUP TIME -->
+                  <div class="col-12 mt-3" id="pickup-time-container">
+                    {{ form.pickup_time }}
+                    <div class="text-danger">{{ form.pickup_time.errors }}</div>
+                  </div>
+                </div>
+
+                <!-- CARD FIELD -->
                 <div class="mb-3">
-                  <label class="form-label">Card details</label>
-                  <div id="card-element" class="form-control"></div>
+                  <label class="form-label">Card Details</label>
+                  <div id="card-element"></div>
                   <div id="card-errors" class="text-danger mt-2"></div>
                 </div>
 
-                <!-- SAVE INFO CHECKBOX -->
+                <!-- SAVE INFO -->
                 <div class="form-check mb-3">
                   <input type="checkbox" id="id-save-info" class="form-check-input" />
-                  <label for="id-save-info" class="form-check-label">Save payment info</label>
+                  <label class="form-check-label" for="id-save-info">Save payment info</label>
                 </div>
 
                 <!-- LOADING OVERLAY -->
-                <div id="loading-overlay" class="d-none text-center">
-                  <div class="spinner-border mt-3"></div>
+                <div id="loading-overlay" class="d-flex">
+                  <div class="spinner-border text-light" role="status"></div>
                 </div>
 
-                <button id="submit-button" class="btn btn-success w-100 mt-3">Pay Now</button>
+                <button id="submit-button" class="btn btn-success w-100 mt-3 fw-bold">Pay Now</button>
               </form>
             </div>
           </div>
@@ -90,8 +106,7 @@
       </div>
     {% else %}
       <div class="alert alert-warning text-center">
-        Your bag is empty.
-        <br /><br />
+        Your bag is empty.<br /><br />
         <a href="{% url 'dish_list' %}" class="btn btn-primary">Browse Dishes</a>
       </div>
     {% endif %}
