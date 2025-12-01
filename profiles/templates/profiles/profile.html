@@ -5,14 +5,14 @@
 {% endblock %}
 {% block content %}
   <div class="container py-4">
-    <h2 class="fw-bold text-center mb-4">👤 My Profile</h2>
+    <h2 class="fw-bold text-center mb-4">My Profile</h2>
 
     <div class="row g-4">
       <!-- Left: Profile Info -->
       <div class="col-md-6">
         <div class="card shadow-sm border-0 rounded-4">
           <div class="card-body">
-            <h5 class="fw-bold mb-3">🧾 Default Delivery Information</h5>
+            <h5 class="fw-bold mb-3">Default Delivery Information</h5>
             <form method="POST" novalidate>
               {% csrf_token %}
               {% for field in form %}

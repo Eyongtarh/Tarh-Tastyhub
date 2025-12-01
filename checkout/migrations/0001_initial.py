@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('dishes', '0003_alter_category_menu_type'),
-        #('profiles', '0001_initial'),
+        ('profiles', '0001_initial'),
     ]
 
     operations = [
