@@ -1,17 +1,16 @@
 import os
+import dj_database_url
+if os.path.isfile('env.py'):
+    import env
+
 from pathlib import Path
 from django.contrib import messages
 
-if os.path.isfile('env.py'):
-    import env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-
-# Security
-SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-development-key')
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
@@ -40,9 +39,14 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_SIGNUP_FIELDS = [
+    "email*",
+    "username*",
+    "password1*",
+    "password2*",
+]
+
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
@@ -107,12 +111,22 @@ CHANNEL_LAYERS = {
 
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

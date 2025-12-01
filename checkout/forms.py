@@ -25,7 +25,6 @@ class OrderForm(forms.ModelForm):
         label='Delivery Method',
     )
 
-    # 🔥 New: Optional helper text for card section
     card_helper = forms.CharField(
         required=False,
         label='',
@@ -63,31 +62,26 @@ class OrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Apply global styling
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
 
-            # Style all non-radio inputs
             if not isinstance(field.widget, forms.RadioSelect):
                 field.widget.attrs['class'] = (
                     css + ' form-control mb-2 stripe-style-input'
                 ).strip()
 
-            # Placeholder for text fields
             if not isinstance(field.widget, (forms.Select, forms.RadioSelect)):
                 field.widget.attrs.setdefault(
                     'placeholder',
                     name.replace('_', ' ').title()
                 )
 
-        # 🧩 Tweak label visibility
         for field in self.fields.values():
             field.label = ''
 
     def clean(self):
         cleaned = super().clean()
 
-        # Pickup requires a time
         if cleaned.get('delivery_type') == 'pickup' and not cleaned.get('pickup_time'):
             self.add_error(
                 'pickup_time',

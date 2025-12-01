@@ -146,9 +146,9 @@ body {
 footer {
     background-color:transparent;
     color: white;
-    padding: 20px;
+    padding: 10px;
     font-size: 0.9rem;
-    margin: 0% 5%;
+    margin: 0% 3%;
 }
 
 .tarh-footer .footer-link {
@@ -183,7 +183,7 @@ footer {
 }
 
 /* --------------------- Mobile Header -------------------- */
-.<!-- --------------------- Mobile Header-------------------- -->
+
 /* Header Container */
 .d-lg-none.bg-warning {
     padding: 0.5rem 1rem;

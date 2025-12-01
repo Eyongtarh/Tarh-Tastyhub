@@ -11,9 +11,7 @@ class UserProfile(models.Model):
     default_street_address2 = models.CharField(max_length=80, null=True, blank=True)
     default_county = models.CharField(max_length=80, null=True, blank=True)
     default_local = models.CharField(max_length=80, null=True, blank=True)
-
     email_verified = models.BooleanField(default=False)
-    last_verification_sent = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.usernames
