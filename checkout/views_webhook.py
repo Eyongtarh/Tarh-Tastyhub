@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -13,6 +13,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @require_POST
 @csrf_exempt
 def webhook(request):
+    """Listen for Stripe webhooks and handle them."""
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
     webhook_secret = getattr(settings, 'STRIPE_WEBHOOK_SECRET', None)
@@ -21,6 +22,7 @@ def webhook(request):
         logger.error("Stripe webhook secret not set in settings")
         return HttpResponse(status=500)
 
+    # Verify webhook signature
     try:
         event = stripe.Webhook.construct_event(
             payload=payload,
@@ -37,6 +39,7 @@ def webhook(request):
         logger.exception(f"Unexpected webhook error: {e}")
         return HttpResponse(content=str(e), status=400)
 
+    # Pass event to handler
     handler = StripeWH_Handler(request)
     event_map = {
         'payment_intent.succeeded': handler.handle_payment_intent_succeeded,
@@ -45,4 +48,9 @@ def webhook(request):
 
     event_type = event.get('type')
     event_handler = event_map.get(event_type, handler.handle_event)
-    return event_handler(event)
+
+    response = event_handler(event)
+    # Ensure proper HttpResponse
+    if isinstance(response, tuple):
+        return HttpResponse(*response)
+    return response

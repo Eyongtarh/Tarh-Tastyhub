@@ -13,8 +13,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from .models import Order, OrderLineItem
-#from profiles.models import UserProfile
 from dishes.models import DishPortion
+from profiles.models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +94,7 @@ class StripeWH_Handler:
         shipping = intent.get("shipping", {}) or {}
         addr = shipping.get("address", {}) or {}
         profile = None
+
         if username != "AnonymousUser":
             try:
                 profile = UserProfile.objects.get(user__username=username)
@@ -164,19 +165,17 @@ class StripeWH_Handler:
 
         self._send_confirmation_email(order)
 
+        # Notify via WebSocket
         try:
             layer = get_channel_layer()
-
             async_to_sync(layer.group_send)(
                 f"order_{order.order_number}",
                 {"type": "order_update", "order_number": order.order_number, "status": order.status, "progress": 25},
             )
-
             async_to_sync(layer.group_send)(
                 "admin_orders",
                 {"type": "order_update", "order_id": order.id, "status": order.status},
             )
-
         except Exception as e:
             logger.warning(f"WebSocket error: {e}")
 
@@ -185,4 +184,4 @@ class StripeWH_Handler:
 
     def handle_payment_intent_payment_failed(self, event):
         logger.info("Payment failed")
-        return HttpResponse("Failure", status=200)
+        return HttpResponse("Payment failed", status=200)

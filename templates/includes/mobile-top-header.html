@@ -11,15 +11,11 @@
       <!-- Mobile Bag Count -->
       <a href="{% url 'bag' %}" class="position-relative text-dark">
         <i class="fa-solid fa-shopping-bag fs-5"></i>
-        <span id="bag-count-mobile" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-warning">
-          {{ bag_count|default:0 }}
-        </span>
+        <span id="bag-count-mobile" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-warning">{{ bag_count|default:0 }}</span>
       </a>
 
       <!-- Hamburger Menu Button -->
-      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle menu">
-        <i class="fa-solid fa-bars"></i>
-      </button>
+      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
 </div>
@@ -32,7 +28,9 @@
   </div>
   <div class="offcanvas-body p-3">
     <ul class="list-unstyled mb-0">
-      <li><a href="{% url 'home' %}">Home</a></li>
+      <li>
+        <a href="{% url 'home' %}">Home</a>
+      </li>
 
       <!-- Categories -->
       <li class="mt-2">
@@ -40,7 +38,9 @@
         {% if categories %}
           <ul class="ps-3">
             {% for category in categories %}
-              <li><a href="{% url 'dish_list_by_category' category.slug %}">{{ category.name }}</a></li>
+              <li>
+                <a href="{% url 'dish_list_by_category' category.slug %}">{{ category.name }}</a>
+              </li>
             {% endfor %}
           </ul>
         {% else %}
@@ -49,16 +49,28 @@
       </li>
 
       <!-- Other pages -->
-      <li><a href="{% url 'dish_list' %}">Browse Dishes</a></li>
-      <li><a href="{% url 'checkout' %}">Checkout</a></li>
-      <li><a href="{#% url 'feedback' %#}">Contact</a></li>
+      <li>
+        <a href="{% url 'dish_list' %}">Browse Dishes</a>
+      </li>
+      <li>
+        <a href="{% url 'checkout' %}">Checkout</a>
+      </li>
+      <li>
+        <a href="{% url 'feedback' %}">Contact</a>
+      </li>
 
       <!-- Auth -->
       {% if user.is_authenticated %}
-        <li><a href="{#% url 'profile' %#}">Profile</a></li>
-        <li><a href="{% url 'account_logout' %}">Logout</a></li>
+        <li>
+          <a href="{% url 'profile' %}">Profile</a>
+        </li>
+        <li>
+          <a href="{% url 'account_logout' %}">Logout</a>
+        </li>
       {% else %}
-        <li><a href="{% url 'account_login' %}">Login</a></li>
+        <li>
+          <a href="{% url 'account_login' %}">Login</a>
+        </li>
       {% endif %}
     </ul>
   </div>

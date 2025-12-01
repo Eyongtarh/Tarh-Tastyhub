@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     base: {
       color: "#000",
       fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSize: "16px",
+      fontSize: window.innerWidth < 576 ? "14px" : "16px",
       "::placeholder": { color: "#aab7c4" },
     },
     invalid: {
@@ -33,6 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const card = elements.create("card", { style });
   card.mount("#card-element");
+
+  // Scroll card into view on mobile
+  card.on("focus", () => {
+    if (window.innerWidth < 576) {
+      cardElementDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
 
   card.on("change", function (event) {
     const errorDiv = document.getElementById("card-errors");
