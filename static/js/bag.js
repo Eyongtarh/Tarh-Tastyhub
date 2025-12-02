@@ -41,7 +41,10 @@ if (window.dishBagJSLoaded) {
 
         const handleQuantityChange = async (input, increment = 0) => {
             if (!input) return;
-            const portionId = input.dataset.portionId || input.dataset.id;
+
+            const card = input.closest('.dish-card, .card, .col-md-6');
+            const portionSelect = card?.querySelector('.portion-select');
+            const portionId = portionSelect ? portionSelect.value : input.dataset.portionId;
             if (!portionId) return;
 
             let qty = parseInt(input.value) || 1;
@@ -65,6 +68,7 @@ if (window.dishBagJSLoaded) {
                 console.error('Bag update error:', err);
             }
         };
+
 
         // --- Quantity buttons ---
         document.querySelectorAll('.dish-qty-increment, .bag-qty-increment').forEach(btn => {
@@ -91,7 +95,10 @@ if (window.dishBagJSLoaded) {
                 const card = btn.closest('.dish-card, .card, .col-md-6');
                 const input = card?.querySelector('.dish-qty') || { value: 1 };
                 const quantity = parseInt(input.value) || 1;
-                const portionId = btn.dataset.portionId || btn.dataset.id;
+
+                const portionSelect = card?.querySelector('.portion-select');
+                const portionId = portionSelect ? portionSelect.value : (btn.dataset.portionId || btn.dataset.id);
+
                 if (!portionId) return;
 
                 try {
