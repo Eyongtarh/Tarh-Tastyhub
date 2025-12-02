@@ -1,7 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.conf import settings
+from decimal import Decimal, ROUND_HALF_UP
 import logging
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
+
+import stripe
 
 from .forms import OrderForm
 from .services import OrderService, OrderServiceError
@@ -9,93 +14,144 @@ from .models import Order
 
 logger = logging.getLogger(__name__)
 
+stripe.api_key = getattr(settings, "STRIPE_SECRET_KEY", None)
 
+
+def _to_decimal(value, fallback=Decimal("0.00")):
+    try:
+        if isinstance(value, Decimal):
+            return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        return Decimal(str(value)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    except Exception:
+        return fallback
+
+
+@require_http_methods(["GET", "POST"])
 def checkout(request):
-    """
-    Handle checkout process safely to prevent duplicate orders.
-    """
     from bag.context_processors import bag_contents
-    ctx = bag_contents(request)
-    bag = request.session.get('bag', {})
 
+    ctx = bag_contents(request) or {}
+    subtotal = (
+        _to_decimal(ctx.get("bag_total"))
+        or _to_decimal(ctx.get("subtotal"))
+        or Decimal("0.00")
+    )
+
+    delivery_fee = (
+        _to_decimal(ctx.get("delivery_fee"))
+        if ctx.get("delivery_fee") is not None
+        else Decimal("0.00")
+    )
+
+    if delivery_fee == Decimal("0.00") and ctx.get("delivery_fee") is None:
+        try:
+            MIN_FREE = _to_decimal(getattr(settings, "MIN_FREE_DELIVERY", Decimal("20.00")))
+            DEFAULT_DELIVERY = _to_decimal(getattr(settings, "DEFAULT_DELIVERY_FEE", Decimal("3.99")))
+        except Exception:
+            MIN_FREE = Decimal("20.00")
+            DEFAULT_DELIVERY = Decimal("3.99")
+
+        delivery_fee = Decimal("0.00") if subtotal >= MIN_FREE else DEFAULT_DELIVERY
+
+    grand_total = (subtotal + delivery_fee).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+    bag = request.session.get("bag", {}) or {}
     if not bag:
         messages.error(request, "Your bag is empty. Add items before checkout.")
-        return redirect('bag')
+        return redirect("bag")
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
             try:
-                # Optional: Stripe PID from frontend for webhook consistency
-                stripe_pid = request.POST.get('stripe_pid', None)
+                stripe_pid = request.POST.get("stripe_pid")
 
-                # Check if order already exists with this stripe_pid
                 if stripe_pid and Order.objects.filter(stripe_pid=stripe_pid).exists():
-                    order = Order.objects.get(stripe_pid=stripe_pid)
+                    existing = Order.objects.get(stripe_pid=stripe_pid)
                     messages.info(request, "Order already processed.")
-                    return redirect('checkout_success', order_number=order.order_number)
+                    return redirect("checkout_success", order_number=existing.order_number)
 
-                # Create order atomically
-                order, _ = OrderService.create_order_from_bag(
+                form_data = form.cleaned_data.copy()
+                form_data["delivery_fee"] = str(delivery_fee)
+
+                order = OrderService.create_order_from_bag(
                     user=request.user if request.user.is_authenticated else None,
                     bag=bag,
-                    form_data=form.cleaned_data,
-                    stripe_pid=stripe_pid
+                    form_data=form_data,
+                    save_original_bag=True,
+                    stripe_pid=stripe_pid,
                 )
 
-                # Clear bag after success
-                request.session['bag'] = {}
+                request.session["bag"] = {}
                 request.session.modified = True
 
                 messages.success(
                     request,
-                    '<span class="fa-icon"><i class="fa-solid fa-check"></i></span> Order placed successfully!'
+                    '<span class="fa-icon"><i class="fa-solid fa-check"></i></span> Order placed successfully!',
+                    extra_tags="safe",
                 )
-                return redirect('checkout_success', order_number=order.order_number)
+                return redirect("checkout_success", order_number=order.order_number)
 
             except OrderServiceError as e:
-                logger.exception(f"OrderServiceError during checkout: {e}")
+                logger.exception("OrderServiceError during checkout")
                 messages.error(request, str(e))
             except Exception as e:
-                logger.exception(f"Unexpected error during checkout: {e}")
-                messages.error(request, "Error processing your order. Please try again.")
+                logger.exception("Unexpected error during checkout: %s", e)
+                messages.error(request, "Error processing your order. Please contact support.")
         else:
             messages.error(request, "Please correct the errors below.")
     else:
-        # Pre-fill form if user is authenticated
         initial = {}
         if request.user.is_authenticated:
-            profile = getattr(request.user, 'userprofile', None)
-            if profile:
-                initial = {
-                    'full_name': request.user.get_full_name() or request.user.username,
-                    'email': request.user.email,
-                    'phone_number': getattr(profile, 'default_phone_number', ''),
-                    'street_address1': getattr(profile, 'default_street_address1', ''),
-                    'street_address2': getattr(profile, 'default_street_address2', ''),
-                    'town_or_city': getattr(profile, 'default_town_or_city', ''),
-                    'county': getattr(profile, 'default_county', ''),
-                    'postcode': getattr(profile, 'default_postcode', ''),
-                    'local': getattr(profile, 'default_local', ''),
-                }
+            profile = getattr(request.user, "userprofile", None)
+            initial = {
+                "full_name": request.user.get_full_name() or request.user.username,
+                "email": request.user.email,
+                "phone_number": getattr(profile, "default_phone_number", ""),
+                "street_address1": getattr(profile, "default_street_address1", ""),
+                "street_address2": getattr(profile, "default_street_address2", ""),
+                "town_or_city": getattr(profile, "default_town_or_city", ""),
+                "county": getattr(profile, "default_county", ""),
+                "postcode": getattr(profile, "default_postcode", ""),
+                "local": getattr(profile, "default_local", ""),
+            }
         form = OrderForm(initial=initial)
 
-    stripe_public_key = settings.STRIPE_PUBLIC_KEY
-    client_secret = settings.STRIPE_SECRET_KEY
+    client_secret = None
+    try:
+        amount_cents = int((grand_total * 100).to_integral_value(rounding=ROUND_HALF_UP))
+        currency = getattr(settings, "STRIPE_CURRENCY", "usd")
 
-    return render(request, 'checkout/checkout.html', {
-        'form': form,
-        'stripe_public_key': stripe_public_key,
-        'client_secret': client_secret,
-        **ctx
-    })
+        intent = stripe.PaymentIntent.create(
+            amount=amount_cents,
+            currency=currency,
+            automatic_payment_methods={"enabled": True},
+            metadata={"integration_check": "accept_a_payment"},
+        )
+
+        client_secret = intent.client_secret
+    except Exception as e:
+        logger.exception("Failed to create Stripe PaymentIntent: %s", e)
+        client_secret = None
+
+    stripe_public_key = getattr(settings, "STRIPE_PUBLIC_KEY", "")
+
+    template_ctx = {
+        "form": form,
+        "stripe_public_key": stripe_public_key,
+        "client_secret": client_secret,
+        "bag_items": ctx.get("bag_items") or ctx.get("items") or [],
+        "subtotal": subtotal,
+        "delivery_fee": delivery_fee,
+        "grand_total": grand_total,
+        "bag_total": subtotal,
+        **ctx,
+    }
+
+    return render(request, "checkout/checkout.html", template_ctx)
 
 
 def checkout_success(request, order_number):
-    """
-    View for the checkout success page.
-    """
     order = get_object_or_404(Order, order_number=order_number)
-
     messages.success(request, f"Order {order.order_number} placed successfully!")
-    return render(request, 'checkout/success.html', {'order': order})
+    return render(request, "checkout/success.html", {"order": order})
