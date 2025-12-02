@@ -95,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
               line2: form.street_address2.value.trim(),
               city: form.town_or_city.value.trim(),
               state: form.county.value.trim(),
-              country: form.local?.value.trim() || "",
             },
           },
         },

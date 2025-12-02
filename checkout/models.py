@@ -2,7 +2,7 @@ from django.db import models
 from profiles.models import UserProfile
 from dishes.models import DishPortion
 import uuid
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 
 def generate_order_number():
@@ -49,6 +49,7 @@ class Order(models.Model):
 
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="Pending")
     grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, default=Decimal("0.00"))
     stripe_pid = models.CharField(max_length=254, null=True, blank=True)
     original_bag = models.TextField(null=True, blank=True)
     public_tracking = models.BooleanField(default=False)
@@ -81,5 +82,8 @@ class OrderLineItem(models.Model):
 
     @property
     def lineitem_total(self):
-        """Return correct calculation."""
-        return (self.price or self.portion.price) * self.quantity
+        """Return correct calculation and quantize to 2 dp."""
+        qty = int(self.quantity or 0)
+        price = Decimal(self.price or self.portion.price or Decimal("0.00"))
+        total = (price * qty).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        return total
