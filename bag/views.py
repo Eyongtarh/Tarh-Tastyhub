@@ -7,7 +7,7 @@ from decimal import Decimal
 from dishes.models import DishPortion
 from bag.context_processors import bag_contents
 
-DELIVERY_FEE = Decimal("30.00")
+DELIVERY_FEE = Decimal("4.00")
 
 
 def _get_bag_totals(request):
