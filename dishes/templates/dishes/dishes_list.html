@@ -94,6 +94,51 @@
       {% empty %}
         <p class="text-center text-muted">No dishes found.</p>
       {% endfor %}
+      <!-- Pagination -->
+      {% if dishes.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+          <ul class="pagination justify-content-center">
+            {% if dishes.has_previous %}
+              <li class="page-item">
+                <a class="page-link"
+                  href="?page={{ dishes.previous_page_number }}{% if search_term %}
+                    &q={{ search_term }}
+                  {% endif %}{% if current_category %}
+                    &category={{ current_category.slug }}
+                  {% endif %}">
+                  Previous
+                </a>
+              </li>
+            {% endif %}
+
+            {% for num in dishes.paginator.page_range %}
+              <li class="page-item {% if dishes.number == num %}active{% endif %}">
+                <a class="page-link"
+                  href="?page={{ num }}{% if search_term %}
+                    &q={{ search_term }}
+                  {% endif %}{% if current_category %}
+                    &category={{ current_category.slug }}
+                  {% endif %}">
+                  {{ num }}
+                </a>
+              </li>
+            {% endfor %}
+
+            {% if dishes.has_next %}
+              <li class="page-item">
+                <a class="page-link"
+                  href="?page={{ dishes.next_page_number }}{% if search_term %}
+                    &q={{ search_term }}
+                  {% endif %}{% if current_category %}
+                    &category={{ current_category.slug }}
+                  {% endif %}">
+                  Next
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
     </div>
   </div>
 

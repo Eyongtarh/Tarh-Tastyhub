@@ -1,12 +1,10 @@
-
+/* General Rules */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
-/* --------------------- Body & Typography -------------------- */
 body {
     background-color:  rgba(39, 143, 106, 0.843);
     width: 100%;
@@ -22,7 +20,7 @@ main {
 }
 
 
-/* --------------------- Navbar -------------------- */
+/* Navbar */
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: 700;
@@ -42,7 +40,7 @@ main {
     font-size: x-large;
     padding: 0px 5px;
 }
-/* Dropdown */
+
 .dropdown-menu {
     background-color: #ffffff;
     border-radius: 8px;
@@ -56,7 +54,6 @@ main {
     color: #000 !important;
 }
 
-/* Navbar Bag Badge - scoped only to bag-count */
 .bag-count {
     font-size: 0.75rem !important;
     padding: 3px 6px;
@@ -70,22 +67,19 @@ main {
     text-align: center;
 }
 
-/* --------------------- Hero Section -------------------- */
-.hero {
-    background: url('/static/images/banner.jpg') center center / cover no-repeat;
-    height: 400px;
+/* Hero Section */
+.feedback_back {
+    background: url('/static/images/feedback_pic.jpg') center center / cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
-    color: white;
     flex-direction: column;
 }
 
 .hero h1 { font-size: 3rem; font-weight: 700; }
 .hero p { font-size: 1.2rem; }
 
-/* --------------------- Cards -------------------- */
+/* Cards */
 .card {
     border-radius: 12px;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -103,13 +97,13 @@ main {
     object-fit: cover;
 }
 
-/* --------------------- Buttons -------------------- */
+/* Buttons */
 .btn-warning {
     color: #000 !important;
     font-weight: 600;
 }
 
-/* --------------------- Forms -------------------- */
+/* Forms */
 .form-control {
     border-radius: 8px;
 }
@@ -119,7 +113,7 @@ main {
     box-shadow: 0 0 5px rgba(255,193,7,0.5);
 }
 
-/* --------------------- Flying Bag Animation -------------------- */
+/* Flying Bag Animation */
 #flying-image {
     position: fixed;
     width: 50px;
@@ -130,7 +124,7 @@ main {
     transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s;
 }
 
-/* --------------------- Search Dropdown -------------------- */
+/* Search Dropdown  */
 #search-results,
 #mobile-search-results {
     position: absolute;
@@ -146,13 +140,13 @@ main {
     border-radius: 5px;
 }
 
-/* --------------------- Toast -------------------- */
+/* Toast */
 #notification-toast {
     min-width: 260px;
     border-radius: 12px;
 }
 
-/* --------------------- Footer -------------------- */
+/* Footer */
 footer {
     background-color:transparent;
     color: white;
@@ -187,21 +181,18 @@ footer {
     color: #ffffff;
 }
 
-/* Remove extra spacing from lists */
 .tarh-footer ul li {
     margin-bottom: 6px;
 }
 
-/* --------------------- Mobile Header -------------------- */
+/* Mobile Header */
 
-/* Header Container */
 .d-lg-none.bg-warning {
     padding: 0.5rem 1rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    z-index: 1050; /* above content */
+    z-index: 1050;
 }
 
-/* Hamburger Button */
 .btn-hamburger {
     display: flex;
     align-items: center;
@@ -221,14 +212,12 @@ footer {
     color: #000;
 }
 
-/* Rotate icon when offcanvas is open */
 .offcanvas.show + .btn-hamburger i,
 .offcanvas.show i {
     transform: rotate(90deg);
     transition: transform 0.3s ease;
 }
 
-/* Bag Icon & Count */
 .d-lg-none .d-flex.align-items-center.gap-2 > * {
     display: flex;
     align-items: center;
@@ -246,7 +235,6 @@ footer {
     text-align: center;
 }
 
-/* Offcanvas Menu */
 .offcanvas-body {
     padding: 1rem;
     background-color: #ffffff;
@@ -271,18 +259,28 @@ footer {
     background-color: rgba(255,193,7,0.1);
     border-radius: 5px;
 }
-/* Nested Categories */
+
 .offcanvas-body ul ul li a {
     padding-left: 1rem;
     font-weight: 400;
     font-size: 0.95rem;
 }
-/* Offcanvas Header */
+
 .offcanvas-header {
     border-bottom: 1px solid #ddd;
 }
 
-/* Responsive tweaks */
+.offcanvas {
+    z-index: 1060;
+    width: 250px;
+    max-width: 80%;
+}
+.offcanvas-header .btn-close {
+    z-index: 1070;
+}
+
+
+/* Media Queris */
 @media (max-width: 576px) {
     .btn-hamburger {
         width: 40px;
