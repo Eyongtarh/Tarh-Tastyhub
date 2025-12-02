@@ -22,10 +22,9 @@
           {% endif %}
 
           {% for field in form %}
-            {# Render honeypot as hidden input but do not show label #}
             {% if field.name == 'honeypot' %}
               {{ field }}
-            {% elif request.user.is_authenticated and field.name in 'name email'|split:' ' %}
+            {% elif request.user.is_authenticated and field.name in hidden_fields %}
               {{ field.as_hidden }}
             {% else %}
               <div class="mb-3">

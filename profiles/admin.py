@@ -5,9 +5,19 @@ from .models import UserProfile
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = (
-        'user',
-        'default_phone_number',
-        'default_local',
-        'email_verified'
+        "id",
+        "user",
+        "email_verified",
+        "last_verification_sent",
     )
-    list_filter = ('email_verified',)
+
+    search_fields = (
+        "user__username",
+        "user__email",
+    )
+
+    list_filter = (
+        "email_verified",
+    )
+
+    ordering = ("user__username",)
