@@ -49,7 +49,6 @@ class OrderForm(forms.ModelForm):
             'town_or_city',
             'county',
             'postcode',
-            'local',
             'delivery_type',
             'pickup_time',
         ]
