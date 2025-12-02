@@ -82,8 +82,6 @@ class OrderLineItem(models.Model):
 
     @property
     def lineitem_total(self):
-        """Return correct calculation and quantize to 2 dp."""
         qty = int(self.quantity or 0)
         price = Decimal(self.price or self.portion.price or Decimal("0.00"))
-        total = (price * qty).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-        return total
+        return (price * qty).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
