@@ -45,7 +45,7 @@ def all_dishes(request):
     if search_term:
         dishes = dishes.filter(name__icontains=search_term)
 
-    paginator = Paginator(dishes, 12)
+    paginator = Paginator(dishes, 8)
     try:
         dishes_page = paginator.page(page)
     except PageNotAnInteger:

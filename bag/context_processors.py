@@ -4,25 +4,17 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_DELIVERY = Decimal("4.00")
+MIN_FREE_DELIVERY = Decimal("20.00")
+
 
 def bag_contents(request):
-    """
-    Global cart/bag context processor.
-    Fully corrected & secured version:
-    - Validates session structure
-    - Cleans invalid IDs/quantities
-    - Loads all DishPortion objects in ONE query
-    - Removes items missing from DB
-    - Prevents client-side price manipulation
-    """
-
     session_bag = request.session.get("bag", {})
-
     if not isinstance(session_bag, dict):
         session_bag = {}
 
-    invalid_keys = []
     normalized = {}
+    invalid_keys = []
 
     for raw_id, raw_qty in session_bag.items():
         try:
@@ -31,22 +23,15 @@ def bag_contents(request):
         except Exception:
             invalid_keys.append(raw_id)
             continue
-
         normalized[str(portion_id)] = qty
 
-    if invalid_keys:
-        for key in invalid_keys:
-            session_bag.pop(key, None)
-        request.session["bag"] = session_bag
-        request.session.modified = True
+    for key in invalid_keys:
+        session_bag.pop(key, None)
+    request.session["bag"] = session_bag
+    request.session.modified = True
 
     portion_ids = [int(pid) for pid in normalized.keys()]
-    portions = (
-        DishPortion.objects
-        .select_related("dish")
-        .filter(id__in=portion_ids)
-    )
-
+    portions = DishPortion.objects.select_related("dish").filter(id__in=portion_ids)
     portion_map = {p.id: p for p in portions}
 
     items = []
@@ -57,19 +42,14 @@ def bag_contents(request):
     for pid_str, qty in normalized.items():
         pid = int(pid_str)
         portion = portion_map.get(pid)
-
         if not portion:
             logger.warning(f"Bag contains missing DishPortion id={pid}; removing.")
             session_bag.pop(pid_str, None)
             removed_missing_items = True
             continue
-
-        qty = max(1, int(qty))
         line_total = portion.price * qty
-
         total += line_total
         count += qty
-
         items.append({
             "portion_id": pid,
             "portion": portion,
@@ -82,7 +62,8 @@ def bag_contents(request):
     if removed_missing_items:
         request.session["bag"] = session_bag
         request.session.modified = True
-    delivery_fee = Decimal("0.00")
+
+    delivery_fee = Decimal("0.00") if total >= MIN_FREE_DELIVERY else DEFAULT_DELIVERY
     grand_total = total + delivery_fee
 
     return {

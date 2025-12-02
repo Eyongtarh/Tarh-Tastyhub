@@ -1,6 +1,5 @@
 /* index.css */
 
-/* Full-page hero section, background only for this page */
 .hero-section {
   min-height: 100vh;
   background-image: url("../images/food-hero.png");
@@ -13,7 +12,6 @@
   margin: 3%;
 }
 
-/* Overlay to make text readable */
 .hero-overlay {
   background-color: rgba(39, 143, 106, 0.843);
   padding: 2rem;
@@ -21,7 +19,6 @@
   max-width: 600px;
 }
 
-/* order button */
 .shop-now-button {
   border-radius: 12px;
   background-color: #ff6b35;
@@ -34,7 +31,7 @@
   color: #fff;
 }
 
-/* Responsive adjustments */
+/* Media Queries */
 @media (max-width: 767px) {
   .hero-overlay {
     max-width: 100%;
