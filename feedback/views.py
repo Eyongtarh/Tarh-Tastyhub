@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django_ratelimit.decorators import ratelimit
 from .forms import FeedbackForm
 import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +26,7 @@ def feedback_view(request):
                 if not feedback.name or not feedback.email:
                     messages.error(request, "Name and email are required for anonymous feedback.")
                     logger.warning("Anonymous feedback missing name/email.")
-                    return render(request, 'feedback/feedback.html', {'form': form})
+                    return render(request, 'feedback/feedback.html', {'form': form, 'hidden_fields': ['name', 'email']})
 
             try:
                 feedback.save()
@@ -43,4 +41,6 @@ def feedback_view(request):
     else:
         form = FeedbackForm(user=request.user)
 
-    return render(request, 'feedback/feedback.html', {'form': form})
+    # Pass the hidden fields list in the context
+    hidden_fields = ['name', 'email']
+    return render(request, 'feedback/feedback.html', {'form': form, 'hidden_fields': hidden_fields})

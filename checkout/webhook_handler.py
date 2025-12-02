@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class StripeWH_Handler:
-    """Handle Stripe webhooks safely and atomically."""
+    """Handles Stripe webhooks."""
 
     def __init__(self, request):
         self.request = request
@@ -52,11 +52,10 @@ class StripeWH_Handler:
             logger.exception(f"Email send failed for order {order.order_number}: {e}")
 
     def handle_event(self, event):
-        logger.info(f"Unhandled webhook {event.get('type')}")
+        logger.info(f"Unhandled webhook: {event.get('type')}")
         return HttpResponse("Unhandled event", status=200)
 
     def _parse_bag(self, bag_raw):
-        """Ensures bag is { portion_id: quantity } safely."""
         try:
             data = json.loads(bag_raw) if isinstance(bag_raw, str) else bag_raw
         except Exception:
@@ -71,14 +70,15 @@ class StripeWH_Handler:
             try:
                 cleaned[str(pid)] = max(1, int(qty))
             except Exception:
-                logger.warning(f"Invalid bag entry {pid}: {qty}")
+                logger.warning(f"Invalid bag entry: {pid}:{qty}")
 
         return cleaned
 
     def handle_payment_intent_succeeded(self, event):
         intent = event["data"]["object"]
         pid = intent.get("id")
-        metadata = intent.get("metadata", {})
+        metadata = intent.get("metadata", {}) or {}
+
         bag_raw = metadata.get("bag", "{}")
         bag = self._parse_bag(bag_raw)
 
@@ -90,23 +90,15 @@ class StripeWH_Handler:
 
         email_meta = metadata.get("email")
         username = metadata.get("username", "AnonymousUser")
-        save_info = metadata.get("save_info", "").lower() in ["true", "1"]
+        save_info = str(metadata.get("save_info", "")).lower() in ["true", "1"]
+
         shipping = intent.get("shipping", {}) or {}
         addr = shipping.get("address", {}) or {}
-        profile = None
 
+        profile = None
         if username != "AnonymousUser":
             try:
                 profile = UserProfile.objects.get(user__username=username)
-                if save_info:
-                    profile.default_phone_number = shipping.get("phone") or profile.default_phone_number
-                    profile.default_local = addr.get("country") or profile.default_local
-                    profile.default_postcode = addr.get("postal_code") or profile.default_postcode
-                    profile.default_town_or_city = addr.get("city") or profile.default_town_or_city
-                    profile.default_street_address1 = addr.get("line1") or profile.default_street_address1
-                    profile.default_street_address2 = addr.get("line2") or profile.default_street_address2
-                    profile.default_county = addr.get("state") or profile.default_county
-                    profile.save()
             except UserProfile.DoesNotExist:
                 profile = None
 
@@ -143,17 +135,19 @@ class StripeWH_Handler:
                     try:
                         portion = DishPortion.objects.select_related("dish").get(pk=portion_id)
                     except DishPortion.DoesNotExist:
-                        logger.warning(f"Portion ID {portion_id} missing — skipped")
+                        logger.warning(f"Missing portion id {portion_id}, skipping.")
                         continue
 
-                    line_total = (portion.price * qty).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+                    line_total = (portion.price * qty).quantize(
+                        Decimal("0.01"), rounding=ROUND_HALF_UP
+                    )
                     running_total += line_total
 
                     OrderLineItem.objects.create(
                         order=order,
                         portion=portion,
                         quantity=qty,
-                        lineitem_total=line_total,
+                        price=portion.price,
                     )
 
                 order.grand_total = running_total
@@ -161,20 +155,20 @@ class StripeWH_Handler:
 
         except Exception as e:
             logger.exception(f"Order creation failed: {e}")
-            return HttpResponse("Order creation error", status=500)
+            return HttpResponse("Order error", status=500)
 
         self._send_confirmation_email(order)
 
-        # Notify via WebSocket
         try:
             layer = get_channel_layer()
             async_to_sync(layer.group_send)(
                 f"order_{order.order_number}",
-                {"type": "order_update", "order_number": order.order_number, "status": order.status, "progress": 25},
-            )
-            async_to_sync(layer.group_send)(
-                "admin_orders",
-                {"type": "order_update", "order_id": order.id, "status": order.status},
+                {
+                    "type": "order_update",
+                    "order_number": order.order_number,
+                    "status": order.status,
+                    "progress": 25,
+                },
             )
         except Exception as e:
             logger.warning(f"WebSocket error: {e}")
