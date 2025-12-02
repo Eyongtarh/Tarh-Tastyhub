@@ -6,9 +6,58 @@
 {% endblock %}
 
 {% block content %}
+  <!-- Company Info Section -->
   <div class="container py-5">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-10">
+        <h3 class="fw-bold text-center mb-4">Contact & Company Information</h3>
+        <div class="p-4 p-md-5 bg-light border rounded shadow-sm feedback_back">
+          <div class="row g-4">
+            <!-- Address -->
+            <div class="col-md-4 text-center">
+              <div class="p-3 h-100 rounded bg-white shadow-sm">
+                <i class="bi bi-geo-alt fs-1 text-warning"></i>
+                <h5 class="fw-bold mt-3">Address</h5>
+                <p class="mb-0">
+                  33 Tastyhub Street<br />
+                  Esongbenchang, Ekpaw
+                </p>
+              </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-md-4 text-center">
+              <div class="p-3 h-100 rounded bg-white shadow-sm">
+                <i class="bi bi-telephone fs-1 text-warning"></i>
+                <h5 class="fw-bold mt-3">Phone</h5>
+                <p class="mb-1">+3487465774</p>
+
+                <i class="bi bi-envelope fs-1 text-warning"></i>
+                <h5 class="fw-bold mt-3">Email</h5>
+                <p class="mb-0">support@tastyhub.com</p>
+              </div>
+            </div>
+
+            <!-- Opening Hours -->
+            <div class="col-md-4 text-center">
+              <div class="p-3 h-100 rounded bg-white shadow-sm">
+                <i class="bi bi-clock fs-1 text-warning"></i>
+                <h5 class="fw-bold mt-3">Opening Hours</h5>
+                <p class="mb-0">
+                  Mon-Fri: 07:00 - 22:00<br />
+                  Sat-Sun: 07:00 - 21:00
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback Form Title -->
     <h2 class="fw-bold text-center mb-4">Customer Feedback</h2>
 
+    <!-- Actual Form -->
     <div class="row justify-content-center">
       <div class="col-md-6 bg-white p-4 rounded shadow-sm">
         <form method="post" novalidate>
