@@ -4,12 +4,14 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
 {% endblock %}
+
 {% block content %}
   <div class="container py-5">
     <div class="text-center mb-5">
-      <h2 class="fw-bold text-success mb-2"><span class="fa-icon"><i class="fa-solid fa-check"></i></span></h2>
+      <h2 class="fw-bold text-success mb-2"><i class="bi bi-check-lg text-warning"></i></h2>
       <p class="text-muted">
-        Thank you, {{ order.full_name }} your meal is on the way<span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
+        Thank you, {{ order.full_name }}! Your meal is on the way
+        <span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
       </p>
       <p>
         Delivery Type: <strong>{{ order.delivery_type|title }}</strong>
@@ -23,7 +25,7 @@
 
     <div class="mb-4">
       <div class="progress" style="height: 30px;">
-        <div id="order-progress" class="progress-bar progress-bar-striped bg-warning" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
       </div>
     </div>
 
@@ -44,15 +46,15 @@
               <tr>
                 <td>{{ item.portion.dish.name }}</td>
                 <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-end">₦{{ item.price }}</td>
-                <td class="text-end fw-bold">₦{{ item.lineitem_total }}</td>
+                <td class="text-end">${{ item.price }}</td>
+                <td class="text-end fw-bold">${{ item.lineitem_total }}</td>
               </tr>
             {% endfor %}
           </tbody>
           <tfoot class="border-top">
             <tr>
               <td colspan="3" class="text-end fw-bold">Grand Total:</td>
-              <td class="text-end fw-bold text-warning">₦{{ order.grand_total }}</td>
+              <td class="text-end fw-bold text-warning">${{ order.grand_total }}</td>
             </tr>
           </tfoot>
         </table>
@@ -61,9 +63,11 @@
 
     <div class="text-center mt-4">
       <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping</a>
+      <a href="{% url 'order_tracking' order_number=order.order_number %}" class="btn btn-primary fw-bold ms-2">Track Order</a>
     </div>
   </div>
 {% endblock %}
+
 {% block postloadjs %}
   <script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}

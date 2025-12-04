@@ -4,20 +4,7 @@ from .models import UserProfile
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "user",
-        "email_verified",
-        "last_verification_sent",
-    )
-
-    search_fields = (
-        "user__username",
-        "user__email",
-    )
-
-    list_filter = (
-        "email_verified",
-    )
-
+    list_display = ("id", "user")
+    search_fields = ("user__username", "user__email")
+    list_filter = ("email_verified",)
     ordering = ("user__username",)
