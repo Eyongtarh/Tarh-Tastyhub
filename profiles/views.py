@@ -3,41 +3,31 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode
-from django_ratelimit.decorators import ratelimit
-from django.utils import timezone
-from datetime import timedelta
 import logging
 
 from django.contrib.auth.models import User
 from checkout.models import Order
 from .models import UserProfile
 from .forms import UserProfileForm, UserRegisterForm
-from .utils import email_verification_token, send_verification_email
+
+from .utils import send_verification_email, email_verification_token
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
 
 logger = logging.getLogger(__name__)
 
 
-@ratelimit(key="ip", rate="5/m", block=True)
 def register(request):
-    """
-    Register a new user (email verification required).
-    """
+    """Register a new user with email verification."""
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
-
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False  # Require email verification before login
-            user.save()  # Signal creates UserProfile
+            user.is_active = False
+            user.save()
 
             send_verification_email(request, user)
-
-            messages.success(
-                request,
-                "Account created! Please verify your email before logging in."
-            )
+            messages.success(request, "Account created! Please verify your email before logging in.")
             return redirect('login')
         else:
             messages.error(request, "There were errors in your form. Please fix them.")
@@ -47,23 +37,16 @@ def register(request):
     return render(request, 'profiles/register.html', {'form': form})
 
 
-
-@ratelimit(key="ip", rate="5/m", block=True)
 def login_view(request):
-    """
-    Users cannot log in unless their email is verified.
-    """
+    """Login view with email verification check."""
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
-
         if form.is_valid():
             user = form.get_user()
+            profile = get_object_or_404(UserProfile, user=user)
 
-            if not user.userprofile.email_verified:
-                messages.warning(
-                    request,
-                    "Your email is not verified. Please check your email or resend verification."
-                )
+            if not profile.email_verified:
+                messages.warning(request, "Your email is not verified. Please check your email.")
                 return redirect('resend_verification')
 
             login(request, user)
@@ -77,41 +60,17 @@ def login_view(request):
     return render(request, 'profiles/login.html', {'form': form})
 
 
-@login_required
-def resend_verification_email(request):
-    """
-    Allow user to resend verification email with 5-minute cooldown.
-    """
-    profile = request.user.userprofile
-    now = timezone.now()
-
-    if profile.email_verified:
-        messages.info(request, "Your email is already verified.")
-        return redirect('profile')
-
-    if profile.last_verification_sent and (now - profile.last_verification_sent) < timedelta(minutes=5):
-        messages.warning(request, "Please wait a few minutes before resending verification.")
-        return redirect('profile')
-
-    send_verification_email(request, request.user)
-    messages.success(request, "A new verification email has been sent.")
-    return redirect('profile')
-
-
 def activate_account(request, uidb64, token):
-    """
-    Verify the email link, activate account, and log the user in.
-    """
+    """Verify email and activate account."""
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-
     except Exception as e:
         logger.warning(f"Activation failed: {e}")
         messages.error(request, "Invalid activation link.")
         return redirect('login')
 
-    profile = user.userprofile
+    profile = get_object_or_404(UserProfile, user=user)
 
     if profile.email_verified:
         messages.info(request, "Your email is already verified.")
@@ -133,61 +92,72 @@ def activate_account(request, uidb64, token):
     return redirect('login')
 
 
+def resend_verification(request):
+    """Resend email verification link to the user."""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            profile = get_object_or_404(UserProfile, user=user)
+
+            if profile.email_verified:
+                messages.info(request, "Your email is already verified. Please log in.")
+                return redirect('login')
+
+            send_verification_email(request, user)
+            messages.success(request, "A new verification email has been sent. Please check your inbox.")
+            return redirect('login')
+
+        except User.DoesNotExist:
+            messages.error(request, "No account found with that email.")
+
+    return render(request, 'profiles/resend_verification.html')
+
+
 @login_required
 def profile(request):
-    """
-    Show and update user profile. Always ensures profile exists (fixes 404).
-    """
-    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    """Display and update user profile."""
+    profile = get_object_or_404(UserProfile, user=request.user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=profile)
-
         if form.is_valid():
             form.save()
-            messages.success(request, "Your profile has been updated.")
+            messages.success(request, "Profile updated successfully")
         else:
-            messages.error(request, "Please correct the errors in the form.")
+            messages.error(request, "Update failed. Please ensure the form is valid.")
     else:
         form = UserProfileForm(instance=profile)
 
-    orders = Order.objects.filter(user_profile=profile)
-
-    return render(request, 'profiles/profile.html', {
+    orders = profile.orders.all() if hasattr(profile, 'orders') else []
+    context = {
         'form': form,
         'orders': orders,
-    })
+        'on_profile_page': True
+    }
+    return render(request, 'profiles/profile.html', context)
 
 
 @login_required
 def order_history(request, order_number):
-    """
-    Display a specific order from the user's profile.
-    """
-    order = get_object_or_404(
-        Order,
-        order_number=order_number,
-        user_profile=request.user.userprofile
-    )
+    """Display a specific order for the logged-in user."""
+    order = get_object_or_404(Order, order_number=order_number)
+    messages.info(request, f'This is a past confirmation for order number {order_number}. A confirmation email was sent on the order date.')
 
-    messages.info(request, f"Viewing order #{order_number}")
-
-    return render(request, 'checkout/checkout_success.html', {
+    context = {
         'order': order,
         'from_profile': True
-    })
+    }
+    return render(request, 'checkout/checkout_success.html', context)
 
 
 @login_required
 def delete_account(request):
-    """
-    Permanently delete the user's account.
-    """
+    """Delete user account permanently."""
     if request.method == 'POST':
         user = request.user
         logout(request)
         user.delete()
-
         messages.success(request, "Your account has been deleted.")
         return redirect('home')
 
@@ -196,7 +166,5 @@ def delete_account(request):
 
 @login_required
 def password_change(request):
-    """
-    Redirect to Django Allauth password change URL.
-    """
+    """Redirect to Django Allauth password change page."""
     return redirect('/accounts/password/change/')

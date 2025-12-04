@@ -1,50 +1,64 @@
 {% extends "base.html" %}
 {% load static %}
-{% block content %}
-<div class="container">
-  <h2 class="fw-bold text-center mb-4">
-    <span class="fa-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span>
-    Admin Dashboard
-  </h2>
 
-  <div class="table-responsive">
-    <table class="table table-hover align-middle shadow-sm">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Customer</th>
-          <th>Total ($)</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="orders-table">
-        {% for order in orders %}
-        <tr id="order-{{ order.id }}">
-          <td>{{ order.id }}</td>
-          <td>{{ order.full_name }}</td>
-          <td>{{ order.grand_total }}</td>
-          <td>{{ order.status }}</td>
-          <td>
-            <form method="POST" action="{% url 'update_order_status' order.id %}" class="d-flex">
-              {% csrf_token %}
-              <select name="status" class="form-select form-select-sm me-2">
-                <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
-                <option {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
-                <option {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
-                <option {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
-              </select>
-              <button class="btn btn-warning btn-sm">Update</button>
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+{% block content %}
+
+<div class="container my-5">
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">
+            <i class="fa-solid fa-screwdriver-wrench me-2"></i> Admin Dashboard
+        </h2>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Total ($)</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Progress</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="orders-table">
+                {% for order in orders %}
+                <tr id="order-{{ order.id }}">
+                    <td class="text-center">{{ order.id }}</td>
+                    <td>{{ order.full_name }}</td>
+                    <td class="text-end">${{ order.grand_total }}</td>
+                    <td class="status-text text-center">{{ order.status }}</td>
+                    <td style="min-width:200px;">
+                        <div class="progress" style="height:20px;">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width:{{ order.progress_percent }}%;" aria-valuenow="{{ order.progress_percent }}" aria-valuemin="0" aria-valuemax="100">
+                                {{ order.status }}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="d-flex gap-2 justify-content-center flex-wrap">
+                        <form method="POST" action="{% url 'update_order_status' order.id %}" class="d-flex gap-2 flex-wrap align-items-center">
+                            {% csrf_token %}
+                            <select name="status" class="form-select form-select-sm" data-order-id="{{ order.id }}">
+                                <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
+                                <option {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
+                                <option {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                            <button class="btn btn-warning btn-sm">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %}
+
 {% block postloadjs %}
-  <script src="{% static 'checkout/js/checkout.js' %}"></script>
+<script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}

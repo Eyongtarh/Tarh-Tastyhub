@@ -67,7 +67,7 @@ main {
     text-align: center;
 }
 
-/* Hero Section */
+/* Feedback section Image */
 .feedback_back {
     background: url('/static/images/feedback_pic.jpg') center center / cover no-repeat;
     display: flex;
@@ -102,6 +102,37 @@ main {
     color: #000 !important;
     font-weight: 600;
 }
+
+.btn-password,
+.btn-delete {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-password {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+}
+.btn-password:hover {
+    background-color: #0b5cd6;
+    transform: translateY(-2px);
+    color: #ffc107;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+}
+.btn-delete:hover {
+    background-color: #bb2d3b;
+    transform: translateY(-2px);
+    color: #ffc107;
+}
+
 
 /* Forms */
 .form-control {
