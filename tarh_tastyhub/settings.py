@@ -98,17 +98,6 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 # Replace WSGI with ASGI
 ASGI_APPLICATION = 'tarh_tastyhub.asgi.application'
 
-# Channels layer (using Redis)
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
-
-
 # Database
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

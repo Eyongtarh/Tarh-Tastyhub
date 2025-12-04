@@ -30,8 +30,8 @@
         </div>
 
         <div class="text-center mt-4">
-          <a href="{% url 'password_change' %}" class="btn btn-outline-secondary btn-sm">Change Password</a>
-          <a href="{% url 'delete_account' %}" class="btn btn-outline-danger btn-sm ms-2">Delete Account</a>
+          <a href="{% url 'password_change' %}" class="btn btn-password btn-sm ms-4"><i class="bi bi-key"></i> Change Password</a>
+          <a href="{% url 'delete_account' %}" class="btn btn-delete btn-sm ms-4"><i class="bi bi-x-circle"></i> Delete Account</a>
         </div>
       </div>
 
@@ -39,7 +39,10 @@
       <div class="col-md-6">
         <div class="card shadow-sm border-0 rounded-4">
           <div class="card-body">
-            <h5 class="fw-bold mb-3">📦 My Orders</h5>
+            <h5 class="fw-bold mb-3">
+              <span style="font-size: 1.7rem;">🧵</span>
+              My Orders
+            </h5>
             {% if orders %}
               <ul class="list-group list-group-flush">
                 {% for order in orders %}

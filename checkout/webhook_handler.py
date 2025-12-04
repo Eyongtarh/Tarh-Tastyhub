@@ -9,9 +9,6 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
-
 from .models import Order, OrderLineItem
 from dishes.models import DishPortion
 from profiles.models import UserProfile
@@ -106,7 +103,6 @@ class StripeWH_Handler:
 
         email_meta = metadata.get("email")
         username = metadata.get("username", "AnonymousUser")
-        save_info = str(metadata.get("save_info", "")).lower() in ["true", "1"]
 
         shipping = intent.get("shipping", {}) or {}
         addr = shipping.get("address", {}) or {}
@@ -183,20 +179,6 @@ class StripeWH_Handler:
             return HttpResponse("Order error", status=500)
 
         self._send_confirmation_email(order)
-
-        try:
-            layer = get_channel_layer()
-            async_to_sync(layer.group_send)(
-                f"order_{order.order_number}",
-                {
-                    "type": "order_update",
-                    "order_number": order.order_number,
-                    "status": order.status,
-                    "progress": 25,
-                },
-            )
-        except Exception as e:
-            logger.warning(f"WebSocket error: {e}")
 
         logger.info(f"Order created OK: {order.order_number}")
         return HttpResponse("Success", status=200)

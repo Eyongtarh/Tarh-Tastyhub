@@ -10,6 +10,7 @@ MIN_FREE_DELIVERY = Decimal("20.00")
 
 def bag_contents(request):
     session_bag = request.session.get("bag", {})
+
     if not isinstance(session_bag, dict):
         session_bag = {}
 
@@ -23,17 +24,17 @@ def bag_contents(request):
         except Exception:
             invalid_keys.append(raw_id)
             continue
+
         normalized[str(portion_id)] = qty
 
     for key in invalid_keys:
         session_bag.pop(key, None)
+
     request.session["bag"] = session_bag
     request.session.modified = True
-
     portion_ids = [int(pid) for pid in normalized.keys()]
     portions = DishPortion.objects.select_related("dish").filter(id__in=portion_ids)
     portion_map = {p.id: p for p in portions}
-
     items = []
     total = Decimal("0.00")
     count = 0
@@ -42,14 +43,18 @@ def bag_contents(request):
     for pid_str, qty in normalized.items():
         pid = int(pid_str)
         portion = portion_map.get(pid)
+
         if not portion:
             logger.warning(f"Bag contains missing DishPortion id={pid}; removing.")
             session_bag.pop(pid_str, None)
             removed_missing_items = True
             continue
+
         line_total = portion.price * qty
+
         total += line_total
         count += qty
+
         items.append({
             "portion_id": pid,
             "portion": portion,

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  My Profile | Tarh Tastyhub
+{% endblock %}
+{% block content %}
+  <h2>Resend Verification Email</h2>
+  <p>Enter your email address to receive a new verification link.</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="email" name="email" placeholder="Email" class="form-control mb-2" required />
+    <button type="submit" class="btn btn-primary">Send Verification Email</button>
+  </form>
+{% endblock %}

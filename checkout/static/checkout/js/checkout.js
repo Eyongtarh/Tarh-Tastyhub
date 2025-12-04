@@ -113,3 +113,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+const statusColors = {
+  "Pending": "#ffc107",
+  "Preparing": "#0d6efd",
+  "Out for Delivery": "#0dcaf0",
+  "Completed": "#198754"
+};
+
+document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+  dropdown.style.backgroundColor = statusColors[dropdown.value] || "#6c757d";
+  dropdown.style.color = "white";
+  dropdown.addEventListener('change', function() {
+    const newStatus = this.value;
+    this.style.backgroundColor = statusColors[newStatus] || "#6c757d";
+  });
+});
+

@@ -5,12 +5,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_POST
 
 import stripe
 
 from .forms import OrderForm
 from .services import OrderService, OrderServiceError
 from .models import Order
+
 
 logger = logging.getLogger(__name__)
 
@@ -31,34 +33,24 @@ def checkout(request):
     from bag.context_processors import bag_contents
 
     ctx = bag_contents(request) or {}
-    subtotal = (
-        _to_decimal(ctx.get("bag_total"))
-        or _to_decimal(ctx.get("subtotal"))
-        or Decimal("0.00")
-    )
-
-    delivery_fee = (
-        _to_decimal(ctx.get("delivery_fee"))
-        if ctx.get("delivery_fee") is not None
-        else Decimal("0.00")
-    )
-
-    if delivery_fee == Decimal("0.00") and ctx.get("delivery_fee") is None:
-        try:
-            MIN_FREE = _to_decimal(getattr(settings, "MIN_FREE_DELIVERY", Decimal("20.00")))
-            DEFAULT_DELIVERY = _to_decimal(getattr(settings, "DEFAULT_DELIVERY_FEE", Decimal("3.99")))
-        except Exception:
-            MIN_FREE = Decimal("20.00")
-            DEFAULT_DELIVERY = Decimal("3.99")
-
-        delivery_fee = Decimal("0.00") if subtotal >= MIN_FREE else DEFAULT_DELIVERY
-
-    grand_total = (subtotal + delivery_fee).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-
+    bag_items = ctx.get("bag_items") or ctx.get("items") or []
     bag = request.session.get("bag", {}) or {}
+
     if not bag:
         messages.error(request, "Your bag is empty. Add items before checkout.")
         return redirect("bag")
+
+    subtotal = _to_decimal(ctx.get("bag_total") or ctx.get("subtotal") or Decimal("0.00"))
+    try:
+        MIN_FREE = _to_decimal(getattr(settings, "MIN_FREE_DELIVERY", Decimal("20.00")))
+        DEFAULT_DELIVERY = _to_decimal(getattr(settings, "DEFAULT_DELIVERY_FEE", Decimal("3.99")))
+    except Exception:
+        MIN_FREE = Decimal("20.00")
+        DEFAULT_DELIVERY = Decimal("3.99")
+
+    delivery_fee = DEFAULT_DELIVERY if subtotal < MIN_FREE else Decimal("0.00")
+    delivery_fee = _to_decimal(delivery_fee)
+    grand_total = (subtotal + delivery_fee).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     if request.method == "POST":
         form = OrderForm(request.POST)
@@ -100,6 +92,7 @@ def checkout(request):
                 messages.error(request, "Error processing your order. Please contact support.")
         else:
             messages.error(request, "Please correct the errors below.")
+
     else:
         initial = {}
         if request.user.is_authenticated:
@@ -126,13 +119,14 @@ def checkout(request):
             amount=amount_cents,
             currency=currency,
             automatic_payment_methods={"enabled": True},
-            metadata={"integration_check": "accept_a_payment"},
+            metadata={
+                "delivery_fee": str(delivery_fee),
+            },
         )
 
         client_secret = intent.client_secret
     except Exception as e:
         logger.exception("Failed to create Stripe PaymentIntent: %s", e)
-        client_secret = None
 
     stripe_public_key = getattr(settings, "STRIPE_PUBLIC_KEY", "")
 
@@ -140,12 +134,10 @@ def checkout(request):
         "form": form,
         "stripe_public_key": stripe_public_key,
         "client_secret": client_secret,
-        "bag_items": ctx.get("bag_items") or ctx.get("items") or [],
-        "subtotal": subtotal,
+        "bag_items": bag_items,
+        "bag_total": subtotal,
         "delivery_fee": delivery_fee,
         "grand_total": grand_total,
-        "bag_total": subtotal,
-        **ctx,
     }
 
     return render(request, "checkout/checkout.html", template_ctx)
@@ -155,3 +147,22 @@ def checkout_success(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
     messages.success(request, f"Order {order.order_number} placed successfully!")
     return render(request, "checkout/success.html", {"order": order})
+
+
+@require_POST
+def update_order_status(request, order_id):
+    """
+    Update the status of an order from the admin dashboard (synchronous, no live updates).
+    """
+    order = get_object_or_404(Order, id=order_id)
+    new_status = request.POST.get('status')
+
+    if new_status not in dict(Order.STATUS_CHOICES):
+        messages.error(request, "Invalid status selected.")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    order.status = new_status
+    order.save()
+
+    messages.success(request, f"Order {order.order_number} status updated to {new_status}.")
+    return redirect(request.META.get('HTTP_REFERER', '/'))
