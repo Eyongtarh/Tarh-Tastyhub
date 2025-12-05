@@ -52,3 +52,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.dish-qty-increment').forEach(btn => btn.addEventListener('click', () => updateQty(btn, true)));
     document.querySelectorAll('.dish-qty-decrement').forEach(btn => btn.addEventListener('click', () => updateQty(btn, false)));
 });
+
+
