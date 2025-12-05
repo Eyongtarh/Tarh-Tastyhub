@@ -1,26 +1,37 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.core.cache import cache
+
 from dishes.models import Dish, Category
+
 
 def index(request):
     """
-    Home page view for Tarh Tastyhub.
+    Homepage with:
+    - Categories
+    - Paginated Featured Dishes
+    - Testimonials section (static on front-end)
     """
 
-    # Get 4 valid categories only (with slug)
-    categories = Category.objects.filter(
-        slug__isnull=False
-    ).exclude(
-        slug__exact=''
-    ).order_by('name')[:4]
+    # Categories (top 4 valid)
+    categories = cache.get("home_categories")
+    if categories is None:
+        categories = list(
+            Category.objects.filter(slug__isnull=False)
+            .exclude(slug__exact="")
+            .order_by("name")[:4]
+        )
+        cache.set("home_categories", categories, 3600)
 
-    # Featured dishes
-    featured_dishes = Dish.objects.filter(
-        available=True
-    ).order_by('-id')[:8]
+    featured_qs = Dish.objects.available().order_by("-id")
+
+    paginator = Paginator(featured_qs, 4)
+    page_number = request.GET.get("page")
+    featured_dishes = paginator.get_page(page_number)
 
     context = {
-        'categories': categories,
-        'featured_dishes': featured_dishes,
+        "categories": categories,
+        "featured_dishes": featured_dishes,
     }
 
-    return render(request, 'home/index.html', context)
+    return render(request, "home/index.html", context)

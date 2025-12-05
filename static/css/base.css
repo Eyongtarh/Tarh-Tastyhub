@@ -133,6 +133,20 @@ main {
     color: #ffc107;
 }
 
+.btn-login {
+    background-color: #2dbb4e;
+    color: #fff;
+    border: none;
+    text-decoration: none;
+    list-style: none;
+    
+}
+
+.btn-login:hover {
+    background-color: #2dbb4e;
+    transform: translateY(-2px);
+    color: #ffc107;
+}
 
 /* Forms */
 .form-control {
@@ -143,6 +157,12 @@ main {
     border-color: #ffc107;
     box-shadow: 0 0 5px rgba(255,193,7,0.5);
 }
+
+.allauth-form-inner-content h1,
+.allauth-form-inner-content h2 {
+    color: white !important;
+}
+
 
 /* Flying Bag Animation */
 #flying-image {

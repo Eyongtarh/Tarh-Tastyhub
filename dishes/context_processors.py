@@ -18,7 +18,7 @@ def menu_dishes(request):
                 category.name: category.dishes.filter(available=True)
                 for category in categories
             }
-        cache.set('menu_dishes', menu, 60 * 60)  # cache for 1 hour
+        cache.set('menu_dishes', menu, 60 * 60)
 
     return {'menu_dishes': menu}
 
@@ -30,5 +30,5 @@ def categories_nav(request):
     categories = cache.get('nav_categories')
     if categories is None:
         categories = list(Category.objects.only('name', 'slug'))
-        cache.set('nav_categories', categories, 60 * 60)  # cache for 1 hour
+        cache.set('nav_categories', categories, 60 * 60)
     return {'categories': categories}
