@@ -1,95 +1,54 @@
-// static/js/search.js
+/**
+ * Handle search form submission and dish quantity/portion updates.
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    const fields = [
-        { inputId: 'search-input', resultsId: 'search-results' },
-        { inputId: 'mobile-search-input', resultsId: 'mobile-search-results' }
+
+    // Submit search form on Enter key
+    const searchForms = [
+        { inputId: 'search-input', formId: 'search-form' },
+        { inputId: 'mobile-search-input', formId: 'mobile-search-form' }
     ];
 
-    const search = async (query, box) => {
-        if (!query || query.length < 2) {
-            box.style.display = 'none';
-            box.innerHTML = '';
-            return;
-        }
-
-        box.innerHTML = `<div class="dropdown-item text-muted">Searching...</div>`;
-        box.style.display = 'block';
-
-        try {
-            const res = await fetch(`/dishes/search-dishes/?q=${encodeURIComponent(query)}`);
-            const data = await res.json();
-            box.innerHTML = '';
-
-            if (Array.isArray(data.dishes) && data.dishes.length) {
-                data.dishes.forEach((d, idx) => {
-                    const link = document.createElement('a');
-                    link.className = 'dropdown-item';
-                    link.href = d.url;
-                    link.textContent = d.name;
-                    link.setAttribute('role', 'option');
-                    link.setAttribute('data-index', idx);
-                    box.appendChild(link);
-                });
-            } else {
-                const span = document.createElement('span');
-                span.className = 'dropdown-item text-muted';
-                span.textContent = 'No dishes found';
-                box.appendChild(span);
-            }
-            box.style.display = 'block';
-        } catch (err) {
-            console.error('Search error:', err);
-            box.style.display = 'none';
-        }
-    };
-
-    const debounce = (fn, delay = 300) => {
-        let timeout;
-        return (...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => fn(...args), delay);
-        };
-    };
-
-    fields.forEach(({ inputId, resultsId }) => {
+    searchForms.forEach(({ inputId, formId }) => {
         const input = document.getElementById(inputId);
-        const box = document.getElementById(resultsId);
-        if (!input || !box) return;
+        const form = document.getElementById(formId);
+        if (!input || !form) return;
 
-        box.setAttribute('role', 'listbox');
-
-        input.addEventListener('input', debounce(() => search(input.value.trim(), box)));
-
-        input.addEventListener('blur', () => setTimeout(() => { box.style.display = 'none'; }, 150));
-
-        document.addEventListener('click', e => {
-            if (e.target === input || box.contains(e.target)) return;
-            box.style.display = 'none';
-        });
-
-        let currentIndex = -1;
-        input.addEventListener('keydown', (e) => {
-            const items = Array.from(box.querySelectorAll('.dropdown-item'));
-            if (!items.length) return;
-
-            if (e.key === 'ArrowDown') {
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
                 e.preventDefault();
-                currentIndex = Math.min(items.length - 1, currentIndex + 1);
-                items.forEach(i => i.classList.remove('active'));
-                items[currentIndex].classList.add('active');
-                items[currentIndex].scrollIntoView({ block: 'nearest' });
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                currentIndex = Math.max(0, currentIndex - 1);
-                items.forEach(i => i.classList.remove('active'));
-                items[currentIndex].classList.add('active');
-                items[currentIndex].scrollIntoView({ block: 'nearest' });
-            } else if (e.key === 'Enter') {
-                e.preventDefault();
-                if (currentIndex >= 0 && items[currentIndex]) {
-                    window.location = items[currentIndex].href;
-                }
+                form.submit();
             }
         });
     });
+
+    // Dish portion selector and price updater
+    document.querySelectorAll('.portion-select').forEach(select => {
+        select.addEventListener('change', () => {
+            const card = select.closest('.card-body');
+            const qtyInput = card.querySelector('.dish-qty');
+            const priceEl = card.querySelector('.dish-price');
+            const price = parseFloat(select.options[select.selectedIndex].textContent.split('- $')[1]) || 0;
+            const qty = parseInt(qtyInput.value) || 1;
+            priceEl.textContent = `$${(price * qty).toFixed(2)}`;
+            qtyInput.dataset.portionId = select.value;
+        });
+    });
+
+    // Quantity increment/decrement buttons
+    const updateQty = (btn, increment = true) => {
+        const input = btn.parentElement.querySelector('.dish-qty');
+        const card = btn.closest('.card-body');
+        const priceEl = card.querySelector('.dish-price');
+        const select = card.querySelector('.portion-select');
+        let qty = parseInt(input.value) || 1;
+        qty = increment ? qty + 1 : Math.max(1, qty - 1);
+        input.value = qty;
+
+        let price = select ? parseFloat(select.options[select.selectedIndex].textContent.split('- $')[1]) : parseFloat(priceEl.textContent.replace('$',''));
+        priceEl.textContent = `$${(price * qty).toFixed(2)}`;
+    };
+
+    document.querySelectorAll('.dish-qty-increment').forEach(btn => btn.addEventListener('click', () => updateQty(btn, true)));
+    document.querySelectorAll('.dish-qty-decrement').forEach(btn => btn.addEventListener('click', () => updateQty(btn, false)));
 });
