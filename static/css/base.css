@@ -67,6 +67,73 @@ main {
     text-align: center;
 }
 
+/* Smooth fade-out for removed items */
+.removing {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+
+/* Quantity input styling */
+.dish-qty {
+  width: 50px;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 2px 6px;
+}
+
+/* Increment/decrement buttons */
+.dish-qty-increment,
+.dish-qty-decrement,
+.bag-qty-increment,
+.bag-qty-decrement {
+  cursor: pointer;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 2px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.dish-qty-increment:hover,
+.dish-qty-decrement:hover,
+.bag-qty-increment:hover,
+.bag-qty-decrement:hover {
+  background-color: #e68900;
+}
+
+/* Line total text */
+.line-total strong {
+  color: #4caf50;
+}
+
+/* Bag counts */
+.bag-count {
+  font-weight: bold;
+  color: #2196f3; 
+}
+
+
+/* Remove-from-bag button */
+.remove-from-bag {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remove-from-bag:hover {
+  background-color: #d32f2f;
+}
+
+
 /* Feedback section Image */
 .feedback_back {
     background: url('/static/images/feedback_pic.jpg') center center / cover no-repeat;

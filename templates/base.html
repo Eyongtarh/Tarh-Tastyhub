@@ -4,18 +4,59 @@
 <html lang="en">
   <head>
     {% block meta %}
-      <meta charset="utf-8" />
+      <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <!-- Dynamic SEO -->
+      <meta name="description"
+        content="{% block meta_description %}
+          
+          Delicious meals delivered fast from Tarh Tastyhub restaurant.
+
+        {% endblock %}" />
+      <meta name="keywords"
+        content="{% block meta_keywords %}
+          
+          Tarh Tastyhub, restaurant, food, delivery, meals, dishes, cuisine
+
+        {% endblock %}" />
+      <meta name="author" content="Tarh Tastyhub" />
+
+      <!-- Open Graph / Facebook -->
+      <meta property="og:title"
+        content="{% block og_title %}
+          
+          Tarh Tastyhub
+
+        {% endblock %}" />
+      <meta property="og:description"
+        content="{% block og_description %}
+          
+          Enjoy tasty meals from Tarh Tastyhub restaurant.
+
+        {% endblock %}" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+      <meta property="og:image"
+        content="{% block og_image %}
+          {% static 'images/logo.png' %}
+        {% endblock %}" />
+
+      <title>
+        {% block title %}
+          Tarh Tastyhub | Delicious Meals Delivered Fast
+        {% endblock %}
+      </title>
     {% endblock %}
 
-    <title>
-      {% block title %}
-        Tarh Tastyhub
-      {% endblock %}
-    </title>
-
     {% block corecss %}
+      <!-- Favicon -->
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon_io/apple-touch-icon.png' %}" />
+      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon_io/favicon-32x32.png' %}" />
+      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon_io/favicon-16x16.png' %}" />
+
+      <!-- Stylesheets -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
       <link rel="stylesheet" href="{% static 'css/base.css' %}" />
@@ -67,7 +108,6 @@
       {% endblock %}
     </main>
 
-    <!-- FOOTER -->
     {% include 'includes/footer.html' %}
 
     <!-- Toast Container -->
@@ -82,24 +122,24 @@
 
     <!-- Toast Renderer -->
     <script>
-document.addEventListener("DOMContentLoaded", function () {
-    {% if messages %}
-        {% for message in messages %}
+      document.addEventListener("DOMContentLoaded", function () {
+        {% if messages %}
+          {% for message in messages %}
             const toast = document.createElement("div");
             toast.className = "toast text-bg-{{ message.tags }} border-0 mb-2";
             toast.role = "alert";
             toast.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body">{{ message|escape }}</div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
+              <div class="d-flex">
+                <div class="toast-body">{{ message|escape }}</div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+              </div>
             `;
             document.getElementById("toast-container").appendChild(toast);
             new bootstrap.Toast(toast).show();
-        {% endfor %}
-    {% endif %}
-});
-</script>
+          {% endfor %}
+        {% endif %}
+      });
+    </script>
 
     {% block postloadjs %}
 
