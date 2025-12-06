@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.db.models import Q
 
 from .models import Category, Dish
-from .forms import DishForm, CategoryForm
+from .forms import DishForm, DishPortionFormSet, DishImageFormSet, CategoryForm
 
 
 def admin_required(user):
@@ -24,12 +24,7 @@ def get_cached_categories():
 
 
 def all_dishes(request):
-    """
-    Show all dishes with optional:
-    - Search by name, ingredients, dietary info
-    - Category filter
-    - Pagination
-    """
+    """Show all dishes with optional search, category filter, and pagination."""
     search_term = request.GET.get("q", "").strip()
     category_slug = request.GET.get("category", "").strip()
     page = request.GET.get("page", 1)
@@ -127,10 +122,28 @@ def dish_detail(request, slug):
 def add_dish(request):
     """Add a new dish (admin only)."""
     form = DishForm(request.POST or None, request.FILES or None)
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        return redirect("dish_list")
-    return render(request, "dishes/add_edit_dish.html", {"form": form, "action": "Add"})
+    portion_formset = DishPortionFormSet(request.POST or None, instance=form.instance)
+    image_formset = DishImageFormSet(request.POST or None, request.FILES or None, instance=form.instance)
+
+    if request.method == "POST":
+        if form.is_valid() and portion_formset.is_valid() and image_formset.is_valid():
+            dish = form.save()
+            portion_formset.instance = dish
+            portion_formset.save()
+            image_formset.instance = dish
+            image_formset.save()
+            return redirect("dish_list")
+
+    return render(
+        request,
+        "dishes/add_edit_dish.html",
+        {
+            "form": form,
+            "portion_formset": portion_formset,
+            "image_formset": image_formset,
+            "action": "Add",
+        }
+    )
 
 
 @login_required
@@ -139,11 +152,27 @@ def edit_dish(request, slug):
     """Edit a dish (admin only)."""
     dish = get_object_or_404(Dish, slug=slug)
     form = DishForm(request.POST or None, request.FILES or None, instance=dish)
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        cache.delete(f"dish_detail_{slug}")
-        return redirect("dish_detail", slug=dish.slug)
-    return render(request, "dishes/add_edit_dish.html", {"form": form, "action": "Edit"})
+    portion_formset = DishPortionFormSet(request.POST or None, instance=dish)
+    image_formset = DishImageFormSet(request.POST or None, request.FILES or None, instance=dish)
+
+    if request.method == "POST":
+        if form.is_valid() and portion_formset.is_valid() and image_formset.is_valid():
+            form.save()
+            portion_formset.save()
+            image_formset.save()
+            cache.delete(f"dish_detail_{slug}")
+            return redirect("dish_detail", slug=dish.slug)
+
+    return render(
+        request,
+        "dishes/add_edit_dish.html",
+        {
+            "form": form,
+            "portion_formset": portion_formset,
+            "image_formset": image_formset,
+            "action": "Edit",
+        }
+    )
 
 
 @login_required
@@ -162,7 +191,7 @@ def delete_dish(request, slug):
 @user_passes_test(admin_required)
 def add_category(request):
     """Add a category (admin only)."""
-    form = CategoryForm(request.POST or None)
+    form = CategoryForm(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
         form.save()
         cache.delete("cached_category_menu")
@@ -175,7 +204,7 @@ def add_category(request):
 def edit_category(request, slug):
     """Edit a category (admin only)."""
     category = get_object_or_404(Category, slug=slug)
-    form = CategoryForm(request.POST or None, instance=category)
+    form = CategoryForm(request.POST or None, request.FILES or None, instance=category)
     if request.method == "POST" and form.is_valid():
         form.save()
         cache.delete("cached_category_menu")

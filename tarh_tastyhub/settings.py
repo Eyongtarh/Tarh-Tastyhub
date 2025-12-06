@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'checkout',
     'profiles',
     'feedback',
+    'widget_tweaks',
 ]
 
 SITE_ID = 1

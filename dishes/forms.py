@@ -1,5 +1,6 @@
 from django import forms
-from .models import Dish, Category
+from django.forms import inlineformset_factory
+from .models import Dish, Category, DishImage, DishPortion
 
 
 class DishForm(forms.ModelForm):
@@ -22,18 +23,38 @@ class DishForm(forms.ModelForm):
             'available_until',
         )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control mb-2'
+
+class DishPortionForm(forms.ModelForm):
+    class Meta:
+        model = DishPortion
+        fields = ('size', 'weight', 'price')
+
+
+DishPortionFormSet = inlineformset_factory(
+    Dish,
+    DishPortion,
+    form=DishPortionForm,
+    extra=1,
+    can_delete=True
+)
+
+
+class DishImageForm(forms.ModelForm):
+    class Meta:
+        model = DishImage
+        fields = ('image', 'alt_text')
+
+
+DishImageFormSet = inlineformset_factory(
+    Dish,
+    DishImage,
+    form=DishImageForm,
+    extra=2,
+    can_delete=True
+)
 
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ('name', 'slug', 'menu_type', 'description', 'icon')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control mb-2'

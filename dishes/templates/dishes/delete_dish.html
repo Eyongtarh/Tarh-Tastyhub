@@ -1,15 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}
+  Tarh Tastyhub
+{% endblock %}
 {% block content %}
-  <div class="container py-5 text-center">
-    <h2 class="fw-bold mb-4 text-danger"><span class="fa-icon"><i class="fa-solid fa-trash-can"></i></span>Delete Dish</h2>
-    <p>
-      Are you sure you want to delete <strong>{{ dish.name }}</strong>?
-    </p>
-    <form method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger fw-bold">Yes, Delete</button>
-      <a href="{% url 'dish_detail' dish.slug %}" class="btn btn-secondary ms-2">Cancel</a>
-    </form>
+  <div class="container mx-auto px-4 py-6">
+    <h2 class="text-2xl font-semibold mb-4">Delete Dish</h2>
+    <div class="bg-white shadow rounded p-6">
+      {% if dish and dish.pk %}
+        <p class="mb-4 text-gray-700">
+          Are you sure you want to delete the dish
+          <strong>{{ dish.name }}</strong>?
+        </p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Confirm Delete</button>
+          <a href="{% url 'dish_detail' dish.slug %}" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+        </form>
+      {% else %}
+        <p class="text-red-600">The dish does not exist or cannot be deleted.</p>
+        <a href="{% url 'dish_list' %}" class="text-gray-600 hover:underline">Back to Dishes</a>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}
