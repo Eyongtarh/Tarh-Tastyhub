@@ -5,26 +5,34 @@ from django.urls import reverse
 from decimal import Decimal
 
 from dishes.models import DishPortion
-from bag.context_processors import bag_contents
-
-DELIVERY_FEE = Decimal("4.00")
+from bag.context_processors import MIN_FREE_DELIVERY, DEFAULT_DELIVERY
 
 
 def _get_bag_totals(request):
     """
     Helper to compute subtotal, delivery fee, and grand total.
-    Returns a dict with subtotal, delivery_fee, grand_total.
+    Applies free delivery if subtotal >= MIN_FREE_DELIVERY.
     """
     bag = request.session.get("bag", {})
     subtotal = Decimal("0.00")
+
     for pid, qty in bag.items():
         portion = DishPortion.objects.get(pk=pid)
         subtotal += portion.price * qty
 
-    grand_total = subtotal + DELIVERY_FEE
+    if subtotal >= MIN_FREE_DELIVERY:
+        delivery_fee = Decimal("0.00")
+        delivery_fee_display = "Free"
+    else:
+        delivery_fee = DEFAULT_DELIVERY
+        delivery_fee_display = f"${DEFAULT_DELIVERY:.2f}"
+
+    grand_total = subtotal + delivery_fee
+
     return {
         "subtotal": subtotal,
-        "delivery_fee": DELIVERY_FEE,
+        "delivery_fee": delivery_fee,
+        "delivery_fee_display": delivery_fee_display,
         "grand_total": grand_total
     }
 
@@ -51,6 +59,7 @@ def view_bag(request):
         "items": items,
         "bag_total": totals["subtotal"],
         "delivery_fee": totals["delivery_fee"],
+        "delivery_fee_display": totals["delivery_fee_display"],
         "grand_total": totals["grand_total"]
     }
     return render(request, 'bag/card.html', context)
@@ -91,6 +100,7 @@ def add_to_bag(request, portion_id):
             "line_total": f"{line_total:.2f}",
             "subtotal": f"{totals['subtotal']:.2f}",
             "delivery_fee": f"{totals['delivery_fee']:.2f}",
+            "delivery_fee_display": totals['delivery_fee_display'],
             "grand_total": f"{totals['grand_total']:.2f}",
         })
 
@@ -134,6 +144,7 @@ def adjust_bag(request, portion_id):
             "line_total": f"{line_total:.2f}",
             "subtotal": f"{totals['subtotal']:.2f}",
             "delivery_fee": f"{totals['delivery_fee']:.2f}",
+            "delivery_fee_display": totals['delivery_fee_display'],
             "grand_total": f"{totals['grand_total']:.2f}",
         })
 
@@ -161,6 +172,7 @@ def remove_from_bag(request, portion_id):
             "line_total": "0.00",
             "subtotal": f"{totals['subtotal']:.2f}",
             "delivery_fee": f"{totals['delivery_fee']:.2f}",
+            "delivery_fee_display": totals['delivery_fee_display'],
             "grand_total": f"{totals['grand_total']:.2f}",
         })
 

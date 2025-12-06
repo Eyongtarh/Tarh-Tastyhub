@@ -4,15 +4,13 @@ import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib import messages
-from django.views.decorators.http import require_http_methods
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods, require_POST
 
 import stripe
 
 from .forms import OrderForm
 from .services import OrderService, OrderServiceError
 from .models import Order
-
 
 logger = logging.getLogger(__name__)
 
@@ -40,17 +38,18 @@ def checkout(request):
         messages.error(request, "Your bag is empty. Add items before checkout.")
         return redirect("bag")
 
-    subtotal = _to_decimal(ctx.get("bag_total") or ctx.get("subtotal") or Decimal("0.00"))
+    subtotal = _to_decimal(ctx.get("bag_total") or Decimal("0.00"))
+
     try:
-        MIN_FREE = _to_decimal(getattr(settings, "MIN_FREE_DELIVERY", Decimal("20.00")))
-        DEFAULT_DELIVERY = _to_decimal(getattr(settings, "DEFAULT_DELIVERY_FEE", Decimal("3.99")))
+        MIN_FREE = _to_decimal(getattr(settings, "MIN_FREE_DELIVERY", Decimal("80.00")))
+        DEFAULT_DELIVERY = _to_decimal(getattr(settings, "DEFAULT_DELIVERY_FEE", Decimal("4.00")))
     except Exception:
-        MIN_FREE = Decimal("20.00")
-        DEFAULT_DELIVERY = Decimal("3.99")
+        MIN_FREE = Decimal("80.00")
+        DEFAULT_DELIVERY = Decimal("4.00")
 
     delivery_fee = DEFAULT_DELIVERY if subtotal < MIN_FREE else Decimal("0.00")
-    delivery_fee = _to_decimal(delivery_fee)
     grand_total = (subtotal + delivery_fee).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    delivery_fee_display = f"${delivery_fee:.2f}" if delivery_fee > 0 else "Free"
 
     if request.method == "POST":
         form = OrderForm(request.POST)
@@ -137,6 +136,7 @@ def checkout(request):
         "bag_items": bag_items,
         "bag_total": subtotal,
         "delivery_fee": delivery_fee,
+        "delivery_fee_display": delivery_fee_display,
         "grand_total": grand_total,
     }
 

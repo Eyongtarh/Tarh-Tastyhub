@@ -5,12 +5,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 DEFAULT_DELIVERY = Decimal("4.00")
-MIN_FREE_DELIVERY = Decimal("20.00")
+MIN_FREE_DELIVERY = Decimal("80.00")
 
 
 def bag_contents(request):
     session_bag = request.session.get("bag", {})
-
     if not isinstance(session_bag, dict):
         session_bag = {}
 
@@ -24,7 +23,6 @@ def bag_contents(request):
         except Exception:
             invalid_keys.append(raw_id)
             continue
-
         normalized[str(portion_id)] = qty
 
     for key in invalid_keys:
@@ -32,9 +30,11 @@ def bag_contents(request):
 
     request.session["bag"] = session_bag
     request.session.modified = True
+
     portion_ids = [int(pid) for pid in normalized.keys()]
     portions = DishPortion.objects.select_related("dish").filter(id__in=portion_ids)
     portion_map = {p.id: p for p in portions}
+
     items = []
     total = Decimal("0.00")
     count = 0
@@ -51,7 +51,6 @@ def bag_contents(request):
             continue
 
         line_total = portion.price * qty
-
         total += line_total
         count += qty
 
@@ -68,7 +67,13 @@ def bag_contents(request):
         request.session["bag"] = session_bag
         request.session.modified = True
 
-    delivery_fee = Decimal("0.00") if total >= MIN_FREE_DELIVERY else DEFAULT_DELIVERY
+    if total >= MIN_FREE_DELIVERY:
+        delivery_fee = Decimal("0.00")
+        delivery_fee_display = "Free"
+    else:
+        delivery_fee = DEFAULT_DELIVERY
+        delivery_fee_display = f"${DEFAULT_DELIVERY:.2f}"
+
     grand_total = total + delivery_fee
 
     return {
@@ -76,6 +81,7 @@ def bag_contents(request):
         "bag_items": items,
         "bag_total": total,
         "delivery_fee": delivery_fee,
+        "delivery_fee_display": delivery_fee_display,
         "grand_total": grand_total,
         "bag_count": count,
     }
