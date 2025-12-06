@@ -1,19 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
-  <div class="container py-5">
-    <h2 class="fw-bold text-center mb-4 text-danger"><span><i class="fa-solid fa-trash-can"></i></span>Delete Category</h2>
-    <div class="row justify-content-center">
-      <div class="col-md-6 text-center bg-white p-4 rounded shadow-sm">
-        <p class="mb-4">
-          Are you sure you want to delete the category "<strong>{{ category.name }}</strong>"? This will also delete all associated dishes.
+  <div class="container mx-auto px-4 py-6">
+    <h2 class="text-2xl font-semibold mb-4">Delete Category</h2>
+    <div class="bg-white shadow rounded p-6">
+      {% if category and category.pk %}
+        <p class="mb-4 text-gray-700">
+          Are you sure you want to delete the category
+          <strong>{{ category.name }}</strong>?
         </p>
         <form method="post">
           {% csrf_token %}
-          <button type="submit" class="btn btn-danger fw-bold">Delete Permanently</button>
-          <a href="{% url 'dish_list' %}" class="btn btn-secondary ms-2">Cancel</a>
+          <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Confirm Delete</button>
+          <a href="{% url 'category_list' %}" class="ml-4 text-gray-600 hover:underline">Cancel</a>
         </form>
-      </div>
+      {% else %}
+        <p class="text-red-600">The category does not exist or cannot be deleted.</p>
+        <a href="{% url 'category_list' %}" class="text-gray-600 hover:underline">Back to Categories</a>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
