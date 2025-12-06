@@ -14,7 +14,7 @@ if (window.dishBagJSLoaded) {
             if (subtotalEl) subtotalEl.textContent = `$${parseFloat(data.subtotal).toFixed(2)}`;
 
             const deliveryEl = document.querySelector('#bag-delivery');
-            if (deliveryEl) deliveryEl.textContent = `$${parseFloat(data.delivery_fee).toFixed(2)}`;
+            if (deliveryEl) deliveryEl.textContent = data.delivery_fee_display || `$${parseFloat(data.delivery_fee).toFixed(2)}`;
 
             const grandTotalEl = document.querySelector('#grand-total');
             if (grandTotalEl) grandTotalEl.textContent = `$${parseFloat(data.grand_total).toFixed(2)}`;
