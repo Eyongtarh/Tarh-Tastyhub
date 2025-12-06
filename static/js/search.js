@@ -1,5 +1,5 @@
 /**
- * Handle search form submission and dish quantity/portion updates.
+ * search.js — ONLY search + portion price update
  */
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -22,35 +22,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Dish portion selector and price updater
+    // Portion select price updater
     document.querySelectorAll('.portion-select').forEach(select => {
         select.addEventListener('change', () => {
             const card = select.closest('.card-body');
             const qtyInput = card.querySelector('.dish-qty');
             const priceEl = card.querySelector('.dish-price');
-            const price = parseFloat(select.options[select.selectedIndex].textContent.split('- $')[1]) || 0;
+
+            const price = parseFloat(
+                select.options[select.selectedIndex].textContent.split('- $')[1]
+            ) || 0;
+
             const qty = parseInt(qtyInput.value) || 1;
+
             priceEl.textContent = `$${(price * qty).toFixed(2)}`;
+
             qtyInput.dataset.portionId = select.value;
         });
     });
 
-    // Quantity increment/decrement buttons
-    const updateQty = (btn, increment = true) => {
-        const input = btn.parentElement.querySelector('.dish-qty');
-        const card = btn.closest('.card-body');
-        const priceEl = card.querySelector('.dish-price');
-        const select = card.querySelector('.portion-select');
-        let qty = parseInt(input.value) || 1;
-        qty = increment ? qty + 1 : Math.max(1, qty - 1);
-        input.value = qty;
-
-        let price = select ? parseFloat(select.options[select.selectedIndex].textContent.split('- $')[1]) : parseFloat(priceEl.textContent.replace('$',''));
-        priceEl.textContent = `$${(price * qty).toFixed(2)}`;
-    };
-
-    document.querySelectorAll('.dish-qty-increment').forEach(btn => btn.addEventListener('click', () => updateQty(btn, true)));
-    document.querySelectorAll('.dish-qty-decrement').forEach(btn => btn.addEventListener('click', () => updateQty(btn, false)));
 });
-
-
