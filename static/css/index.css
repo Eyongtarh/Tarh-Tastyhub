@@ -1,9 +1,5 @@
 /* index.css */
 
-h1, h2 {
-  color: #fff;
-}
-
 .hero-section {
   background-image: url("../images/food-hero.png");
   background-position: center;

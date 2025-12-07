@@ -1,40 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load dishes_extras %}
+
 {% block title %}
   Tarh Tastyhub
 {% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
+{% endblock %}
 {% block content %}
-  <div class="container mx-auto px-4 py-6">
-    <h2 class="text-2xl font-semibold mb-4">{{ action }} Category</h2>
-    <form method="post" enctype="multipart/form-data" class="space-y-4">
-      {% csrf_token %}
-      <div class="mb-4">{{ form.non_field_errors }}</div>
-      <!-- Main Category Fields -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {% for field in form %}
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
-            {{ field }}
-            {% if field.help_text %}
-              <p class="text-xs text-gray-500">{{ field.help_text }}</p>
-            {% endif %}
-            {% for error in field.errors %}
-              <p class="text-red-600 text-sm">{{ error }}</p>
-            {% endfor %}
-          </div>
-        {% endfor %}
-      </div>
+  <div class="container my-5">
+    <div class="text-center mb-4">
+      <h2 class="section-title"><i class="fa-solid fa-screwdriver-wrench me-2"></i> {{ action }} Category</h2>
+    </div>
+    <div class="form-container mx-auto" style="max-width: 700px;">
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+        <div class="mb-4">{{ form.non_field_errors }}</div>
 
-      <!-- Current Icon -->
-      {% if form.instance.pk and form.instance.icon %}
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Current Icon:</label>
-          <img src="{{ form.instance.icon.url }}" class="mt-2 rounded" style="max-width: 100px;" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {% for field in form %}
+            <div class="mb-4">
+              <label class="block text-sm font-medium">{{ field.label }}</label>
+              {{ field }}
+              {% if field.help_text %}
+                <p class="text-xs">{{ field.help_text }}</p>
+              {% endif %}
+              {% for error in field.errors %}
+                <p class="text-red-600 text-sm">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endfor %}
         </div>
-      {% endif %}
 
-      <!-- Submit Button -->
-      <button type="submit" class="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">{{ action }} Category</button>
-    </form>
+        {% if form.instance.pk and form.instance.icon %}
+          <div class="mb-4 current-icon">
+            <label class="block text-sm font-medium">Current Icon:</label>
+            <img src="{{ form.instance.icon.url }}" />
+          </div>
+        {% endif %}
+
+        <div class="text-center">
+          <button type="submit" class="btn-primary mt-4">{{ action }} Category</button>
+          <a href="{% url 'admin_dashboard' %}" class="btn-cancel">Cancel</a>
+        </div>
+      </form>
+    </div>
   </div>
 {% endblock %}

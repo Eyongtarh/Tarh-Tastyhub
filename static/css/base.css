@@ -20,6 +20,15 @@ main {
 }
 
 
+.text-white {
+  color: #fff;
+}
+
+
+.text-black {
+  color: black;
+}
+
 /* Navbar */
 .navbar-brand {
     font-size: 1.5rem;

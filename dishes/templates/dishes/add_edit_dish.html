@@ -1,110 +1,147 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load dishes_extras %}
 
 {% block title %}
   Tarh Tastyhub
 {% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
+{% endblock %}
 {% block content %}
-  <div class="container mx-auto px-4 py-6">
-    <h2 class="text-2xl font-semibold mb-4">{{ action }} Dish</h2>
-    <form method="post" enctype="multipart/form-data" class="space-y-6">
-      {% csrf_token %}
-      <div class="mb-4">{{ form.non_field_errors }}</div>
+  <div class="container my-5">
+    <div class="text-center mb-4">
+      <h2 class="section-title"><i class="fa-solid fa-utensils me-2"></i> {{ action }} Dish</h2>
+    </div>
 
-      <!-- Main Dish Fields -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {% for field in form %}
-          <div class="mb-4">
-            {% if field.name in 'available,is_special' %}
-              <div class="flex items-center space-x-2 mt-1">
+    <div class="form-container mx-auto" style="max-width: 900px;">
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="mb-4 text-red-600">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <!-- Main Dish Fields -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {% for field in form %}
+            <div>
+              {# Correct Django-safe condition #}
+              {% if field.name == 'available' or field.name == 'is_special' %}
+                <div class="flex items-center mt-2">
+                  {{ field }}
+                  <label class="ml-2">{{ field.label }}</label>
+                </div>
+              {% else %}
+                <label class="block text-sm font-medium">{{ field.label }}</label>
                 {{ field }}
-                <label for="{{ field.id_for_label }}" class="text-gray-700 text-sm">{{ field.label }}</label>
-              </div>
-            {% else %}
-              <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
-              {{ field }}
-              {% if field.help_text %}
-                <p class="text-xs text-gray-500">{{ field.help_text }}</p>
+                {% if field.help_text %}
+                  <p class="text-xs">{{ field.help_text }}</p>
+                {% endif %}
               {% endif %}
-            {% endif %}
-            {% for error in field.errors %}
-              <p class="text-red-600 text-sm">{{ error }}</p>
-            {% endfor %}
-          </div>
-        {% endfor %}
-      </div>
 
-      <!-- Current Main Image -->
-      {% if form.instance.pk and form.instance.image %}
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Current Main Image:</label>
-          <img src="{{ form.instance.image.url }}" class="mt-2 rounded" style="max-width: 250px;" />
-        </div>
-      {% endif %}
-
-      <!-- Portions Formset -->
-      <h3 class="text-xl font-semibold mt-6 mb-2">Portions</h3>
-      {{ portion_formset.management_form }}
-      <div class="space-y-4">
-        {% for formset_form in portion_formset.forms %}
-          <div class="border p-4 rounded-lg bg-gray-50">
-            {% for field in formset_form.visible_fields %}
-              <div class="mb-2">
-                <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
-                {{ field }}
-                {% for error in field.errors %}
-                  <p class="text-red-600 text-sm">{{ error }}</p>
-                {% endfor %}
-              </div>
-            {% endfor %}
-            {% if formset_form.instance.pk %}
-              <div class="flex items-center mt-2 space-x-2">
-                {{ formset_form.DELETE }}
-                <label class="text-red-600 text-sm">Delete this Portion</label>
-              </div>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
-
-      <!-- Additional Images Formset -->
-      <h3 class="text-xl font-semibold mt-6 mb-2">Additional Images</h3>
-      {{ image_formset.management_form }}
-      {% if form.instance.pk and form.instance.images.all %}
-        <div class="mb-4 flex flex-wrap gap-3">
-          {% for image in form.instance.images.all %}
-            <div class="text-center">
-              <img src="{{ image.image.url }}" class="rounded mb-1" style="width:140px; height:auto;" />
-              <div class="text-xs">{{ image.alt_text }}</div>
+              {% for error in field.errors %}
+                <p class="text-red-600 text-sm">{{ error }}</p>
+              {% endfor %}
             </div>
           {% endfor %}
         </div>
-      {% endif %}
 
-      <div class="space-y-4">
-        {% for img_form in image_formset.forms %}
-          <div class="border p-4 rounded-lg bg-gray-50">
-            {% for field in img_form.visible_fields %}
-              <div class="mb-2">
-                <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
-                {{ field }}
-                {% for error in field.errors %}
-                  <p class="text-red-600 text-sm">{{ error }}</p>
+        <!-- Current Main Image -->
+        {% if form.instance.pk and form.instance.image %}
+          <div class="mb-4 current-image">
+            <label class="block text-sm font-medium">Current Main Image:</label>
+            <img src="{{ form.instance.image.url }}" />
+          </div>
+        {% endif %}
+
+        <!-- Portions Formset -->
+        <div class="mb-4">
+          <h2 class="section-title text-sm">Portions</h2>
+
+          {{ portion_formset.management_form }}
+
+          {% for formset_form in portion_formset.forms %}
+            <div class="p-4 mb-3 rounded">
+              {{ formset_form.non_field_errors }}
+              {% for hidden in formset_form.hidden_fields %}
+                {{ hidden }}
+              {% endfor %}
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {% for field in formset_form.visible_fields %}
+                  <div>
+                    <label class="block text-sm font-medium">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                      <p class="text-red-600 text-sm">{{ error }}</p>
+                    {% endfor %}
+                  </div>
                 {% endfor %}
               </div>
-            {% endfor %}
-            {% if img_form.instance.pk %}
-              <div class="flex items-center mt-2 space-x-2">
-                {{ img_form.DELETE }}
-                <label class="text-red-600 text-sm">Delete this Image</label>
-              </div>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
 
-      <!-- Submit Button -->
-      <button type="submit" class="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">{{ action }} Dish</button>
-    </form>
+              {% if formset_form.instance.pk %}
+                <div class="flex items-center mt-2">
+                  {{ formset_form.DELETE }}
+                  <label class="ml-2 text-red-600">Delete this Portion</label>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Additional Images Formset -->
+        <div class="mb-4">
+          <h2 class="section-title text-sm">Additional Images</h2>
+
+          {{ image_formset.management_form }}
+
+          {% if form.instance.pk and form.instance.images.exists %}
+            <div class="flex flex-wrap gap-3 mb-3">
+              {% for image in form.instance.images.all %}
+                <div class="text-center">
+                  <img src="{{ image.image.url }}" class="current-image" />
+                  <div class="text-xs text-gray-300 mt-1">{{ image.alt_text }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% for img_form in image_formset.forms %}
+            <div class="p-4 mb-3 rounded">
+              {{ img_form.non_field_errors }}
+              {% for hidden in img_form.hidden_fields %}
+                {{ hidden }}
+              {% endfor %}
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for field in img_form.visible_fields %}
+                  <div>
+                    <label class="block text-sm font-medium">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                      <p class="text-red-600 text-sm">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </div>
+
+              {% if img_form.instance.pk %}
+                <div class="flex items-center mt-2">
+                  {{ img_form.DELETE }}
+                  <label class="ml-2 text-red-600">Delete this Image</label>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center">
+          <button type="submit" class="btn-primary mt-4">{{ action }} Dish</button>
+          <a href="{% url 'admin_dashboard' %}" class="btn-cancel">Cancel</a>
+        </div>
+      </form>
+    </div>
   </div>
 {% endblock %}

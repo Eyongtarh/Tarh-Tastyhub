@@ -1,6 +1,4 @@
-/* ========================
-   Checkout Card Styling
-======================== */
+
 .checkout-card .card-body {
   padding: 2rem;
 }
@@ -17,9 +15,6 @@
   margin-bottom: 1rem;
 }
 
-/* ========================
-   Stripe Card Input
-======================== */
 #card-element,
 .StripeElement {
   box-sizing: border-box;
@@ -43,9 +38,6 @@
   border-color: #dc3545;
 }
 
-/* ========================
-   Loading Overlay
-======================== */
 #loading-overlay {
   display: none !important;
   position: fixed;
@@ -62,9 +54,6 @@
   color: #fff;
 }
 
-/* ========================
-   Responsive Layout
-======================== */
 @media (max-width: 991.98px) {
   .checkout-card {
     width: 100%;
