@@ -1,25 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load dishes_extras %}
+
 {% block title %}
   Tarh Tastyhub
 {% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
+{% endblock %}
 {% block content %}
-  <div class="container mx-auto px-4 py-6">
-    <h2 class="text-2xl font-semibold mb-4">Delete Dish</h2>
-    <div class="bg-white shadow rounded p-6">
+  <div class="container my-5">
+    <div class="text-center mb-4">
+      <h2 class="section-title"><i class="fa-solid fa-trash me-2"></i> Delete Dish</h2>
+    </div>
+    <div class="form-container mx-auto" style="max-width: 700px;">
       {% if dish and dish.pk %}
-        <p class="mb-4 text-gray-700">
-          Are you sure you want to delete the dish
-          <strong>{{ dish.name }}</strong>?
-        </p>
+        <div class="warning-box">
+          <i class="fa-solid fa-triangle-exclamation fa-icon"></i>
+          Are you sure you want to delete the dish <span class="dish-name"><strong>{{ dish.name }}</strong></span>?
+        </div>
         <form method="post">
           {% csrf_token %}
-          <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Confirm Delete</button>
-          <a href="{% url 'dish_detail' dish.slug %}" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+          <div class="text-center">
+            <button type="submit" class="btn-danger mt-4">Confirm Delete</button>
+            <a href="{% url 'admin_dashboard' %}" class="btn-cancel">Cancel</a>
+          </div>
         </form>
       {% else %}
-        <p class="text-red-600">The dish does not exist or cannot be deleted.</p>
-        <a href="{% url 'dish_list' %}" class="text-gray-600 hover:underline">Back to Dishes</a>
+        <div class="warning-box">The dish does not exist or cannot be deleted.</div>
+        <div class="text-center">
+          <a href="{% url 'dish_list' %}" class="btn-secondary">Back to Dishes</a>
+        </div>
       {% endif %}
     </div>
   </div>
