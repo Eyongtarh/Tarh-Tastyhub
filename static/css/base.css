@@ -212,7 +212,7 @@ main {
 .btn-login {
     background-color: #2dbb4e;
     color: #fff;
-    border: none;
+    border-color: #fff;
     text-decoration: none;
     list-style: none;
     
@@ -404,6 +404,24 @@ footer {
 }
 .offcanvas-header .btn-close {
     z-index: 1070;
+}
+
+
+/* Messages */
+.alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.alert-secondary,
+.alert-success
+.alert-info,
+.alert-warning,
+.alert-danger {
+    background-color:  #ffc107;
+    color: rgb(0, 0, 0);
 }
 
 
