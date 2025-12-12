@@ -79,10 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
     postData.append("email", form.email.value.trim());
 
     try {
-      // Cache checkout data
       await fetch("/checkout/cache_checkout_data/", { method: "POST", body: postData });
-
-      // Confirm card payment
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: card,
@@ -130,3 +127,59 @@ document.querySelectorAll('.status-dropdown').forEach(dropdown => {
   });
 });
 
+// =====================
+// checkout.js
+// =====================
+
+// ---------------------
+// CSRF Helper
+// ---------------------
+function getCSRFToken() {
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+    return cookieValue || '';
+}
+
+// Feedback Actions
+
+function getCSRFToken() {
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+    return cookieValue || '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const feedbackTbody = document.getElementById('feedback-tbody');
+    if (!feedbackTbody) return;
+
+    feedbackTbody.addEventListener('click', function(e) {
+        const target = e.target;
+        const id = target.dataset.fbId;
+        if (!id) return;
+
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '';
+
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = getCSRFToken();
+        form.appendChild(csrfInput);
+
+        if (target.classList.contains('fb-mark-handled-btn')) {
+            form.action = `/feedback/mark-handled/${id}/`;
+        } else if (target.classList.contains('fb-mark-unhandled-btn')) {
+            form.action = `/feedback/mark-unhandled/${id}/`;
+        } else {
+            return;
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    });
+});

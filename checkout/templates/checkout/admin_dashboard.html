@@ -1,163 +1,217 @@
 {% extends "base.html" %}
 {% load static %}
-{% load dishes_extras %}
-
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
+{% endblock %}
 {% block content %}
 
-<style>
-/* Orders Table Colors */
-.table-dark th { background-color: #343a40 !important; color: #fff; }
-.status-text.Pending { color: #ffc107; font-weight: bold; }
-.status-text.Preparing { color: #17a2b8; font-weight: bold; }
-.status-text.Out { color: #ef7614ff; font-weight: bold; }
-.status-text.Completed { color: #28a745; font-weight: bold; }
-.progress-bar-striped { background-color: #6c757d; }
-
-/* Table Headers */
-.table-secondary th { background-color: #6c757d; color: #fff; }
-
-/* Buttons */
-.btn-success { background-color: #28a745; border-color: #28a745; }
-.btn-primary { background-color: #007bff; border-color: #007bff; }
-.btn-warning { background-color: #ffc107; border-color: #ffc107; color: #212529; }
-.btn-danger { background-color: #dc3545; border-color: #dc3545; }
-.btn-sm i { margin-right: 4px; }
-
-/* Table Row Hover */
-.table-hover tbody tr:hover { background-color: #f1f3f5; }
-
-/* Section Titles */
-h4.fw-bold { color: white }
-</style>
-
 <div class="container my-5">
-    <!-- Page Header -->
+
+    <!-- Header -->
     <div class="text-center mb-4">
         <h2 class="fw-bold text-white">
-            <i class="fa-solid fa-screwdriver-wrench me-2"></i> Admin Dashboard
+            <i class="fa-solid fa-screwdriver-wrench me-2"></i>
+            Admin Dashboard
         </h2>
     </div>
-<!-- Add Buttons -->
-<div class="mb-3 text-center">
-    <a href="{% url 'add_dish' %}" class="btn btn-primary me-2">
-        <i class="fa-solid fa-plus"></i> Add Dish
-    </a>
-    <a href="{% url 'add_category' %}" class="btn btn-primary">
-        <i class="fa-solid fa-plus"></i> Add Category
-    </a>
-</div>
 
-<!-- Orders Table -->
-<div class="table-responsive shadow-sm rounded mb-5">
-    <table class="table table-hover align-middle">
-        <thead class="table-dark text-center">
-            <tr>
-                <th>ID</th>
-                <th>Customer</th>
-                <th>Total ($)</th>
-                <th>Status</th>
-                <th>Progress</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="orders-table">
-            {% for order in orders %}
-            <tr id="order-{{ order.id }}">
-                <td class="text-center">{{ order.id }}</td>
-                <td>{{ order.full_name }}</td>
-                <td class="text-end">${{ order.grand_total }}</td>
-                <td class="status-text {{ order.status|cut:" " }}">{{ order.status }}</td>
-                <td style="min-width:200px;">
-                    <div class="progress" style="height:20px;">
-                        <div class="progress-bar progress-bar-striped" role="progressbar" style="width:{{ order.progress_percent }}%;" aria-valuenow="{{ order.progress_percent }}" aria-valuemin="0" aria-valuemax="100">
-                            {{ order.status }}
+    <!-- Buttons -->
+    <div class="mb-3 text-center">
+        <a href="{% url 'add_dish' %}" class="btn btn-primary me-2">
+            <i class="fa-solid fa-plus"></i> Add Dish
+        </a>
+        <a href="{% url 'add_category' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Category
+        </a>
+    </div>
+    <!-- ORDERS TABLE -->
+    <div class="table-responsive shadow-sm rounded mb-5">
+        <h4 class="fw-bold mb-3">Orders</h4>
+        <table class="table table-hover align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Total ($)</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="text-center">{{ order.id }}</td>
+                    <td>{{ order.full_name }}</td>
+                    <td class="text-end">${{ order.grand_total }}</td>
+                    <td class="status-text {{ order.status|cut:" " }}">{{ order.status }}</td>
+                    <td style="min-width:200px;">
+                        <div class="progress" style="height:20px;">
+                            <div class="progress-bar progress-bar-striped"
+                                 role="progressbar"
+                                 style="width:{{ order.progress_percent }}%;">
+                                {{ order.status }}
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td class="d-flex gap-2 justify-content-center flex-wrap">
-                    <form method="POST" action="{% url 'update_order_status' order.id %}" class="d-flex gap-2 flex-wrap align-items-center">
-                        {% csrf_token %}
-                        <select name="status" class="form-select form-select-sm" data-order-id="{{ order.id }}">
-                            <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
-                            <option {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
-                            <option {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
-                            <option {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
-                        </select>
-                        <button class="btn btn-warning btn-sm">Update</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    </td>
+                    <td class="d-flex gap-2 justify-content-center">
+                        <form method="POST" action="{% url 'update_order_status' order.id %}">
+                            {% csrf_token %}
+                            <select name="status" class="form-select form-select-sm">
+                                <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
+                                <option {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
+                                <option {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            </select>
+                            <button class="btn btn-warning btn-sm mt-1">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- DISHES -->
+    <div class="table-responsive shadow-sm rounded">
+        <h4 class="fw-bold mb-3">Dishes</h4>
+        <table class="table table-hover align-middle">
+            <thead class="table-secondary text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price ($)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dish in dishes %}
+                <tr>
+                    <td>{{ dish.name }}</td>
+                    <td>{{ dish.category.name }}</td>
+                    <td class="text-end">{{ dish.price }}</td>
+                    <td class="d-flex gap-2 justify-content-center">
+                        <a href="{% url 'edit_dish' dish.slug %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_dish' dish.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="table-responsive shadow-sm rounded mt-4">
+        <h4 class="fw-bold mb-3">Categories</h4>
+        <table class="table table-hover align-middle">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td class="d-flex gap-2 justify-content-center">
+                        <a href="{% url 'edit_category' category.slug %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_category' category.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="table-responsive shadow-sm rounded mt-5">
+        <h4 class="fw-bold mb-3">Feedback</h4>
+
+        <!-- Filter -->
+        <div class="mb-3">
+            <form method="GET" class="d-flex gap-3">
+                <select name="filter" class="form-select w-auto">
+                    <option value="all" {% if filter_status == 'all' %}selected{% endif %}>All</option>
+                    <option value="unread" {% if filter_status == 'unread' %}selected{% endif %}>Unread</option>
+                    <option value="handled" {% if filter_status == 'handled' %}selected{% endif %}>Handled</option>
+                </select>
+                <button class="btn btn-primary">Apply</button>
+            </form>
+        </div>
+
+        <table class="table table-hover align-middle">
+            <thead class="table-secondary text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Handled</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for fb in feedback_list %}
+                <tr>
+                    <td>{{ fb.name }}</td>
+                    <td>{{ fb.email }}</td>
+                    <td>{{ fb.subject }}</td>
+                    <td>{{ fb.message }}</td>
+                    <td>{{ fb.created_at|date:"Y-m-d H:i" }}</td>
+                    <td class="text-center">
+                        {% if fb.handled %}
+                            <span class="text-success fw-bold">Yes</span>
+                        {% else %}
+                            <span class="text-danger fw-bold">No</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if not fb.handled %}
+                        <form method="POST" action="{% url 'mark-handled' fb.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-success btn-sm">Mark as handled</button>
+                        </form>
+                        {% else %}
+                        <form method="POST" action="{% url 'mark-unhandled' fb.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-secondary btn-sm">Mark as unread</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-3">No feedback found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-3">
+            {% if feedback_list.has_other_pages %}
+            <ul class="pagination">
+                {% if feedback_list.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ feedback_list.previous_page_number }}&filter={{ filter_status }}">Previous</a>
+                </li>
+                {% endif %}
+                {% for num in feedback_list.paginator.page_range %}
+                <li class="page-item {% if feedback_list.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}&filter={{ filter_status }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+                {% if feedback_list.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ feedback_list.next_page_number }}&filter={{ filter_status }}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
 </div>
-
-<!-- Dishes Table -->
-<div class="table-responsive shadow-sm rounded">
-    <h4 class="fw-bold mb-3">Dishes</h4>
-    <table class="table table-hover align-middle">
-        <thead class="table-secondary text-center">
-            <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Price ($)</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for dish in dishes %}
-            <tr>
-                <td>{{ dish.name }}</td>
-                <td>{{ dish.category.name }}</td>
-                <td class="text-end">{{ dish.price }}</td>
-                <td class="d-flex gap-2 justify-content-center flex-wrap">
-                    <a href="{% url 'edit_dish' dish.slug %}" class="btn btn-warning btn-sm">
-                        <i class="fa-solid fa-pen"></i> Edit
-                    </a>
-                    <a href="{% url 'delete_dish' dish.slug %}" class="btn btn-danger btn-sm">
-                        <i class="fa-solid fa-trash"></i> Delete
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<!-- Categories Table -->
-<div class="table-responsive shadow-sm rounded mt-4">
-    <h4 class="fw-bold mb-3">Categories</h4>
-    <table class="table table-hover align-middle">
-        <thead class="table-secondary text-center">
-            <tr>
-                <th>Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category in categories %}
-            <tr>
-                <td>{{ category.name }}</td>
-                <td class="d-flex gap-2 justify-content-center flex-wrap">
-                    <a href="{% url 'edit_category' category.slug %}" class="btn btn-warning btn-sm">
-                        <i class="fa-solid fa-pen"></i> Edit
-                    </a>
-                    <a href="{% url 'delete_category' category.slug %}" class="btn btn-danger btn-sm">
-                        <i class="fa-solid fa-trash"></i> Delete
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-</div>
-
-{% endblock %}
-
-{% block postloadjs %}
-
-<script src="{% static 'checkout/js/checkout.js' %}"></script>
-
 {% endblock %}
