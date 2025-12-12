@@ -19,4 +19,14 @@ urlpatterns = [
     path('success/<str:order_number>/',
          views.checkout_success,
          name='checkout_success'),
+    path(
+        'feedback/mark-handled/<int:feedback_id>/',
+        admin_dashboard_view.mark_feedback_handled,
+        name='mark_feedback_handled'
+    ),
+    path(
+        'feedback/mark-unhandled/<int:feedback_id>/',
+        admin_dashboard_view.mark_feedback_unhandled,
+        name='mark_feedback_unhandled'
+    ),
 ]
