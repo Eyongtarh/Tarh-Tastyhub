@@ -3,4 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.feedback_view, name='feedback'),
+    path('mark-handled/<int:pk>/', views.mark_handled, name='mark-handled'),
+    path('mark-unhandled/<int:pk>/', views.mark_unhandled, name='mark-unhandled'),
 ]
