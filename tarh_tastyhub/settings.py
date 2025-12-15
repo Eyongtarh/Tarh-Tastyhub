@@ -13,7 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = 'DEVELOPMENT' in os.environ
 
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost', 'tarh-tastyhub-4071346c00af.herokuapp.com').split(',')
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    '127.0.0.1,localhost,tarh-tastyhub-4071346c00af.herokuapp.com'
+).split(',')
 
 
 INSTALLED_APPS = [
@@ -97,8 +100,7 @@ TEMPLATES = [
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-# Replace WSGI with ASGI
-ASGI_APPLICATION = 'tarh_tastyhub.asgi.application'
+WSGI_APPLICATION = 'tarh_tastyhub.wsgi.application'
 
 # Database
 # Database
