@@ -1,8 +1,6 @@
 .venv
 mythings.sh
 env.py
-.env
 db.sqlite3
 __pycache__/
 *.pyc
-
