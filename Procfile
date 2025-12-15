@@ -1,0 +1,1 @@
+web: gunicorn tarh_tastyhub.wsgi:application
