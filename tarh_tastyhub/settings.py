@@ -10,7 +10,7 @@ from django.contrib.messages import constants as messages
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
+DEBUG = 'DEVELOPMENT' in os.environ
 
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost', 'tarh-tastyhub-4071346c00af.herokuapp.com').split(',')
