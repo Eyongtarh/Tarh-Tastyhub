@@ -2,3 +2,5 @@
 mythings.sh
 env.py
 db.sqlite3
+__pycache__/
+*.pyc
