@@ -1,7 +1,11 @@
 import os
 from pathlib import Path
+if os.path.isfile('env.py'):
+    import env
+
 import dj_database_url
 from django.contrib.messages import constants as messages
+
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
