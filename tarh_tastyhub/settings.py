@@ -1,25 +1,26 @@
-
 import os
-import dj_database_url
-if os.path.isfile('env.py'):
-    import env
-
 from pathlib import Path
+import dj_database_url
 from django.contrib.messages import constants as messages
 
-
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Debug
 DEBUG = 'DEVELOPMENT' in os.environ
 
-
+# Allowed hosts
 ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
     '127.0.0.1,localhost,tarh-tastyhub-4071346c00af.herokuapp.com'
 ).split(',')
 
+# Secret key
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
+# Installed apps
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
+    # Third-party apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -34,6 +37,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'storages',
+
+    # Your apps
     'home',
     'dishes',
     'bag',
@@ -42,23 +47,32 @@ INSTALLED_APPS = [
     'feedback',
 ]
 
+# Site framework
 SITE_ID = 1
 
-ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_SIGNUP_FIELDS = [
-    "email*",
-    "username*",
-    "password1*",
-    "password2*",
-]
-
+# Authentication
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+# Messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert alert-secondary',
+    messages.INFO: 'alert alert-info',
+    messages.SUCCESS: 'alert alert-success',
+    messages.WARNING: 'alert alert-warning',
+    messages.ERROR: 'alert alert-danger',
+}
+
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -76,10 +90,7 @@ ROOT_URLCONF = 'tarh_tastyhub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'templates',
-            BASE_DIR / 'templates' / 'allauth',
-        ],
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'templates' / 'allauth'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,20 +105,14 @@ TEMPLATES = [
             'builtins': [
                 'crispy_forms.templatetags.crispy_forms_tags',
                 'crispy_forms.templatetags.crispy_forms_field',
-            ]
+            ],
         },
     },
 ]
 
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
 WSGI_APPLICATION = 'tarh_tastyhub.wsgi.application'
 
 # Database
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
@@ -119,8 +124,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
-SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -136,52 +139,34 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Message Bootstrap classes
-MESSAGE_TAGS = {
-    messages.DEBUG: 'alert alert-secondary',
-    messages.INFO: 'alert alert-info',
-    messages.SUCCESS: 'alert alert-success',
-    messages.WARNING: 'alert alert-warning',
-    messages.ERROR: 'alert alert-danger',
-}
-
-
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-# Static / Media
-
+# Static and media files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+STATICFILES_DIRS = [BASE_DIR / 'static']
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# AWS S3 Storage
 if 'USE_AWS' in os.environ:
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub-market'
+    AWS_S3_REGION_NAME = 'eu-north-1'
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
-    # Cache control
     AWS_S3_OBJECT_PARAMETERS = {
         'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
         'CacheControl': 'max-age=94608000',
     }
 
-    # Bucket Config
-    AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub-market'
-    AWS_S3_REGION_NAME = 'eu-north-1'
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-
-    # Static and media files
-    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+    # Static files on S3
     STATICFILES_LOCATION = 'static'
-    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
-    MEDIAFILES_LOCATION = 'media'
-
-    # Override static and media URLs in production
+    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+
+    # Media files on S3
+    MEDIAFILES_LOCATION = 'media'
+    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 # Stripe
@@ -190,4 +175,5 @@ STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WH_SECRET')
 
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
