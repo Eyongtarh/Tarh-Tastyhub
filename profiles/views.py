@@ -38,15 +38,14 @@ def register(request):
 
 
 def login_view(request):
-    """Login view with email verification check."""
+    """Login view with email activation check."""
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            profile = get_object_or_404(UserProfile, user=user)
 
-            if not profile.email_verified:
-                messages.warning(request, "Your email is not verified. Please check your email.")
+            if not user.is_active:
+                messages.warning(request, "Your email is not verified. Please check your inbox.")
                 return redirect('resend_verification')
 
             login(request, user)
@@ -70,17 +69,12 @@ def activate_account(request, uidb64, token):
         messages.error(request, "Invalid activation link.")
         return redirect('login')
 
-    profile = get_object_or_404(UserProfile, user=user)
-
-    if profile.email_verified:
+    if user.is_active:
         messages.info(request, "Your email is already verified.")
         login(request, user)
         return redirect('profile')
 
     if email_verification_token.check_token(user, token):
-        profile.email_verified = True
-        profile.save()
-
         user.is_active = True
         user.save()
 
@@ -93,23 +87,21 @@ def activate_account(request, uidb64, token):
 
 
 def resend_verification(request):
-    """Resend email verification link to the user."""
     if request.method == 'POST':
         email = request.POST.get('email')
+
         try:
             user = User.objects.get(email=email)
-            profile = get_object_or_404(UserProfile, user=user)
-
-            if profile.email_verified:
-                messages.info(request, "Your email is already verified. Please log in.")
-                return redirect('login')
-
-            send_verification_email(request, user)
-            messages.success(request, "A new verification email has been sent. Please check your inbox.")
-            return redirect('login')
-
+            if not user.is_active:
+                send_verification_email(request, user)
         except User.DoesNotExist:
-            messages.error(request, "No account found with that email.")
+            pass
+
+        messages.success(
+            request,
+            "If an account exists for that email, a verification message has been sent."
+        )
+        return redirect('login')
 
     return render(request, 'profiles/resend_verification.html')
 
