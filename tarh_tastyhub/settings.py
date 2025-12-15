@@ -11,7 +11,7 @@ from django.contrib.messages import constants as messages
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Debug
-DEBUG = 'DEVELOPMENT' in os.environ
+DEBUG = True
 
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
@@ -24,7 +24,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Installed apps
 INSTALLED_APPS = [
-    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,8 +31,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-    # Third-party apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -41,8 +38,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'storages',
-
-    # Your apps
     'home',
     'dishes',
     'bag',
@@ -50,6 +45,8 @@ INSTALLED_APPS = [
     'profiles',
     'feedback',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 # Site framework
 SITE_ID = 1
@@ -152,7 +149,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # AWS S3 Storage
-if 'USE_AWS' in os.environ:
+if 'USE_AWS' in os.environ and not DEBUG:
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub-market'

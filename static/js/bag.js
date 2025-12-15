@@ -1,3 +1,37 @@
+if (!window.showToast) {
+    // Safe global toast function
+    window.showToast = (message, type = 'success') => {
+        let toast = document.querySelector('#notification-toast');
+
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'notification-toast';
+            toast.style.position = 'fixed';
+            toast.style.top = '20px';
+            toast.style.right = '20px';
+            toast.style.padding = '12px 16px';
+            toast.style.borderRadius = '6px';
+            toast.style.fontSize = '0.95rem';
+            toast.style.zIndex = '9999';
+            toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            document.body.appendChild(toast);
+        }
+
+        toast.textContent = message;
+        toast.className = '';
+        toast.classList.add(type);
+        toast.classList.add('show');
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-20px)';
+        }, 3000);
+    };
+}
+
 if (window.dishBagJSLoaded) {
     console.log("dish_bag.js already loaded — skipping.");
 } else {
@@ -6,10 +40,10 @@ if (window.dishBagJSLoaded) {
     document.addEventListener('DOMContentLoaded', () => {
         const csrftoken = window.getCSRFToken ? window.getCSRFToken() : null;
 
+        // Update bag UI
         const updateBagUI = (data, input = null) => {
             if (!data) return;
 
-            // Update subtotal, delivery, grand total
             const subtotalEl = document.querySelector('#bag-subtotal');
             if (subtotalEl) subtotalEl.textContent = `$${parseFloat(data.subtotal).toFixed(2)}`;
 
@@ -19,10 +53,8 @@ if (window.dishBagJSLoaded) {
             const grandTotalEl = document.querySelector('#grand-total');
             if (grandTotalEl) grandTotalEl.textContent = `$${parseFloat(data.grand_total).toFixed(2)}`;
 
-            // Update bag count
             document.querySelectorAll('.bag-count').forEach(el => el.textContent = data.bag_count);
 
-            // Update line total if input provided
             if (input) {
                 const card = input.closest('.card-body, .bag-item, .col-md-6');
                 if (!card) return;
@@ -31,6 +63,7 @@ if (window.dishBagJSLoaded) {
             }
         };
 
+        // POST helper
         const postData = async (url, data) => {
             const headers = { 'X-Requested-With': 'XMLHttpRequest' };
             if (csrftoken) headers['X-CSRFToken'] = csrftoken;
@@ -39,6 +72,7 @@ if (window.dishBagJSLoaded) {
             return res.json();
         };
 
+        // Handle quantity change
         const handleQuantityChange = async (input, increment = 0) => {
             if (!input) return;
 
@@ -63,14 +97,15 @@ if (window.dishBagJSLoaded) {
                 if (qty === 0) {
                     const cardCol = input.closest('.col, .bag-item');
                     if (cardCol) cardCol.remove();
+                    window.showToast && window.showToast('Item removed!', 'warning');
                 }
             } catch (err) {
                 console.error('Bag update error:', err);
+                window.showToast && window.showToast('Failed to update item!', 'danger');
             }
         };
 
-
-        // --- Quantity buttons ---
+        // Quantity buttons
         document.querySelectorAll('.dish-qty-increment, .bag-qty-increment').forEach(btn => {
             btn.addEventListener('click', () => {
                 const input = btn.closest('.card-body, .bag-item, .col-md-6')?.querySelector('.dish-qty');
@@ -89,7 +124,7 @@ if (window.dishBagJSLoaded) {
             input.addEventListener('change', () => handleQuantityChange(input, 0));
         });
 
-        // --- Add to Bag ---
+        // Add to bag
         document.querySelectorAll('.add-to-bag, #add-dish-to-bag').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const card = btn.closest('.dish-card, .card, .col-md-6');
@@ -98,7 +133,6 @@ if (window.dishBagJSLoaded) {
 
                 const portionSelect = card?.querySelector('.portion-select');
                 const portionId = portionSelect ? portionSelect.value : (btn.dataset.portionId || btn.dataset.id);
-
                 if (!portionId) return;
 
                 try {
@@ -108,14 +142,16 @@ if (window.dishBagJSLoaded) {
                     updateBagUI(data, input);
 
                     if (card) document.dispatchEvent(new CustomEvent('dishAdded', { detail: { card } }));
-                    if (window.showToast) window.showToast('Added to bag!', 'success');
+
+                    window.showToast && window.showToast('Added to bag!', 'success');
                 } catch (err) {
                     console.error('Add to bag error:', err);
+                    window.showToast && window.showToast('Failed to add to bag!', 'danger');
                 }
             });
         });
 
-        // --- Remove from Bag ---
+        // Remove from bag
         document.querySelectorAll('.remove-from-bag').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const portionId = btn.dataset.portionId || btn.dataset.id;
@@ -129,8 +165,10 @@ if (window.dishBagJSLoaded) {
 
                     const cardCol = btn.closest('.col, .bag-item');
                     if (cardCol) cardCol.remove();
+                    window.showToast && window.showToast('Removed from bag!', 'warning');
                 } catch (err) {
                     console.error('Remove from bag error:', err);
+                    window.showToast && window.showToast('Failed to remove item!', 'danger');
                 }
             });
         });

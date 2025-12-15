@@ -1,1 +1,1286 @@
-[{"model": "sites.site", "pk": 1, "fields": {"domain": "example.com", "name": "example.com"}}]
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$n5BiZMtw4vLVseikzKu18O$w9+qe0Th/YsqJOGj/6nOa0W6Ni7qdnvNoVUS4PO8MFo=",
+      "last_login": "2025-12-12T19:57:50.012Z",
+      "is_superuser": true,
+      "username": "Eyongtarhb",
+      "first_name": "Eyongtarh",
+      "last_name": "Besong",
+      "email": "eyongtarh@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-11-24T14:52:53Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "sites.site",
+    "pk": 1,
+    "fields": {
+      "domain": "tarh-tastyhub.com",
+      "name": "Tarh Tastyhub"
+    }
+  },
+  {
+    "model": "account.emailaddress",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "email": "eyongtarh@gmail.com",
+      "verified": true,
+      "primary": true
+    }
+  },
+  {
+    "model": "dishes.category",
+    "pk": 1,
+    "fields": {
+      "name": "Breakfast",
+      "slug": "breakfast",
+      "menu_type": "Breakfast",
+      "description": "",
+      "icon": "category_icons/breakfast_icon.jpg"
+    }
+  },
+  {
+    "model": "dishes.category",
+    "pk": 2,
+    "fields": {
+      "name": "Lunch",
+      "slug": "lunch",
+      "menu_type": "Lunch",
+      "description": "",
+      "icon": "category_icons/lunch_icon.jpg"
+    }
+  },
+  {
+    "model": "dishes.category",
+    "pk": 3,
+    "fields": {
+      "name": "Dinner",
+      "slug": "dinner",
+      "menu_type": "Dinner",
+      "description": "",
+      "icon": "category_icons/dinner_icon.jpg"
+    }
+  },
+  {
+    "model": "dishes.category",
+    "pk": 4,
+    "fields": {
+      "name": "Grill",
+      "slug": "grill",
+      "menu_type": "Grill",
+      "description": "",
+      "icon": "category_icons/grill_icon.jpg"
+    }
+  },
+  {
+    "model": "dishes.category",
+    "pk": 5,
+    "fields": {
+      "name": "Drinks",
+      "slug": "drinks",
+      "menu_type": "Drinks",
+      "description": "",
+      "icon": "category_icons/drinks_icon.jpg"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Hot D",
+      "slug": "coffee-1",
+      "description": "Coffee/tea, bread, butter",
+      "ingredients": "Bread (whole grain or white); 1 slice (40g)\r\nButter;1 tsp (5g)\r\nCoffee/Tea; 1 cup (240ml)\r\nSugar or milk/cream",
+      "dietary_info": "Vegetarian",
+      "prep_time": 15,
+      "price": "16.00",
+      "calories": 130,
+      "image": "dishes/coffee_bread_5aXSV3T_r6UfqbS_ZlnIoDu_K4vB3M1_K8nKKCH_VKLGZPX.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "11:00:00",
+      "created": "2025-11-29T20:36:35.177Z",
+      "updated": "2025-11-30T10:47:04.469Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 2,
+    "fields": {
+      "category": 4,
+      "name": "Chicken Wh",
+      "slug": "chicken-1",
+      "description": "Chicken, potatoes chips, soup",
+      "ingredients": "Whole grilled chicken; 1/4 of a medium chicken (200 g cooked meat, skin on)\r\nPotato chips (store-bought, fried); 50 g (about a small handful)\r\nSoup (broth-based, vegetable/chicken); 200 ml (1 cup)",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "30.00",
+      "calories": 700,
+      "image": "dishes/chickin_pota_H6DQ55o_Lc4VHlK_hAdMWI5_ARpwciZ_A7sJLLN_9tqDpwA_7tg1Lr9_SDvAB4N_E4qu_J9ch3IB.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-29T20:43:12.830Z",
+      "updated": "2025-12-07T14:03:44.457Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 3,
+    "fields": {
+      "category": 3,
+      "name": "Chicken Pa",
+      "slug": "chicken-2",
+      "description": "Chicken slice, pasta, soup",
+      "ingredients": "Chicken breast/leg/wings (cooked, sliced); 150 g\r\nPasta (cooked); 100 g\r\nSoup (vegetable or chicken broth-based); 200 ml",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "27.00",
+      "calories": 400,
+      "image": "dishes/chicken_veg_ecLSz6f_Cg1ndDM_JDEQ4k6_lNFhCVn_YJv6Dck_iSeT4GW_8zGQkQW_eAFFWJG.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-29T20:47:44.652Z",
+      "updated": "2025-11-30T11:38:33.727Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 4,
+    "fields": {
+      "category": 4,
+      "name": "Fish Bk",
+      "slug": "fish-1",
+      "description": "Grilled Fish , fried plantain, vegetable",
+      "ingredients": "Fish (grilled tilapia); 150 g\r\nPlantain (ripe, fried in oil); 100g\r\nMixed vegetables (steamed carrots, broccoli, bell peppers); 100 g\r\nOlive oil; 1 tsp (brushing fish)\r\nSalt & pepper;  a pinch",
+      "dietary_info": "Spicy",
+      "prep_time": null,
+      "price": "24.00",
+      "calories": 450,
+      "image": "dishes/fish_veg_VzhvnkK_EuoYLYB_EHFDm18_3fbMd61_vzhDDMD_jG1GqAj_BwuYUHM.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-29T20:50:54.690Z",
+      "updated": "2025-12-07T14:06:29.783Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 5,
+    "fields": {
+      "category": 5,
+      "name": "Soft Pin",
+      "slug": "soft-pin",
+      "description": "Pineaple juice",
+      "ingredients": "",
+      "dietary_info": "Vegan",
+      "prep_time": null,
+      "price": "12.00",
+      "calories": null,
+      "image": "dishes/soft_pin_Xn0Wcwi_1W76Jmy_yC2yuti_Ji7dNdf_HK8x7lj.jpg",
+      "available": true,
+      "is_special": true,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-29T20:59:57.559Z",
+      "updated": "2025-12-05T11:50:10.664Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 6,
+    "fields": {
+      "category": 1,
+      "name": "Egg Bacu",
+      "slug": "egg-bacu",
+      "description": "Fried Egg , Bacon and Sliced Cucumber",
+      "ingredients": "Eggs; 1\r\nBacon;  3 slices\r\nCucumber; 5 slices, sliced thinly\r\nSalt; a pinch for egg and cucumber\r\nBlack pepper; a pinch for egg\r\nButter; 1 tsp for frying the egg\r\nParsley/Chives; 4 leaves each\r\nCherry tomatoes; 6 halves",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "18.00",
+      "calories": 260,
+      "image": "dishes/fried_egg_cucumber_Pf6pa2m.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "11:00:00",
+      "created": "2025-11-30T10:01:01.613Z",
+      "updated": "2025-11-30T10:01:01.613Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 7,
+    "fields": {
+      "category": 1,
+      "name": "Avocado T",
+      "slug": "avotoast",
+      "description": "Avocado Toast",
+      "ingredients": "Bread (whole-grain or sourdough); 1 slice\r\nAvocado; 75 g\r\nOlive oil ; 1 tsp\r\nSalt; a pinch\r\nBlack pepper; a pinch\r\nCherry tomatoes 25 g",
+      "dietary_info": "Vegan",
+      "prep_time": 15,
+      "price": "18.00",
+      "calories": 265,
+      "image": "dishes/avocado_toast_tyvd8ha_69I48oc_H8HnRZK_1LVYM2Q.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "11:00:00",
+      "created": "2025-11-30T10:15:05.000Z",
+      "updated": "2025-11-30T11:07:43.352Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 8,
+    "fields": {
+      "category": 1,
+      "name": "Pancake",
+      "slug": "pancake",
+      "description": "Pancake ,fruits and syrup",
+      "ingredients": "All-purpose flour; \u00bd cup (60 g)\r\nMilk; \u00bd cup (120 ml)\r\nEgg; 1 \r\nSugar; 1 tsp (4g)\r\nBaking powder; \u00bd tsp (2g)\r\nSalt; a pinch ( g)\r\nButter/oi; 1 tsp (5 g)\r\nMaple syrup; (2 tbsp, 30 g)\r\nfresh fruit(choices available); (50 g)",
+      "dietary_info": "Vegetarian",
+      "prep_time": 15,
+      "price": "20.00",
+      "calories": 240,
+      "image": "dishes/pan_cake_uHjjErw_Q9801xe.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "11:00:00",
+      "created": "2025-11-30T10:34:43.768Z",
+      "updated": "2025-11-30T10:34:43.768Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 9,
+    "fields": {
+      "category": 3,
+      "name": "Salad CWG",
+      "slug": "salad-cwg",
+      "description": "Fresh Brie Cheese and Walnut Salad with Grapes",
+      "ingredients": "Fresh Brie cheese; 50 g\r\nWalnuts; 20 g (about 8 halves)\r\nGrapes ; 50 g (~8\u201310 grapes)\r\nMixed salad greens; 50 g\r\nOlive oil (dressing); 1 tsp (5 g)\r\nLemon juice or balsamic vinegar; 1 tsp (~5 g)\r\nSalt & pepper; a pinch",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "20.00",
+      "calories": 350,
+      "image": "dishes/Salad_walnut_1z1zfRQ_EdMOXK3.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T11:05:33.117Z",
+      "updated": "2025-11-30T11:05:33.117Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 10,
+    "fields": {
+      "category": 3,
+      "name": "Vegetable Mix",
+      "slug": "vegetable-mix",
+      "description": "Mix vegetables",
+      "ingredients": "Carrots ; 40 g\r\nBroccoli ;40 g\r\nBell peppers; 30 g\r\nZucchini; 40 g\r\nSpinach; 40 g\r\nRed cabbage; 20g\r\nCherry tomatoes; 50g (8-10 halves)\r\nRed bell pepper; 30 g\r\nGreen beans; 30 g\r\nOlive oil; 1 tsp (~5 g, optional for saut\u00e9ing)\r\nSalt & pepper; a pinch\r\nspices (garlic, parsley, etc.)",
+      "dietary_info": "Vegan",
+      "prep_time": 15,
+      "price": "25.00",
+      "calories": 150,
+      "image": "dishes/mixed_vegetables_o7Un934_DknjEup.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T11:21:45.883Z",
+      "updated": "2025-11-30T11:21:45.883Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 11,
+    "fields": {
+      "category": 3,
+      "name": "Shrimp Pasta",
+      "slug": "shrimp-pasta",
+      "description": "Shrimp Pasta",
+      "ingredients": "Shrimp (peeled, cooked); 150 g\r\nPasta (cooked); 100 g\r\nOlive oil; 1 tsp (5 g)\r\nGarlic; 1 clove (3 g)\r\nCherry tomatoes ; 50 g (8\u201310 halves)\r\nSalt & pepper; a pinch\r\nParmesan cheese; 10 g (1 tbsp)\r\nParsley/basil",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "22.00",
+      "calories": 350,
+      "image": "dishes/shrimp_pasta__0cqppml_DAf9lg5.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T11:32:04.869Z",
+      "updated": "2025-11-30T11:39:21.384Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 12,
+    "fields": {
+      "category": 2,
+      "name": "Achu Meal",
+      "slug": "achu-meal",
+      "description": "Achu soup and fufu",
+      "ingredients": "Cocoyam; boiled and pounded; 300g\r\nPalm oil; 50 ml\r\nKanwa (limestone / \u201cNikki\u201d); 5 g\r\nAchu spices/pepper/salt/meat stock\r\nMeat and smoked fish; beef, cow skin, smoked fish; 100\u2013150 g cooked",
+      "dietary_info": "Spicy",
+      "prep_time": 20,
+      "price": "40.00",
+      "calories": 10,
+      "image": "dishes/achu_soup_UIHCaRR_tXNJZzs_XpbA60O_hAVAjwF_lNJ0UIj_vmUoVDW.jpg",
+      "available": true,
+      "is_special": true,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T11:56:48.340Z",
+      "updated": "2025-12-07T13:49:36.970Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 13,
+    "fields": {
+      "category": 2,
+      "name": "Eru Meal",
+      "slug": "eru-meal",
+      "description": "Fufu and Eru",
+      "ingredients": "Eru\r\nPalm oil, meat/fish ,eru spices\r\nFufu (yam-based); 250\u202fg cooked/mashed)",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "25.00",
+      "calories": 450,
+      "image": "dishes/eru_fufu_Q1laeTJ_mQRCzDp.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T12:07:29.192Z",
+      "updated": "2025-11-30T12:07:29.192Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 14,
+    "fields": {
+      "category": 2,
+      "name": "Asorted Sushi",
+      "slug": "asorted-shushi",
+      "description": "10 Asorted Shushi rolls",
+      "ingredients": "Sushi rice; 150g (cooked)\r\nNori sheets; 2 sheets (5g)\r\nRaw fish (salmon, tuna); 80g\r\nVegetables (cucumber, avocado, carrots); 50 g\r\nSoy sauce; 1 tsp (5g)\r\nWasabi / pickled ginger; (5g)\r\nSesame seeds; 1 tsp (3 g), \r\nmayonnaise; (10 g)",
+      "dietary_info": "Vegetarian",
+      "prep_time": null,
+      "price": "20.00",
+      "calories": 450,
+      "image": "dishes/asorted_shushi_rolls_VhhBs99_htOl8vk_lkmWH5U.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "11:00:00",
+      "created": "2025-11-30T12:19:16.553Z",
+      "updated": "2025-11-30T15:56:24.128Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 15,
+    "fields": {
+      "category": 2,
+      "name": "Noodles Veg",
+      "slug": "noodles-veg",
+      "description": "Noodles , chicken, and Vegetables soup",
+      "ingredients": "Chicken breast (cooked, shredded); 100 g\r\nNoodles (egg noodles, cooked); 75 g\r\nMixed vegetables (carrots, broccoli, bell peppers); 100 g\r\nChicken/vegetable broth; 200 ml\r\nOlive oil; 1 tsp (5 g)\r\nGarlic / ginger; 2 g\r\nSalt & pepper; a pinch",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "24.00",
+      "calories": 450,
+      "image": "dishes/noodles_egetables_Zg1zOGg_aj77O4r.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T12:28:36.262Z",
+      "updated": "2025-11-30T12:28:36.262Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 16,
+    "fields": {
+      "category": 4,
+      "name": "Lamb Rips",
+      "slug": "lamb-rips",
+      "description": "Grilled Lamb rips, potatoes , Vegetables, Sauce",
+      "ingredients": "Lamb ribs (grilled); 200 g\r\nPotatoes (boiled or roasted) ; 150 g\r\nMixed vegetables (steamed carrots, broccoli, bell peppers); 100 g\r\nOlive oil; 1 tsp (5g)\r\nSalt, pepper;  a pinch",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "25.00",
+      "calories": 700,
+      "image": "dishes/lamb_rips_Ruv3T4p_WiK0NEf.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T13:25:37.783Z",
+      "updated": "2025-11-30T13:38:52.502Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 17,
+    "fields": {
+      "category": 4,
+      "name": "Beef Steak",
+      "slug": "beef-steak",
+      "description": "Grilled Beef Steak with Vegetables and potatoes",
+      "ingredients": "Beef steak (grilled, lean cut); 200 g\r\nPotatoes (boiled, baked); 150 g\r\nMixed vegetables (steamed carrots, broccoli, bell peppers); 100 g\r\nOlive oil; 1 tsp (5g for brushing steak)\r\nSalt, pepper;  a pinch",
+      "dietary_info": "Spicy",
+      "prep_time": 15,
+      "price": "24.00",
+      "calories": 600,
+      "image": "dishes/beef_steak_CDATKDX_Sq2MPgI.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "11:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-11-30T13:37:12.552Z",
+      "updated": "2025-11-30T13:37:12.552Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 18,
+    "fields": {
+      "category": 5,
+      "name": "Orange Juice",
+      "slug": "orange-juice",
+      "description": "Natural Orange Juice",
+      "ingredients": "Natural Orange Juice 33cl",
+      "dietary_info": "Vegan",
+      "prep_time": 10,
+      "price": "2.00",
+      "calories": 140,
+      "image": "dishes/orange_juice_LNJ6iys_1aeE1mA_dtXdArr.jpg",
+      "available": true,
+      "is_special": true,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-12-05T11:42:05.391Z",
+      "updated": "2025-12-05T11:50:32.253Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 19,
+    "fields": {
+      "category": 5,
+      "name": "Pineapple Juice",
+      "slug": "pineapple-juice",
+      "description": "Natural Pineapple Juice 33cl",
+      "ingredients": "Natural Pineapple Juice",
+      "dietary_info": "Vegan",
+      "prep_time": 10,
+      "price": "2.00",
+      "calories": 140,
+      "image": "dishes/pineapple_juice_Si81EWP_HLFFjwg.jpg",
+      "available": true,
+      "is_special": true,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-12-05T11:47:41.647Z",
+      "updated": "2025-12-05T11:47:41.647Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 20,
+    "fields": {
+      "category": 5,
+      "name": "Apple Juice",
+      "slug": "apple-juice",
+      "description": "Natural Apple Juice 33cl",
+      "ingredients": "Natural Apple Juice",
+      "dietary_info": "Vegan",
+      "prep_time": 10,
+      "price": "2.00",
+      "calories": 140,
+      "image": "dishes/apple_juice_p8fc5rt_KuYUSpu.jpg",
+      "available": true,
+      "is_special": true,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-12-05T11:58:33.311Z",
+      "updated": "2025-12-05T11:58:33.311Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 21,
+    "fields": {
+      "category": 5,
+      "name": "Mix Juice",
+      "slug": "mix-juice",
+      "description": "Natural Orange, Apple and Lime mix 33cl",
+      "ingredients": "Natural Orange, Apple and Lime mix",
+      "dietary_info": "Vegan",
+      "prep_time": 10,
+      "price": "200.00",
+      "calories": 140,
+      "image": "dishes/mix_juice_YRFB5D7_sBXDvr5.jpg",
+      "available": true,
+      "is_special": true,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-12-05T12:01:46.905Z",
+      "updated": "2025-12-05T12:01:46.905Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 22,
+    "fields": {
+      "category": 5,
+      "name": "Dark Coffee",
+      "slug": "dark-coffee",
+      "description": "Dark Coffee",
+      "ingredients": "Dark Coffee seeds 33cl",
+      "dietary_info": "Vegan",
+      "prep_time": 10,
+      "price": "2.00",
+      "calories": 1,
+      "image": "dishes/dark_coffee_78oIRjy_UpBP6R0.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-12-05T12:10:06.311Z",
+      "updated": "2025-12-05T12:10:06.311Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 23,
+    "fields": {
+      "category": 5,
+      "name": "Green Tea",
+      "slug": "green-tea",
+      "description": "Green Tea",
+      "ingredients": "Green Tea",
+      "dietary_info": "Vegan",
+      "prep_time": 10,
+      "price": "1.00",
+      "calories": 3,
+      "image": "dishes/green_tea_H4kiau3_mLX6xDD.jpg",
+      "available": true,
+      "is_special": false,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-12-05T12:13:35.877Z",
+      "updated": "2025-12-05T12:13:35.877Z"
+    }
+  },
+  {
+    "model": "dishes.dish",
+    "pk": 26,
+    "fields": {
+      "category": 2,
+      "name": "Plant Hamburger",
+      "slug": "plant-ham",
+      "description": "Plant-Based Hamburger",
+      "ingredients": "For the patty & bun:\r\n1 plant-based burger homemade veggie,\r\n1 whole-grain hamburger bun,\r\n1 tbsp vegan butter for grilling,\r\n\r\nToppings:\r\n2 leaves lettuce,\r\n3 slices tomato,\r\n3 slices raw onion,\r\n1 slice vegan cheese,\r\n\r\nSauce:\r\nVegan mayo,\r\nPepper,\r\n\r\nFries:\r\nhomemade fries,\r\n2\u20133 medium potatoes,\r\n1\u20132 tbsp oil,\r\nSalt to taste,",
+      "dietary_info": "Vegan",
+      "prep_time": 14,
+      "price": "15.00",
+      "calories": 145,
+      "image": "dishes/plant_hamburger_ezIegMP_J7gQqh1_GYTbeye_YqPTYSE_dzYZ8wk_PB7O8rv_n19WF2v.jpg",
+      "available": true,
+      "is_special": true,
+      "available_from": "07:00:00",
+      "available_until": "20:00:00",
+      "created": "2025-12-07T13:03:41.206Z",
+      "updated": "2025-12-07T14:10:12.087Z"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 1,
+    "fields": {
+      "dish": 1,
+      "size": "Medium",
+      "weight": 150,
+      "price": "16.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 2,
+    "fields": {
+      "dish": 1,
+      "size": "Large",
+      "weight": 200,
+      "price": "20.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 3,
+    "fields": {
+      "dish": 2,
+      "size": "Medium",
+      "weight": 450,
+      "price": "3000.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 4,
+    "fields": {
+      "dish": 3,
+      "size": "Medium",
+      "weight": 450,
+      "price": "27.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 5,
+    "fields": {
+      "dish": 4,
+      "size": "Medium",
+      "weight": 300,
+      "price": "24.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 6,
+    "fields": {
+      "dish": 6,
+      "size": "Medium",
+      "weight": 213,
+      "price": "18.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 7,
+    "fields": {
+      "dish": 7,
+      "size": "Medium",
+      "weight": 145,
+      "price": "18.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 8,
+    "fields": {
+      "dish": 8,
+      "size": "Medium",
+      "weight": 150,
+      "price": "20.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 9,
+    "fields": {
+      "dish": 9,
+      "size": "Medium",
+      "weight": 150,
+      "price": "20.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 10,
+    "fields": {
+      "dish": 10,
+      "size": "Medium",
+      "weight": 200,
+      "price": "25.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 11,
+    "fields": {
+      "dish": 11,
+      "size": "Medium",
+      "weight": 300,
+      "price": "22.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 12,
+    "fields": {
+      "dish": 12,
+      "size": "Medium",
+      "weight": 500,
+      "price": "40.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 13,
+    "fields": {
+      "dish": 13,
+      "size": "Medium",
+      "weight": 200,
+      "price": "25.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 14,
+    "fields": {
+      "dish": 14,
+      "size": "Medium",
+      "weight": 300,
+      "price": "20.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 15,
+    "fields": {
+      "dish": 15,
+      "size": "Medium",
+      "weight": 300,
+      "price": "24.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 16,
+    "fields": {
+      "dish": 16,
+      "size": "Medium",
+      "weight": 500,
+      "price": "25.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 17,
+    "fields": {
+      "dish": 17,
+      "size": "Medium",
+      "weight": 450,
+      "price": "24.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 18,
+    "fields": {
+      "dish": 18,
+      "size": "33cl",
+      "weight": 330,
+      "price": "2.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 19,
+    "fields": {
+      "dish": 19,
+      "size": "Medium",
+      "weight": 330,
+      "price": "2.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 20,
+    "fields": {
+      "dish": 5,
+      "size": "Medium",
+      "weight": 330,
+      "price": "2.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 21,
+    "fields": {
+      "dish": 20,
+      "size": "Medium",
+      "weight": 330,
+      "price": "2.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 22,
+    "fields": {
+      "dish": 21,
+      "size": "Medium",
+      "weight": 330,
+      "price": "2.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 23,
+    "fields": {
+      "dish": 22,
+      "size": "Medium",
+      "weight": 300,
+      "price": "1.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 24,
+    "fields": {
+      "dish": 23,
+      "size": "Medium",
+      "weight": 150,
+      "price": "1.00"
+    }
+  },
+  {
+    "model": "dishes.dishportion",
+    "pk": 28,
+    "fields": {
+      "dish": 26,
+      "size": "Medium",
+      "weight": 150,
+      "price": "15.00"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 1,
+    "fields": {
+      "dish": 1,
+      "image": "dish_images/coffee_bread_pWcIFmJ_Pmxcf0K.jpg",
+      "alt_text": "Coffee/tea, bread, butter"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 2,
+    "fields": {
+      "dish": 2,
+      "image": "dish_images/chickin_pota_xznCKTW.jpg",
+      "alt_text": "chickin and potatoes"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 3,
+    "fields": {
+      "dish": 3,
+      "image": "dish_images/chicken_veg_yV9yCHa.jpg",
+      "alt_text": "Chickin, pasta and soup"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 4,
+    "fields": {
+      "dish": 4,
+      "image": "dish_images/fish_veg_eU0Wgkk_VHImBD6.jpg",
+      "alt_text": "baked fish ,fried  plantain and vegetable"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 5,
+    "fields": {
+      "dish": 6,
+      "image": "dish_images/fried_egg_cucumber_i2jdRIj_lKeofxD.jpg",
+      "alt_text": "Fried Egg , Bacon and Sliced Cucumber"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 6,
+    "fields": {
+      "dish": 7,
+      "image": "dish_images/avocado_toast_0X8JBfo.jpg",
+      "alt_text": "Avocado Toast"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 7,
+    "fields": {
+      "dish": 8,
+      "image": "dish_images/pan_cake_0locqiY.jpg",
+      "alt_text": "Pancake ,fruits and syrup"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 8,
+    "fields": {
+      "dish": 9,
+      "image": "dish_images/Salad_walnut_5xGBCpl.jpg",
+      "alt_text": "Fresh Brie Cheese and Walnut Salad with Grapes"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 9,
+    "fields": {
+      "dish": 10,
+      "image": "dish_images/mixed_vegetables_z1Tmwyr.jpg",
+      "alt_text": "Mix vegetables"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 10,
+    "fields": {
+      "dish": 11,
+      "image": "dish_images/shrimp_pasta__bkCFXiZ.jpg",
+      "alt_text": "Shrimp Pasta"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 11,
+    "fields": {
+      "dish": 12,
+      "image": "dish_images/achu_soup_SCdpbof.jpg",
+      "alt_text": "Achu soup and fufu"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 12,
+    "fields": {
+      "dish": 13,
+      "image": "dish_images/eru_fufu_Ruq8cUk.jpg",
+      "alt_text": "Fufu and Eru"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 13,
+    "fields": {
+      "dish": 14,
+      "image": "dish_images/asorted_shushi_rolls_OP1fv3k.jpg",
+      "alt_text": "10 Asorted Shushi rolls"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 14,
+    "fields": {
+      "dish": 15,
+      "image": "dish_images/noodles_egetables_dgzsu9E.jpg",
+      "alt_text": "Noodles , chicken, and Vegetables soup"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 15,
+    "fields": {
+      "dish": 16,
+      "image": "dish_images/lamb_rips_hh12Kn1.jpg",
+      "alt_text": "Grilled Lamb rips, potatoes , Vegetables, Sauce"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 16,
+    "fields": {
+      "dish": 17,
+      "image": "dish_images/beef_steak_gb59ouy.jpg",
+      "alt_text": "Grilled Beef Steak with Vegetables and potatoes"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 17,
+    "fields": {
+      "dish": 18,
+      "image": "dish_images/orange_juice_eLJKZx5.jpg",
+      "alt_text": "Natural Orange Juice"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 18,
+    "fields": {
+      "dish": 19,
+      "image": "dish_images/pineapple_juice_91jSxjG.jpg",
+      "alt_text": "Natural Pineapple Juice"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 19,
+    "fields": {
+      "dish": 20,
+      "image": "dish_images/apple_juice_yN902EM.jpg",
+      "alt_text": "Natural Apple Juice"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 20,
+    "fields": {
+      "dish": 21,
+      "image": "dish_images/mix_juice_SWjHcTT.jpg",
+      "alt_text": "Natural Orange, Apple and Lime mix"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 21,
+    "fields": {
+      "dish": 22,
+      "image": "dish_images/dark_coffee_O33uDtk.jpg",
+      "alt_text": "Dark Coffee"
+    }
+  },
+  {
+    "model": "dishes.dishimage",
+    "pk": 22,
+    "fields": {
+      "dish": 23,
+      "image": "dish_images/green_tea_DqjVySj.jpg",
+      "alt_text": "Green Tea"
+    }
+  },
+  {
+    "model": "checkout.order",
+    "pk": 13,
+    "fields": {
+      "user_profile": 1,
+      "order_number": "DBCAA511BC64",
+      "full_name": "Ey",
+      "email": "ey3@gmail.com",
+      "phone_number": "0733994133",
+      "street_address1": "Sommarvadersgatan 166",
+      "street_address2": "",
+      "town_or_city": "Goteborg",
+      "county": "",
+      "postcode": "41833",
+      "local": "",
+      "date": "2025-12-05T10:37:48.182Z",
+      "delivery_type": "pickup",
+      "pickup_time": "2026-01-16T16:37:00Z",
+      "status": "Pending",
+      "grand_total": "18.00",
+      "delivery_fee": "0.00",
+      "stripe_pid": null,
+      "original_bag": "{\"7\": 1}",
+      "public_tracking": false
+    }
+  },
+  {
+    "model": "checkout.order",
+    "pk": 14,
+    "fields": {
+      "user_profile": 1,
+      "order_number": "A43F88A6357A",
+      "full_name": "Eyonw",
+      "email": "wqe@gmail.com",
+      "phone_number": "073393",
+      "street_address1": "Sommarvadersgatan 17",
+      "street_address2": "",
+      "town_or_city": "Goteborg",
+      "county": "",
+      "postcode": "41833",
+      "local": "",
+      "date": "2025-12-05T14:21:11.231Z",
+      "delivery_type": "pickup",
+      "pickup_time": "2025-12-12T15:24:00Z",
+      "status": "Out for Delivery",
+      "grand_total": "42.00",
+      "delivery_fee": "0.00",
+      "stripe_pid": null,
+      "original_bag": "{\"21\": 1, \"12\": 1}",
+      "public_tracking": false
+    }
+  },
+  {
+    "model": "checkout.order",
+    "pk": 15,
+    "fields": {
+      "user_profile": 1,
+      "order_number": "D78B6FB46161",
+      "full_name": "Eyos",
+      "email": "es@gmail.com",
+      "phone_number": "07333",
+      "street_address1": "Sommarvadersgatan 16",
+      "street_address2": "",
+      "town_or_city": "Goteborg",
+      "county": "",
+      "postcode": "41833",
+      "local": "",
+      "date": "2025-12-06T09:07:27.175Z",
+      "delivery_type": "delivery",
+      "pickup_time": null,
+      "status": "Pending",
+      "grand_total": "80.00",
+      "delivery_fee": "0.00",
+      "stripe_pid": null,
+      "original_bag": "{\"12\": 2}",
+      "public_tracking": false
+    }
+  },
+  {
+    "model": "checkout.order",
+    "pk": 16,
+    "fields": {
+      "user_profile": null,
+      "order_number": "51BAEC75BB45",
+      "full_name": "eyongt@gmail.com",
+      "email": "eyongt@gmail.com",
+      "phone_number": "073",
+      "street_address1": "Sommarvadersgatan 55",
+      "street_address2": "",
+      "town_or_city": "Goteborg",
+      "county": "",
+      "postcode": "41833",
+      "local": "",
+      "date": "2025-12-07T20:28:58.852Z",
+      "delivery_type": "delivery",
+      "pickup_time": null,
+      "status": "Pending",
+      "grand_total": "84.00",
+      "delivery_fee": "0.00",
+      "stripe_pid": null,
+      "original_bag": "{\"21\": 2, \"14\": 4}",
+      "public_tracking": false
+    }
+  },
+  {
+    "model": "checkout.orderlineitem",
+    "pk": 10,
+    "fields": {
+      "order": 13,
+      "portion": 7,
+      "quantity": 1,
+      "price": "18.00"
+    }
+  },
+  {
+    "model": "checkout.orderlineitem",
+    "pk": 11,
+    "fields": {
+      "order": 14,
+      "portion": 21,
+      "quantity": 1,
+      "price": "2.00"
+    }
+  },
+  {
+    "model": "checkout.orderlineitem",
+    "pk": 12,
+    "fields": {
+      "order": 14,
+      "portion": 12,
+      "quantity": 1,
+      "price": "40.00"
+    }
+  },
+  {
+    "model": "checkout.orderlineitem",
+    "pk": 13,
+    "fields": {
+      "order": 15,
+      "portion": 12,
+      "quantity": 2,
+      "price": "40.00"
+    }
+  },
+  {
+    "model": "checkout.orderlineitem",
+    "pk": 14,
+    "fields": {
+      "order": 16,
+      "portion": 21,
+      "quantity": 2,
+      "price": "2.00"
+    }
+  },
+  {
+    "model": "checkout.orderlineitem",
+    "pk": 15,
+    "fields": {
+      "order": 16,
+      "portion": 14,
+      "quantity": 4,
+      "price": "20.00"
+    }
+  },
+  {
+    "model": "profiles.userprofile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "default_phone_number": "07333",
+      "default_local": "Ekpaw",
+      "default_postcode": "41833",
+      "default_town_or_city": "Goteborg",
+      "default_street_address1": "Sommarvadersgatan 16",
+      "default_street_address2": null,
+      "default_county": null
+    }
+  },
+  {
+    "model": "feedback.feedback",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "name": "Eyongtarhb",
+      "email": "eyongtarh@gmail.com",
+      "subject": "Nice Meal",
+      "message": "Hot D is great",
+      "created_at": "2025-12-02T18:27:10.711Z",
+      "handled": true
+    }
+  },
+  {
+    "model": "feedback.feedback",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "name": "Eyongtarhb",
+      "email": "eyongtarh@gmail.com",
+      "subject": "Achu",
+      "message": "IT was nice",
+      "created_at": "2025-12-02T22:37:40.344Z",
+      "handled": false
+    }
+  },
+  {
+    "model": "feedback.feedback",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "name": "Eyongtarh Besong",
+      "email": "eyongtarh@gmail.com",
+      "subject": "Nice Meal",
+      "message": "Great meal",
+      "created_at": "2025-12-12T16:33:04.318Z",
+      "handled": false
+    }
+  }
+]
