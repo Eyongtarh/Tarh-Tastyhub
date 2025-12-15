@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django_htmx_messages',
     'crispy_forms',
     'crispy_bootstrap5',
-    'storages'
+    'storages',
     'home',
     'dishes',
     'bag',
