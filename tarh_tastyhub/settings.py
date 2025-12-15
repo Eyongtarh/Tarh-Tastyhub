@@ -145,9 +145,10 @@ USE_TZ = True
 
 # Static and media files
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # AWS S3 Storage
