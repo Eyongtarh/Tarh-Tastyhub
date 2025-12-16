@@ -1,37 +1,3 @@
-if (!window.showToast) {
-    // Safe global toast function
-    window.showToast = (message, type = 'success') => {
-        let toast = document.querySelector('#notification-toast');
-
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.id = 'notification-toast';
-            toast.style.position = 'fixed';
-            toast.style.top = '20px';
-            toast.style.right = '20px';
-            toast.style.padding = '12px 16px';
-            toast.style.borderRadius = '6px';
-            toast.style.fontSize = '0.95rem';
-            toast.style.zIndex = '9999';
-            toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            document.body.appendChild(toast);
-        }
-
-        toast.textContent = message;
-        toast.className = '';
-        toast.classList.add(type);
-        toast.classList.add('show');
-        toast.style.opacity = '1';
-        toast.style.transform = 'translateY(0)';
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(-20px)';
-        }, 3000);
-    };
-}
-
 if (window.dishBagJSLoaded) {
     console.log("dish_bag.js already loaded — skipping.");
 } else {
