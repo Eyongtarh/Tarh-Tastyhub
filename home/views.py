@@ -39,11 +39,11 @@ def privacy_policy(request):
     """
     Privacy Policy page for Tarh Tastyhub.
     """
-    return render(request, "privacy_policy.html")
+    return render(request, "home/privacy_policy.html")
 
 
 def terms_and_conditions(request):
     """
     Terms & Conditions page for Tarh Tastyhub.
     """
-    return render(request, "terms_and_conditions.html")
+    return render(request, "home/terms_and_conditions.html")
