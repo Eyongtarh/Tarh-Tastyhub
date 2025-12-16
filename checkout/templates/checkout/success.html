@@ -14,7 +14,7 @@
         Order Number: <strong>{{ order.order_number }}</strong>
       </p>
       <p>We have sent a confirmation email to: {{ order.email }}</p>
-      <a href="{% url 'home' %}" class="btn btn-primary mt-3">Return Home</a>
+      <a href="{% url 'profile' %}" class="btn btn-primary mt-3">Go To My Profile</a>
     </div>
     <div class="text-center mt-4">
       <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping</a>
