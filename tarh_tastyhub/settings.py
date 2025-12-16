@@ -10,6 +10,9 @@ from django.contrib.messages import constants as messages
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Debug
+DEBUG = True
+
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
