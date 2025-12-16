@@ -267,12 +267,6 @@ main {
     border-radius: 5px;
 }
 
-/* Toast */
-#notification-toast {
-    min-width: 260px;
-    border-radius: 12px;
-}
-
 /* Footer */
 footer {
     background-color:transparent;
@@ -406,36 +400,24 @@ footer {
     z-index: 1070;
 }
 
-
-/* Toast Messages */
-#toast-container {
+/* Toast */
+#notification-toast {
     position: fixed;
     top: 20px;
     right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 9999;
-}
-
-#notification-toast {
+    left: auto;
     min-width: 260px;
     max-width: 300px;
     padding: 12px 16px;
     border-radius: 6px;
     font-size: 0.95rem;
-    color: #212529;
-    background-color: #ffc107;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+    word-wrap: break-word;
 }
-
-#notification-toast.success { background-color: #4e62df; color: #fff; }
-#notification-toast.info    { background-color: #0dcaf0; color: #000; }
-#notification-toast.warning { background-color: #ffc107; color: #000; }
-#notification-toast.danger  { background-color: #dc3545; color: #fff; }
 
 #notification-toast.show {
     opacity: 1;
@@ -445,7 +427,6 @@ footer {
 #notification-toast.hide {
     opacity: 0;
     transform: translateY(-20px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 
@@ -459,6 +440,40 @@ footer {
     .offcanvas-body a {
         font-size: 0.95rem;
     }
+
+    /* Toast */
+    #notification-toast {
+        top: 15px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) translateY(-20px);
+        min-width: 200px;
+        max-width: 90%;
+        font-size: 0.85rem;
+        padding: 10px 14px;
+    }
+
+    #notification-toast.show {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    #notification-toast.hide {
+        transform: translateX(-50%) translateY(-20px);
+    }
+
+    /* Dish_list */
+    .category-filter a {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+        margin: 2px 2px;
+    }
+    .category-filter {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
 }
 
 @media (max-width:768px){

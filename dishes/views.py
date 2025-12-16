@@ -114,7 +114,26 @@ def dish_detail(request, slug):
         )
         cache.set(cache_key, dish, 3600)
 
-    return render(request, "dishes/dish_detail.html", {"dish": dish})
+    bag = request.session.get('bag', {})
+
+    quantity = 1
+
+    if dish.portions.exists():
+        portion_id = str(dish.portions.first().id)
+    else:
+        portion_id = str(dish.id)
+
+    if portion_id in bag:
+        quantity = bag[portion_id]
+
+    return render(
+        request,
+        "dishes/dish_detail.html",
+        {
+            "dish": dish,
+            "quantity": quantity,
+        }
+    )
 
 
 @login_required
