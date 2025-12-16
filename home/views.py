@@ -12,8 +12,6 @@ def index(request):
     - Paginated Featured Dishes
     - Testimonials section (static on front-end)
     """
-
-    # Categories (top 4 valid)
     categories = cache.get("home_categories")
     if categories is None:
         categories = list(
@@ -35,3 +33,17 @@ def index(request):
     }
 
     return render(request, "home/index.html", context)
+
+
+def privacy_policy(request):
+    """
+    Privacy Policy page for Tarh Tastyhub.
+    """
+    return render(request, "privacy_policy.html")
+
+
+def terms_and_conditions(request):
+    """
+    Terms & Conditions page for Tarh Tastyhub.
+    """
+    return render(request, "terms_and_conditions.html")
