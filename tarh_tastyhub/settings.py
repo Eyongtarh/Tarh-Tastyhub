@@ -11,7 +11,7 @@ from django.contrib.messages import constants as messages
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Debug
-DEBUG = True
+DEBUG = False
 
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
