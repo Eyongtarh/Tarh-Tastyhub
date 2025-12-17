@@ -203,3 +203,7 @@ else:
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if os.environ.get('USE_AWS') == 'True':
+    STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.eu-north-1.amazonaws.com/static/"
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.eu-north-1.amazonaws.com/media/"
