@@ -13,6 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Debug
 DEBUG = 'DEVELOPMENT' in os.environ
 
+STATICFILES_LOCATION = 'static'
+MEDIAFILES_LOCATION = 'media'
+
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
@@ -172,12 +175,10 @@ if os.environ.get('USE_AWS') == 'True':
         'CacheControl': 'max-age=94608000',
     }
 
-    STATICFILES_LOCATION = 'static'
     STATICFILES_STORAGE = 'tarh_tastyhub.custom_storages.StaticStorage'
     DEFAULT_FILE_STORAGE = 'tarh_tastyhub.custom_storages.MediaStorage'
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
 
-    MEDIAFILES_LOCATION = 'media'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 # Stripe
