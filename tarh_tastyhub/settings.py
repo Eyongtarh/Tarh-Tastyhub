@@ -11,7 +11,7 @@ from django.contrib.messages import constants as messages
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Debug
-DEBUG = 'DEVELOPMENT' in os.environ
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
