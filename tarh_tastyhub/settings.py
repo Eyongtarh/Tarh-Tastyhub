@@ -1,20 +1,18 @@
 import os
 from pathlib import Path
+
+# Load local env if present
 if os.path.isfile('env.py'):
     import env
 
 import dj_database_url
 from django.contrib.messages import constants as messages
 
-
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Debug
 DEBUG = 'DEVELOPMENT' in os.environ
-
-STATICFILES_LOCATION = 'static'
-MEDIAFILES_LOCATION = 'media'
 
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
@@ -125,17 +123,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tarh_tastyhub.wsgi.application'
 
 # Database
-if 'DATABASE_URL' in os.environ:
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+DATABASES = {
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+} if 'DATABASE_URL' in os.environ else {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -151,7 +146,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static and media files
+# Base static/media settings for local development
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
@@ -159,26 +154,27 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# AWS S3 Storage
+# AWS S3 Storage settings (override local if USE_AWS=True)
 if os.environ.get('USE_AWS') == 'True':
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub-market'
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'tarh-tastyhub-market')
     AWS_S3_REGION_NAME = 'eu-north-1'
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.eu-north-1.amazonaws.com'
-
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
     AWS_DEFAULT_ACL = 'public-read'
     AWS_QUERYSTRING_AUTH = False
-
     AWS_S3_OBJECT_PARAMETERS = {
         'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
         'CacheControl': 'max-age=94608000',
     }
 
+    STATICFILES_LOCATION = 'static'
+    MEDIAFILES_LOCATION = 'media'
+
     STATICFILES_STORAGE = 'tarh_tastyhub.custom_storages.StaticStorage'
     DEFAULT_FILE_STORAGE = 'tarh_tastyhub.custom_storages.MediaStorage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
 
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 # Stripe
@@ -188,10 +184,9 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WH_SECRET')
 DEFAULT_FROM_EMAIL = 'tarh-tastyhub@tastyhub.com'
 
+# Email backend
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'tarh-tastyhub@tastyhub.com'
-
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_USE_TLS = True
@@ -203,7 +198,3 @@ else:
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-if os.environ.get('USE_AWS') == 'True':
-    STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.eu-north-1.amazonaws.com/static/"
-    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.eu-north-1.amazonaws.com/media/"
