@@ -160,6 +160,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # AWS S3 Storage settings (override local if USE_AWS=True)
 
 if 'USE_AWS' in os.environ:
+    STATICFILES_LOCATION = 'static'
+    MEDIAFILES_LOCATION = 'media'
+
+    STATICFILES_STORAGE = 'tarh_tastyhub.custom_storages.StaticStorage'
+    DEFAULT_FILE_STORAGE = 'tarh_tastyhub.custom_storages.MediaStorage'
+
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub-market'
@@ -173,13 +179,8 @@ if 'USE_AWS' in os.environ:
         'CacheControl': 'max-age=94608000',
     }
 
-    STATICFILES_STORAGE = 'tarh_tastyhub.custom_storages.StaticStorage'
-    STATICFILES_LOCATION = 'static'
-    DEFAULT_FILE_STORAGE = 'tarh_tastyhub.custom_storages.MediaStorage'
-    MEDIAFILES_LOCATION = 'media'
-
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
 
 
 # Stripe
