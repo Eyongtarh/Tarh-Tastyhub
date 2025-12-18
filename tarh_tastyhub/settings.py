@@ -12,7 +12,7 @@ from django.contrib.messages import constants as messages
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Debug
-DEBUG = 'DEVELOPMENT' in os.environ
+DEBUG = True
 
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
@@ -158,24 +158,22 @@ MEDIA_ROOT = BASE_DIR / 'media'
 if os.environ.get('USE_AWS') == 'True':
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'tarh-tastyhub-market')
+    AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub-market'
     AWS_S3_REGION_NAME = 'eu-north-1'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+
     AWS_DEFAULT_ACL = 'public-read'
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_OBJECT_PARAMETERS = {
-        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
         'CacheControl': 'max-age=94608000',
     }
-
-    STATICFILES_LOCATION = 'static'
-    MEDIAFILES_LOCATION = 'media'
 
     STATICFILES_STORAGE = 'tarh_tastyhub.custom_storages.StaticStorage'
     DEFAULT_FILE_STORAGE = 'tarh_tastyhub.custom_storages.MediaStorage'
 
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
 
 # Stripe
 STRIPE_CURRENCY = 'usd'
