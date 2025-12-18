@@ -12,12 +12,12 @@ from django.contrib.messages import constants as messages
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Debug
-DEBUG = True
+DEBUG = 'DEVELOPMENT' in os.environ
 
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
-    '127.0.0.1,localhost,tarh-tastyhub-4071346c00af.herokuapp.com'
+    '127.0.0.1,localhost,dashboard.heroku.com/apps/tarh-tastyhub-market,tarh-tastyhub-4071346c00af.herokuapp.com'
 ).split(',')
 
 # Secret key
@@ -123,14 +123,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tarh_tastyhub.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-} if 'DATABASE_URL' in os.environ else {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -155,7 +158,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # AWS S3 Storage settings (override local if USE_AWS=True)
-if os.environ.get('USE_AWS') == 'True':
+
+if 'USE_AWS' in os.environ:
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub-market'
@@ -165,11 +169,14 @@ if os.environ.get('USE_AWS') == 'True':
     AWS_DEFAULT_ACL = 'public-read'
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_OBJECT_PARAMETERS = {
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
         'CacheControl': 'max-age=94608000',
     }
 
     STATICFILES_STORAGE = 'tarh_tastyhub.custom_storages.StaticStorage'
+    STATICFILES_LOCATION = 'static'
     DEFAULT_FILE_STORAGE = 'tarh_tastyhub.custom_storages.MediaStorage'
+    MEDIAFILES_LOCATION = 'media'
 
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
