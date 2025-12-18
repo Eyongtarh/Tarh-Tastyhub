@@ -163,7 +163,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # AWS S3 Storage settings (override local if USE_AWS=True)
 
-if 'USE_AWS' in os.environ:
+USE_AWS = os.environ.get('USE_AWS', 'False') == 'True'
+
+if USE_AWS:
     STATICFILES_LOCATION = 'static'
     MEDIAFILES_LOCATION = 'media'
 
