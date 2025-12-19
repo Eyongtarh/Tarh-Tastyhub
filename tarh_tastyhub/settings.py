@@ -17,8 +17,7 @@ DEBUG = 'DEVELOPMENT' in os.environ
 # Allowed hosts
 
 
-ALLOWED_HOSTS = ['tarh-tastyhub-4071346c00af.herokuapp.com', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['tarh-tastyhub-4071346c00af.herokuapp.com', 'dashboard.heroku.com/apps/tarh-tastyhub', 'localhost', '127.0.0.1']
 
 # Secret key
 SECRET_KEY = os.environ.get('SECRET_KEY')
