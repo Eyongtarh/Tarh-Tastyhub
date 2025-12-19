@@ -17,7 +17,7 @@ DEBUG = 'DEVELOPMENT' in os.environ
 # Allowed hosts
 
 
-ALLOWED_HOSTS = ['tarh-tastyhub-4071346c00af.herokuapp.com', 'dashboard.heroku.com/apps/tarh-tastyhub', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['tarh-tastyhub-4071346c00af.herokuapp.com', 'dashboard.heroku.com/apps/tarh-tasty-hub', 'localhost', '127.0.0.1']
 
 # Secret key
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -157,14 +157,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 if 'USE_AWS' in os.environ:
 
-    # Cache control
-    AWS_S3_OBJECT_PARAMETERS = {
-        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-        'CacheControl': 'max-age=94608000',
-    }
-
     # Bucket Config
-    AWS_STORAGE_BUCKET_NAME = 'tarh-tastyhub'
+    AWS_STORAGE_BUCKET_NAME = 'tarh-tasty-hub'
     AWS_S3_REGION_NAME = 'eu-north-1'
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
