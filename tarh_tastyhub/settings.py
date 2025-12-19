@@ -12,7 +12,7 @@ from django.contrib.messages import constants as messages
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Debug
-DEBUG = True
+DEBUG = 'DEVELOPMENT' in os.environ
 
 # Allowed hosts
 
