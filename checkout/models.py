@@ -76,6 +76,8 @@ class OrderLineItem(models.Model):
     portion = models.ForeignKey(DishPortion, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal("0.00"))
+    public_tracking = models.BooleanField(default=False)
+    email_sent = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("order", "portion")
