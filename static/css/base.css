@@ -76,6 +76,41 @@ main {
     text-align: center;
 }
 
+/* Logo */
+.brand-logo {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #212529;
+    letter-spacing: 0.3px;
+}
+
+.brand-icon {
+    color: #198754;
+    font-size: 1.3rem;
+}
+
+.brand-accent {
+    color: #ffc107;
+}
+
+.brand-main {
+    color: #212529;
+}
+
+.brand-logo:hover .brand-main {
+    color: #198754;
+}
+
+.brand-logo:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+}
+
+
 /* Smooth fade-out for removed items */
 .removing {
   opacity: 0;
@@ -471,17 +506,13 @@ footer {
         transform: translateX(-50%) translateY(-20px);
     }
 
-    /* Dish_list */
-    .category-filter a {
-        padding: 5px 10px;
-        font-size: 0.85rem;
-        margin: 2px 2px;
+    /* logo */
+    .brand-logo {
+        font-size: 1.35rem;
     }
-    .category-filter {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 4px;
+
+    .brand-icon {
+        font-size: 1.1rem;
     }
 
 }

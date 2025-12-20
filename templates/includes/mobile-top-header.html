@@ -2,11 +2,14 @@
 {% load dishes_extras %}
 
 <!-- Mobile Header -->
-<div class="d-lg-none bg-warning sticky-top shadow-sm">
+<div class="d-lg-none bg-white sticky-top shadow-sm">
   <div class="d-flex justify-content-between align-items-center px-3 py-2">
     <!-- Logo -->
-    <a href="{% url 'home' %}" class="fw-bold text-dark fs-5 text-decoration-none">Tarh Tastyhub</a>
-
+    <a href="{% url 'home' %}" class="brand-logo text-decoration-none">
+      <i class="fa-solid fa-utensils brand-icon"></i>
+      <span class="brand-accent">Tarh</span>
+      <span class="brand-main">Tastyhub</span>
+    </a>
     <div class="d-flex align-items-center gap-2">
       <!-- Mobile Bag Count -->
       <a href="{% url 'bag' %}" class="position-relative text-dark">
