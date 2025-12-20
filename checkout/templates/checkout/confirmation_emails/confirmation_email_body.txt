@@ -3,7 +3,7 @@ Hi {{ order.full_name }},
 Thanks for ordering from Tarh Tastyhub!
 
 Your order #{{ order.order_number }} has been received and is being processed.
-We’ll notify you when it’s out for delivery.
+We'll notify you when it's out for delivery.
 
 Order Total: ₦{{ order.grand_total }}
 Delivery Address:

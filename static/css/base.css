@@ -494,6 +494,10 @@ footer {
         font-size: 0.95rem;
     }
 
+    .feedback_form {
+        max-width: 95%;
+    }
+
     /* Toast */
     #notification-toast {
         top: 15px;
