@@ -175,13 +175,9 @@ def checkout_success(request, order_number):
         )
 
         order.email_sent = True
-        order.save()
+        order.save(update_fields=["email_sent"])
 
-    messages.success(
-        request,
-        f"Order {order.order_number} placed successfully!"
-    )
-
+    messages.success(request, f"Order {order.order_number} placed successfully!")
     return render(request, "checkout/success.html", {"order": order})
 
 
