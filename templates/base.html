@@ -11,30 +11,22 @@
       <!-- Dynamic SEO -->
       <meta name="description"
         content="{% block meta_description %}
-          
           Delicious meals delivered fast from Tarh Tastyhub restaurant.
-
         {% endblock %}" />
       <meta name="keywords"
         content="{% block meta_keywords %}
-          
           Tarh Tastyhub, restaurant, food, delivery, meals, dishes, cuisine
-
         {% endblock %}" />
       <meta name="author" content="Tarh Tastyhub" />
 
       <!-- Open Graph / Facebook -->
       <meta property="og:title"
         content="{% block og_title %}
-          
           Tarh Tastyhub
-
         {% endblock %}" />
       <meta property="og:description"
         content="{% block og_description %}
-          
           Enjoy tasty meals from Tarh Tastyhub restaurant.
-
         {% endblock %}" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="{{ request.build_absolute_uri }}" />
@@ -67,7 +59,6 @@
     {% endblock %}
 
     {% block extra_css %}
-
     {% endblock %}
 
     {% block corejs %}
@@ -85,7 +76,6 @@
     {% endblock %}
 
     {% block extra_js %}
-
     {% endblock %}
   </head>
 
@@ -104,7 +94,6 @@
 
     <main class="py-3">
       {% block content %}
-
       {% endblock %}
     </main>
 
@@ -120,29 +109,32 @@
     <script src="{% static 'js/bag.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
 
-    <!-- Toast Renderer -->
+    <!-- Render Django Messages via base.js toast system -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener('DOMContentLoaded', () => {
         {% if messages %}
           {% for message in messages %}
-            const toast = document.createElement("div");
-            toast.className = "toast text-bg-{{ message.tags }} border-0 mb-2";
-            toast.role = "alert";
-            toast.innerHTML = `
-              <div class="d-flex">
-                <div class="toast-body">{{ message|escape }}</div>
-                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-              </div>
-            `;
-            document.getElementById("toast-container").appendChild(toast);
-            new bootstrap.Toast(toast).show();
+            const type = 
+              {% if 'success' in message.tags %} 'success' 
+              {% elif 'error' in message.tags %} 'danger' 
+              {% elif 'warning' in message.tags %} 'warning' 
+              {% else %} 'info' {% endif %};
+            showToast("{{ message|escapejs }}", type, 5000);
           {% endfor %}
         {% endif %}
+
+        // Example: Add-to-bag buttons
+        document.querySelectorAll('.add-to-bag-btn').forEach(btn => {
+          btn.addEventListener('click', e => {
+            e.preventDefault();
+            const name = btn.dataset.dishName || "Item";
+            showToast(`${name} added to bag!`, 'success', 3000);
+          });
+        });
       });
     </script>
 
     {% block postloadjs %}
-
     {% endblock %}
   </body>
 </html>
