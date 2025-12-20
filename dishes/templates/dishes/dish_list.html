@@ -9,7 +9,7 @@
 {% block content %}
   <div class="container py-5">
     <h2 class="fw-bold text-center mb-4 text-white">
-      <span class="fa-icon"><i class="fa-solid fa-utensils"></i></span>
+      <span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>
       Our Dishes
     </h2>
 
@@ -97,8 +97,16 @@
               <li class="page-item">
                 <a class="page-link"
                   href="?page={{ dishes.previous_page_number }}{% if search_term %}
+                    
+                    
+                    
+                    
                     &q={{ search_term }}
                   {% endif %}{% if current_category %}
+                    
+                    
+                    
+                    
                     &category={{ current_category.slug }}
                   {% endif %}">
                   Previous
@@ -109,8 +117,16 @@
               <li class="page-item {% if dishes.number == num %}active{% endif %}">
                 <a class="page-link"
                   href="?page={{ num }}{% if search_term %}
+                    
+                    
+                    
+                    
                     &q={{ search_term }}
                   {% endif %}{% if current_category %}
+                    
+                    
+                    
+                    
                     &category={{ current_category.slug }}
                   {% endif %}">
                   {{ num }}
@@ -121,8 +137,16 @@
               <li class="page-item">
                 <a class="page-link"
                   href="?page={{ dishes.next_page_number }}{% if search_term %}
+                    
+                    
+                    
+                    
                     &q={{ search_term }}
                   {% endif %}{% if current_category %}
+                    
+                    
+                    
+                    
                     &category={{ current_category.slug }}
                   {% endif %}">
                   Next
