@@ -36,6 +36,6 @@
 /* Media Queries */
 @media (max-width: 767px) {
   .hero-overlay {
-    max-width: 100%;
+    max-width: 80%;
   }
 }
