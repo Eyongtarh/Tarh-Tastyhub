@@ -12,7 +12,8 @@ Delivery Address:
 {{ order.town_or_city }},{% if order.county %} {{ order.county }}{% endif %}
 {{ order.local }}
 
-If you have any questions, contact us at {{ contact_email }}.
+If you have any questions, contact us at {{ current_site.domain }}/contact/
+or {{ contact_email }}.
 
 Bon appétit!
 The Tarh Tastyhub Team
