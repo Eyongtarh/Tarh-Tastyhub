@@ -4,6 +4,8 @@ import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_http_methods, require_POST
 
 import stripe
@@ -145,7 +147,41 @@ def checkout(request):
 
 def checkout_success(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
-    messages.success(request, f"Order {order.order_number} placed successfully!")
+
+    if not order.email_sent:
+        subject = render_to_string(
+            "checkout/confirmation_emails/confirmation_email_subject.txt",
+            {"order": order}
+        ).strip()
+
+        body = render_to_string(
+            "checkout/confirmation_emails/confirmation_email_body.txt",
+            {
+                "order": order,
+                "contact_email": getattr(
+                    settings,
+                    "SUPPORT_EMAIL",
+                    settings.DEFAULT_FROM_EMAIL
+                ),
+            }
+        )
+
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [order.email],
+            fail_silently=False,
+        )
+
+        order.email_sent = True
+        order.save()
+
+    messages.success(
+        request,
+        f"Order {order.order_number} placed successfully!"
+    )
+
     return render(request, "checkout/success.html", {"order": order})
 
 

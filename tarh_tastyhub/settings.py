@@ -191,7 +191,14 @@ STRIPE_CURRENCY = 'usd'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WH_SECRET')
-DEFAULT_FROM_EMAIL = 'tarh-tastyhub@tastyhub.com'
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL",
+    "Tarh Tastyhub <tarhtastyhub@gmail.com>"
+)
+SUPPORT_EMAIL = os.environ.get(
+    "SUPPORT_EMAIL",
+    "Tarh Tastyhub <tarhtastyhub@gmail.com>"
+)
 
 # Email backend
 if 'DEVELOPMENT' in os.environ:
