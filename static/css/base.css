@@ -545,4 +545,12 @@ footer {
     .card:hover {
         transform: none;
     }
+
+    .btn-warning,
+    .btn-password,
+    .btn-delete,
+    .btn-password,
+    .btn-login {
+        margin: 2px 2px;
+    }
 }

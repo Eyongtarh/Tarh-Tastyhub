@@ -137,7 +137,7 @@ p.text-normal {
 
 /* Dish_list */
 .category-filter a {
-    text-decoration: none; 
+    text-decoration: none !important;
     display: inline-block;
     margin: 0 4px;
     padding: 6px 14px;
@@ -170,18 +170,17 @@ p.text-normal {
 }
 
 /* Media Queris */
-@media (max-width: 576px) {
-    /* Dish_list */
-    .category-filter a {
-        padding: 5px 10px;
-        font-size: 0.85rem;
-        margin: 2px 2px;
-    }
-    .category-filter {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 4px;
+@media (max-width: 768px) {
+    .category-filter a.badge {
+        padding: 5px 10px !important;
+        font-size: 0.85rem !important;
+        margin: 2px 2px !important;
     }
 
+    .category-filter {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 4px !important;
+    }
 }
