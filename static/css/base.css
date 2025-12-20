@@ -13,6 +13,11 @@ body {
     color: #212529;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 main {
     max-width: 1200px; 
     margin: 0 auto;
@@ -71,9 +76,10 @@ main {
     border-radius: 50%;
     position: absolute;
     top: -5px;
-    right: -10px;
+    right: 0;
     min-width: 1.6rem;
     text-align: center;
+    transform: translateX(50%);
 }
 
 /* Logo */
@@ -430,7 +436,9 @@ footer {
     z-index: 1060;
     width: 250px;
     max-width: 80%;
+    overflow-x: hidden;
 }
+
 .offcanvas-header .btn-close {
     z-index: 1070;
 }
@@ -515,9 +523,21 @@ footer {
         font-size: 1.1rem;
     }
 
+    .banner404 {
+        margin: 1rem;
+    }
+
 }
 
 @media (max-width:768px){
-    .hero h1 { font-size: 2rem; }
-    .hero p { font-size: 1rem; }
+    .hero h1 { 
+        font-size: 2rem; 
+    }
+    .hero p { 
+        font-size: 1rem; 
+    }
+
+    .card:hover {
+        transform: none;
+    }
 }
