@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 from django.views.decorators.http import require_http_methods, require_POST
 
 import stripe
@@ -149,19 +150,21 @@ def checkout_success(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
 
     if not order.email_sent:
-
         subject = render_to_string(
             "checkout/confirmation_emails/confirmation_email_subject.txt",
             {"order": order}
         ).strip()
 
-        site_domain = getattr(settings, "SITE_DOMAIN", "https://www.tarhtastyhub.com")
+        current_site = get_current_site(request)
+
         body = render_to_string(
             "checkout/confirmation_emails/confirmation_email_body.txt",
             {
                 "order": order,
+                "current_site": current_site,
             }
         )
+
         send_mail(
             subject,
             body,
@@ -169,10 +172,12 @@ def checkout_success(request, order_number):
             [order.email],
             fail_silently=False,
         )
+
         order.email_sent = True
         order.save(update_fields=["email_sent"])
 
     messages.success(request, f"Order {order.order_number} placed successfully!")
+
     return render(request, "checkout/success.html", {"order": order})
 
 
