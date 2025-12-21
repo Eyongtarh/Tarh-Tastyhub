@@ -122,24 +122,18 @@ def mark_feedback_unhandled(request, feedback_id):
 
 
 @staff_member_required
-@require_POST
 def cancel_order(request, order_id):
-    """
-    Admin-only: cancel an order.
-    Completed orders cannot be cancelled.
-    """
     order = get_object_or_404(Order, pk=order_id)
 
     if order.status == "Completed":
         messages.error(request, "Completed orders cannot be cancelled.")
         return redirect("admin_dashboard")
 
-    order.status = "Cancelled"
-    order.save()
+    if request.method == "POST":
+        order.status = "Cancelled"
+        order.save()
+        messages.success(request, f"Order #{order.order_number} has been cancelled.")
+        return redirect("admin_dashboard")
 
-    messages.success(
-        request,
-        f"Order #{order.order_number} has been cancelled and removed."
-    )
-
-    return redirect("admin_dashboard")
+    context = {"order": order}
+    return render(request, "checkout/cancel_order.html", context)
