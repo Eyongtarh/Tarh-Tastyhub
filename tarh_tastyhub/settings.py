@@ -15,9 +15,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = 'DEVELOPMENT' in os.environ
 
 # Allowed hosts
-
-
-ALLOWED_HOSTS = ['tarh-tastyhub-4071346c00af.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        "ALLOWED_HOSTS",
+        "tarh-tastyhub-4071346c00af.herokuapp.com,localhost,127.0.0.1"
+    ).split(",")
+    if host.strip()
+]
 
 # Secret key
 SECRET_KEY = os.environ.get('SECRET_KEY')
