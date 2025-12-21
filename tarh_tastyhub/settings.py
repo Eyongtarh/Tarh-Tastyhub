@@ -171,7 +171,7 @@ if USE_AWS:
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
 
     # S3 storages
-    STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+    STATICFILES_STORAGE = 'custom_storages.StaticManifestStorage'
     DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
     # URLs
