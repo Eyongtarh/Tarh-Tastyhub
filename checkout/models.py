@@ -1,6 +1,8 @@
 from django.db import models
 from profiles.models import UserProfile
 from dishes.models import DishPortion
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import uuid
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -86,3 +88,12 @@ class OrderLineItem(models.Model):
         qty = int(self.quantity or 0)
         price = Decimal(self.price or self.portion.price or Decimal("0.00"))
         return (price * qty).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+@receiver(post_save, sender=Order)
+def delete_cancelled_order(sender, instance, **kwargs):
+    """
+    Automatically delete an order after it is cancelled.
+    """
+    if instance.status == "Cancelled":
+        instance.delete()

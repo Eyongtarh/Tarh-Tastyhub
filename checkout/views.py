@@ -149,13 +149,12 @@ def checkout_success(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
 
     if not order.email_sent:
-        # Email subject
+
         subject = render_to_string(
             "checkout/confirmation_emails/confirmation_email_subject.txt",
             {"order": order}
         ).strip()
 
-        # Email body with dynamic domain
         site_domain = getattr(settings, "SITE_DOMAIN", "https://www.tarhtastyhub.com")
         body = render_to_string(
             "checkout/confirmation_emails/confirmation_email_body.txt",
@@ -163,8 +162,6 @@ def checkout_success(request, order_number):
                 "order": order,
             }
         )
-
-        # Send email
         send_mail(
             subject,
             body,
@@ -172,8 +169,6 @@ def checkout_success(request, order_number):
             [order.email],
             fail_silently=False,
         )
-
-        # Mark email as sent
         order.email_sent = True
         order.save(update_fields=["email_sent"])
 

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
-{% endblock %}
-{% block content %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
+{% endblock %}
+
+{% block content %}
 <div class="container my-5">
 
     <!-- Header -->
@@ -15,7 +16,7 @@
         </h2>
     </div>
 
-    <!-- Buttons -->
+    <!-- Action Buttons -->
     <div class="mb-3 text-center">
         <a href="{% url 'add_dish' %}" class="btn btn-primary me-2">
             <i class="fa-solid fa-plus"></i> Add Dish
@@ -24,9 +25,11 @@
             <i class="fa-solid fa-plus"></i> Add Category
         </a>
     </div>
-    <!-- ORDERS TABLE -->
+
+    <!-- ORDERS -->
     <div class="table-responsive shadow-sm rounded mb-5">
         <h4 class="fw-bold mb-3">Orders</h4>
+
         <table class="table table-hover align-middle">
             <thead class="table-dark text-center">
                 <tr>
@@ -35,45 +38,78 @@
                     <th>Total ($)</th>
                     <th>Status</th>
                     <th>Progress</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for order in orders %}
                 <tr>
                     <td class="text-center">{{ order.id }}</td>
                     <td>{{ order.full_name }}</td>
                     <td class="text-end">${{ order.grand_total }}</td>
-                    <td class="status-text {{ order.status|cut:" " }}">{{ order.status }}</td>
+
+                    <td class="text-center">
+                        <span class="badge bg-{{ order.status_color }}">
+                            {{ order.status }}
+                        </span>
+                    </td>
+
                     <td style="min-width:200px;">
                         <div class="progress" style="height:20px;">
-                            <div class="progress-bar progress-bar-striped"
+                            <div class="progress-bar progress-bar-striped bg-{{ order.status_color }}"
                                  role="progressbar"
                                  style="width:{{ order.progress_percent }}%;">
                                 {{ order.status }}
                             </div>
                         </div>
                     </td>
-                    <td class="d-flex gap-2 justify-content-center">
-                        <form method="POST" action="{% url 'update_order_status' order.id %}">
+
+                    <td class="d-flex flex-column gap-2 align-items-center">
+
+                        <!-- UPDATE STATUS -->
+                        <form method="POST"
+                              action="{% url 'update_order_status' order.id %}">
                             {% csrf_token %}
-                            <select name="status" class="form-select form-select-sm">
+                            <select name="status"
+                                    class="form-select form-select-sm mb-1">
                                 <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
                                 <option {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
                                 <option {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
                                 <option {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
                             </select>
-                            <button class="btn btn-warning btn-sm mt-1">Update</button>
+                            <button class="btn btn-warning btn-sm w-100">
+                                Update
+                            </button>
                         </form>
+
+                        <!-- CANCEL ORDER -->
+                        <form method="POST"
+                              action="{% url 'cancel_order' order.id %}"
+                              onsubmit="return confirm('Cancel and permanently delete this order?');">
+                            {% csrf_token %}
+                            <button class="btn btn-danger btn-sm w-100">
+                                Cancel Order
+                            </button>
+                        </form>
+
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-3">
+                        No orders found.
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
     <!-- DISHES -->
-    <div class="table-responsive shadow-sm rounded">
+    <div class="table-responsive shadow-sm rounded mb-5">
         <h4 class="fw-bold mb-3">Dishes</h4>
+
         <table class="table table-hover align-middle">
             <thead class="table-secondary text-center">
                 <tr>
@@ -83,15 +119,24 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
                 {% for dish in dishes %}
                 <tr>
                     <td>{{ dish.name }}</td>
                     <td>{{ dish.category.name }}</td>
-                    <td class="text-end">{{ dish.price }}</td>
-                    <td class="d-flex gap-2 justify-content-center">
-                        <a href="{% url 'edit_dish' dish.slug %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_dish' dish.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                    <td class="text-end">${{ dish.price }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'edit_dish' dish.slug %}"
+                           class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_dish' dish.slug %}"
+                           class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-3">
+                        No dishes available.
                     </td>
                 </tr>
                 {% endfor %}
@@ -100,13 +145,14 @@
     </div>
 
     <!-- CATEGORIES -->
-    <div class="table-responsive shadow-sm rounded mt-4">
+    <div class="table-responsive shadow-sm rounded mb-5">
         <h4 class="fw-bold mb-3">Categories</h4>
+
         <table class="table table-hover align-middle">
             <thead class="table-secondary">
                 <tr>
                     <th>Name</th>
-                    <th>Action</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
 
@@ -114,9 +160,17 @@
                 {% for category in categories %}
                 <tr>
                     <td>{{ category.name }}</td>
-                    <td class="d-flex gap-2 justify-content-center">
-                        <a href="{% url 'edit_category' category.slug %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_category' category.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                    <td class="text-center">
+                        <a href="{% url 'edit_category' category.slug %}"
+                           class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_category' category.slug %}"
+                           class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="text-center text-muted py-3">
+                        No categories found.
                     </td>
                 </tr>
                 {% endfor %}
@@ -124,21 +178,18 @@
         </table>
     </div>
 
-    <!-- Feedback Section -->
-    <div class="table-responsive shadow-sm rounded mt-5">
+    <!-- FEEDBACK -->
+    <div class="table-responsive shadow-sm rounded">
         <h4 class="fw-bold mb-3">Feedback</h4>
 
-        <!-- Filter -->
-        <div class="mb-3">
-            <form method="GET" class="d-flex gap-3">
-                <select name="filter" class="form-select w-auto">
-                    <option value="all" {% if filter_status == 'all' %}selected{% endif %}>All</option>
-                    <option value="unread" {% if filter_status == 'unread' %}selected{% endif %}>Unread</option>
-                    <option value="handled" {% if filter_status == 'handled' %}selected{% endif %}>Handled</option>
-                </select>
-                <button class="btn btn-primary">Apply</button>
-            </form>
-        </div>
+        <form method="GET" class="d-flex gap-3 mb-3">
+            <select name="filter" class="form-select w-auto">
+                <option value="all" {% if filter_status == 'all' %}selected{% endif %}>All</option>
+                <option value="unread" {% if filter_status == 'unread' %}selected{% endif %}>Unread</option>
+                <option value="handled" {% if filter_status == 'handled' %}selected{% endif %}>Handled</option>
+            </select>
+            <button class="btn btn-primary">Apply</button>
+        </form>
 
         <table class="table table-hover align-middle">
             <thead class="table-secondary text-center">
@@ -149,7 +200,6 @@
                     <th>Message</th>
                     <th>Date</th>
                     <th>Handled</th>
-                    <th>Action</th>
                 </tr>
             </thead>
 
@@ -168,50 +218,17 @@
                             <span class="text-danger fw-bold">No</span>
                         {% endif %}
                     </td>
-                    <td class="text-center">
-                        {% if not fb.handled %}
-                        <form method="POST" action="{% url 'mark-handled' fb.id %}">
-                            {% csrf_token %}
-                            <button class="btn btn-success btn-sm">Mark as handled</button>
-                        </form>
-                        {% else %}
-                        <form method="POST" action="{% url 'mark-unhandled' fb.id %}">
-                            {% csrf_token %}
-                            <button class="btn btn-outline-secondary btn-sm">Mark as unread</button>
-                        </form>
-                        {% endif %}
-                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" class="text-center text-muted py-3">No feedback found.</td>
+                    <td colspan="6" class="text-center text-muted py-3">
+                        No feedback found.
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-3">
-            {% if feedback_list.has_other_pages %}
-            <ul class="pagination">
-                {% if feedback_list.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ feedback_list.previous_page_number }}&filter={{ filter_status }}">Previous</a>
-                </li>
-                {% endif %}
-                {% for num in feedback_list.paginator.page_range %}
-                <li class="page-item {% if feedback_list.number == num %}active{% endif %}">
-                    <a class="page-link" href="?page={{ num }}&filter={{ filter_status }}">{{ num }}</a>
-                </li>
-                {% endfor %}
-                {% if feedback_list.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ feedback_list.next_page_number }}&filter={{ filter_status }}">Next</a>
-                </li>
-                {% endif %}
-            </ul>
-            {% endif %}
-        </div>
     </div>
+
 </div>
 {% endblock %}
