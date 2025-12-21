@@ -29,4 +29,10 @@ urlpatterns = [
         admin_dashboard_view.mark_feedback_unhandled,
         name='mark_feedback_unhandled'
     ),
+    path(
+          'cancel-order/<int:order_id>/',
+          admin_dashboard_view.cancel_order,
+          name='cancel_order'
+     ),
+
 ]

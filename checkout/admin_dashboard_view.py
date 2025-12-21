@@ -1,4 +1,3 @@
-# checkout/admin_dashboard_view.py
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
@@ -28,7 +27,6 @@ def admin_dashboard(request):
     - Categories
     - Feedback (filter + pagination)
     """
-    # ORDERS
     orders = (
         Order.objects
         .all()
@@ -38,11 +36,9 @@ def admin_dashboard(request):
     for order in orders:
         order.status_color = STATUS_COLORS.get(order.status, 'secondary')
 
-    # DISHES & CATEGORIES
     dishes = Dish.objects.all().select_related('category').order_by('name')
     categories = Category.objects.all().order_by('name')
 
-    # FEEDBACK FILTERING
     filter_status = request.GET.get("filter", "all")
     if filter_status == "unread":
         feedback_qs = Feedback.objects.filter(handled=False)
@@ -53,8 +49,7 @@ def admin_dashboard(request):
 
     feedback_qs = feedback_qs.order_by('-created_at')
 
-    # PAGINATION
-    paginator = Paginator(feedback_qs, 10)  # 10 items per page
+    paginator = Paginator(feedback_qs, 10)
     page_number = request.GET.get("page")
     feedback_list = paginator.get_page(page_number)
 
@@ -124,3 +119,27 @@ def mark_feedback_unhandled(request, feedback_id):
         'handled': False,
         'feedback_id': fb.id,
     })
+
+
+@staff_member_required
+@require_POST
+def cancel_order(request, order_id):
+    """
+    Admin-only: cancel an order.
+    Completed orders cannot be cancelled.
+    """
+    order = get_object_or_404(Order, pk=order_id)
+
+    if order.status == "Completed":
+        messages.error(request, "Completed orders cannot be cancelled.")
+        return redirect("admin_dashboard")
+
+    order.status = "Cancelled"
+    order.save()
+
+    messages.success(
+        request,
+        f"Order #{order.order_number} has been cancelled and removed."
+    )
+
+    return redirect("admin_dashboard")
