@@ -12,13 +12,17 @@
       <meta name="description"
         content="{% block meta_description %}
           
+          
           Delicious meals delivered fast from Tarh Tastyhub restaurant.
+
 
         {% endblock %}" />
       <meta name="keywords"
         content="{% block meta_keywords %}
           
+          
           Tarh Tastyhub, restaurant, food, delivery, meals, dishes, cuisine
+
 
         {% endblock %}" />
       <meta name="author" content="Tarh Tastyhub" />
@@ -27,13 +31,17 @@
       <meta property="og:title"
         content="{% block og_title %}
           
+          
           Tarh Tastyhub
+
 
         {% endblock %}" />
       <meta property="og:description"
         content="{% block og_description %}
           
+          
           Enjoy tasty meals from Tarh Tastyhub restaurant.
+
 
         {% endblock %}" />
       <meta property="og:type" content="website" />
@@ -55,7 +63,7 @@
       <!-- Stylesheets -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-      <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/base.css' %}?v=2" />
 
       <!-- Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -65,6 +73,7 @@
     {% endblock %}
 
     {% block extra_css %}
+
     {% endblock %}
 
     {% block corejs %}
@@ -79,6 +88,7 @@
     {% endblock %}
 
     {% block extra_js %}
+
     {% endblock %}
   </head>
 
@@ -97,6 +107,7 @@
 
     <main class="py-3">
       {% block content %}
+
       {% endblock %}
     </main>
 
@@ -137,6 +148,7 @@
     </script>
 
     {% block postloadjs %}
+
     {% endblock %}
   </body>
 </html>
