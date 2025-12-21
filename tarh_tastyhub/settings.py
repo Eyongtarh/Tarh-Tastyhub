@@ -17,7 +17,7 @@ DEBUG = 'DEVELOPMENT' in os.environ
 # Allowed hosts
 
 
-ALLOWED_HOSTS = ['tarh-tastyhub-4071346c00af.herokuapp.com', 'dashboard.heroku.com/apps/tarh-tasty-hub', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['tarh-tastyhub-4071346c00af.herokuapp.com', 'localhost', '127.0.0.1']
 
 # Secret key
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -53,7 +53,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 SITE_ID = 1
 
 # Authentication
-ACCOUNT_LOGIN_METHODS = {'email', 'username'}
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
@@ -91,7 +91,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django_htmx_messages.middleware.HtmxMessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'tarh_tastyhub.urls'
