@@ -12,21 +12,13 @@
       <meta name="description"
         content="{% block meta_description %}
           
-          
-          
           Delicious meals delivered fast from Tarh Tastyhub restaurant.
-
-
 
         {% endblock %}" />
       <meta name="keywords"
         content="{% block meta_keywords %}
           
-          
-          
           Tarh Tastyhub, restaurant, food, delivery, meals, dishes, cuisine
-
-
 
         {% endblock %}" />
       <meta name="author" content="Tarh Tastyhub" />
@@ -35,29 +27,17 @@
       <meta property="og:title"
         content="{% block og_title %}
           
-          
-          
           Tarh Tastyhub
-
-
 
         {% endblock %}" />
       <meta property="og:description"
         content="{% block og_description %}
           
-          
-          
           Enjoy tasty meals from Tarh Tastyhub restaurant.
-
-
 
         {% endblock %}" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-      <meta property="og:image"
-        content="{% block og_image %}
-          {% static 'images/logo.png' %}
-        {% endblock %}" />
 
       <title>
         {% block title %}
@@ -76,6 +56,8 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
       <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+
+      <!-- Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -83,7 +65,6 @@
     {% endblock %}
 
     {% block extra_css %}
-
     {% endblock %}
 
     {% block corejs %}
@@ -98,7 +79,6 @@
     {% endblock %}
 
     {% block extra_js %}
-
     {% endblock %}
   </head>
 
@@ -117,7 +97,6 @@
 
     <main class="py-3">
       {% block content %}
-
       {% endblock %}
     </main>
 
@@ -133,21 +112,20 @@
     <script src="{% static 'js/bag.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
 
-    <!-- Render Django Messages via base.js toast system -->
+    <!-- Render Django Messages -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         {% if messages %}
           {% for message in messages %}
-            const type = 
-              {% if 'success' in message.tags %} 'success' 
-              {% elif 'error' in message.tags %} 'danger' 
-              {% elif 'warning' in message.tags %} 'warning' 
+            const type =
+              {% if 'success' in message.tags %} 'success'
+              {% elif 'error' in message.tags %} 'danger'
+              {% elif 'warning' in message.tags %} 'warning'
               {% else %} 'info' {% endif %};
             showToast("{{ message|escapejs }}", type, 5000);
           {% endfor %}
         {% endif %}
 
-        // Example: Add-to-bag buttons
         document.querySelectorAll('.add-to-bag-btn').forEach(btn => {
           btn.addEventListener('click', e => {
             e.preventDefault();
@@ -159,7 +137,6 @@
     </script>
 
     {% block postloadjs %}
-
     {% endblock %}
   </body>
 </html>
