@@ -84,14 +84,10 @@
                         </form>
 
                         <!-- CANCEL ORDER -->
-                        <form method="POST"
-                              action="{% url 'cancel_order' order.id %}"
-                              onsubmit="return confirm('Cancel and permanently delete this order?');">
-                            {% csrf_token %}
-                            <button class="btn btn-danger btn-sm w-100">
-                                Cancel Order
-                            </button>
-                        </form>
+                        <a href="{% url 'cancel_order' order.id %}"
+                           class="btn btn-danger btn-sm w-100">
+                            Cancel Order
+                        </a>
 
                     </td>
                 </tr>
