@@ -8,19 +8,83 @@
 
 {% block content %}
   <div class="container py-5">
-    <h2 class="fw-bold text-center mb-4 text-white"><span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>Our Dishes</h2>
+    <h2 class="fw-bold text-center mb-4 text-white">
+      <span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>
+      Our Dishes
+    </h2>
+
     <!-- Search -->
-    <form method="GET" class="d-flex justify-content-center mb-4">
-      <input id="search-input" type="text" name="q" value="{{ search_term }}" placeholder="Search dishes..." class="form-control w-50 me-2" />
+    <form id="search-form" method="GET" class="d-flex justify-content-center mb-4 gap-2 flex-wrap">
+      <input id="search-input" type="text" name="q" value="{{ search_term }}" placeholder="Search dishes..." class="form-control w-50" />
       <button class="btn btn-warning fw-bold shop-now-button"><span class="fa-icon"><i class="fas fa-search"></i></span></button>
     </form>
 
     <!-- Category Filter -->
-    <div class="category-filter mb-4">
+    <div class="category-filter mb-3 text-center">
       <a href="{% url 'dish_list' %}" class="badge all {% if not current_category %}active{% endif %}">All</a>
+
       {% for category in categories %}
-        <a href="{% url 'dish_list' %}?category={{ category.slug }}" class="badge category {% if current_category and current_category.slug == category.slug %}active{% endif %}">{{ category.name }}</a>
+        <a href="?category={{ category.slug }}" class="badge category {% if current_category and current_category.slug == category.slug %}active{% endif %}">{{ category.name }}</a>
       {% endfor %}
+    </div>
+
+    <!-- Advanced Filters -->
+    <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+      <!-- Price -->
+      <div class="dropdown">
+        <button class="btn btn-outline-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">Price</button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="?max_price=10">Under $10</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?min_price=10&max_price=20">$10 – $20</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?min_price=20">Over $20</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dietary -->
+      <div class="dropdown">
+        <button class="btn btn-outline-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">Dietary</button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="?dietary=Vegetarian">Vegetarian</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?dietary=Vegan">Vegan</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?dietary=Gluten-Free">Gluten-Free</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?dietary=Spicy">Spicy</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Ingredients -->
+      <div class="dropdown">
+        <button class="btn btn-outline-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">Ingredients</button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="?ingredient=chicken">Chicken</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?ingredient=cheese">Cheese</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?ingredient=rice">Rice</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="?ingredient=vegetables">Vegetables</a>
+          </li>
+        </ul>
+      </div>
+
+      <a href="{% url 'dish_list' %}" class="btn btn-outline-secondary btn-sm">Reset Filters</a>
     </div>
 
     <!-- Dishes Grid -->
@@ -33,12 +97,13 @@
             {% else %}
               <img src="{% static 'images/no-image.png' %}" class="card-img-top rounded-top-4" alt="No Image" />
             {% endif %}
+
             <div class="card-body text-center">
               <h6 class="fw-bold">{{ dish.name }}</h6>
               <p class="text-muted small">{{ dish.description|truncatewords:12 }}</p>
 
               {% if dish.portions.exists %}
-                <select class="form-select form-select-sm mb-2 portion-select" aria-label="Select portion">
+                <select class="form-select form-select-sm mb-2 portion-select">
                   {% for portion in dish.portions.all %}
                     <option value="{{ portion.id }}">{{ portion.size }} - ${{ portion.price }}</option>
                   {% endfor %}
@@ -84,135 +149,28 @@
       {% empty %}
         <p class="text-center text-muted">No dishes found.</p>
       {% endfor %}
-
-      <!-- Pagination -->
-      {% if dishes.has_other_pages %}
-        <nav aria-label="Page navigation" class="mt-4">
-          <ul class="pagination justify-content-center">
-            {% if dishes.has_previous %}
-              <li class="page-item">
-                <a class="page-link"
-                  href="?page={{ dishes.previous_page_number }}{% if search_term %}
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    &q={{ search_term }}
-                  {% endif %}{% if current_category %}
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    &category={{ current_category.slug }}
-                  {% endif %}">
-                  Previous
-                </a>
-              </li>
-            {% endif %}
-            {% for num in dishes.paginator.page_range %}
-              <li class="page-item {% if dishes.number == num %}active{% endif %}">
-                <a class="page-link"
-                  href="?page={{ num }}{% if search_term %}
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    &q={{ search_term }}
-                  {% endif %}{% if current_category %}
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    &category={{ current_category.slug }}
-                  {% endif %}">
-                  {{ num }}
-                </a>
-              </li>
-            {% endfor %}
-            {% if dishes.has_next %}
-              <li class="page-item">
-                <a class="page-link"
-                  href="?page={{ dishes.next_page_number }}{% if search_term %}
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    &q={{ search_term }}
-                  {% endif %}{% if current_category %}
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    &category={{ current_category.slug }}
-                  {% endif %}">
-                  Next
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-        </nav>
-      {% endif %}
     </div>
+
+    <!-- Pagination -->
+    {% if dishes.has_other_pages %}
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% for num in dishes.paginator.page_range %}
+            <li class="page-item {% if dishes.number == num %}active{% endif %}">
+              <a class="page-link"
+                href="?page={{ num }}{% for key, value in request.GET.items %}
+                  {% if key != 'page' %}
+                    
+                    &{{ key }}={{ value }}
+                  {% endif %}
+                {% endfor %}">
+                {{ num }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
   </div>
 
   <!-- Search dropdown container -->
