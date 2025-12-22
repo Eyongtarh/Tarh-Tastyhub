@@ -29,6 +29,9 @@ main {
   color: #fff;
 }
 
+.text-yellow {
+    color: #ffc107;
+}
 
 .text-black {
   color: black;
@@ -309,12 +312,11 @@ main {
 }
 
 /* Footer */
-footer {
-    background-color:transparent;
-    color: white;
-    padding: 10px;
+.tarh-footer {
+    background-color: transparent;
+    color: #ffffff;
     font-size: 0.9rem;
-    margin: 0% 3%;
+    margin: 0 3%;
 }
 
 .tarh-footer .footer-link {
@@ -324,18 +326,18 @@ footer {
 }
 
 .tarh-footer .footer-link:hover {
-    color: #e55b2c; 
+    color: #e55b2c;
 }
 
 .tarh-footer .social-icon {
+    font-size: 1.4rem;
     color: #ffffff;
-    font-size: 1.25rem;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .tarh-footer .social-icon:hover {
-    color: #e55b2c; 
-    transform: translateY(-3px);
+    color: #e55b2c;
+    transform: translateY(-2px);
 }
 
 .tarh-footer h6,

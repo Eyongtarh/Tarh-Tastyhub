@@ -1,4 +1,4 @@
-<footer class="tarh-footer text-light col-12 pt-5 pb-4 mt-5">
+<footer class="tarh-footer text-light pt-5 pb-4 mt-5">
   <div class="container">
     <div class="row gy-4">
       <!-- Brand -->
@@ -7,33 +7,29 @@
         <p class="mt-2 small">Fresh home-style meals delivered fast. Enjoy delicious dishes prepared with love and the finest ingredients.</p>
         <ul class="list-unstyled small">
           <li>
-            <a class="footer-link" href="{% url 'home' %}"><strong>Home</strong></a>
+            <a class="footer-link text-yellow" href="{% url 'home' %}"><strong>Home</strong></a>
           </li>
         </ul>
       </div>
 
-      <!-- Dishes Section -->
+      <!-- Dishes -->
       <div class="col-6 col-md-2">
         <h6 class="fw-bold mb-3">Dishes</h6>
         <ul class="list-unstyled small">
-          {% if categories %}
-            {% for category in categories %}
-              <li>
-                <a class="footer-link" href="{% url 'dish_list_by_category' category.slug %}">{{ category }}</a>
-              </li>
-            {% endfor %}
-          {% else %}
+          {% for category in categories %}
             <li>
-              <span class="text-muted small">No categories</span>
+              <a class="footer-link" href="{% url 'dish_list' %}?category={{ category.slug }}">{{ category.name }}</a>
             </li>
-          {% endif %}
-          <li>
+          {% empty %}
+            <li class="text-muted small">No categories</li>
+          {% endfor %}
+          <li class="mt-2">
             <a class="footer-link" href="{% url 'dish_list' %}">Browse Dishes</a>
           </li>
         </ul>
       </div>
 
-      <!-- Help Section -->
+      <!-- Help -->
       <div class="col-6 col-md-2">
         <h6 class="fw-bold mb-3">Help</h6>
         <ul class="list-unstyled small">
@@ -52,15 +48,22 @@
         </ul>
       </div>
 
-      <!-- Social Section -->
+      <!-- Social -->
       <div class="col-12 col-md-4">
-        <h6 class="fw-bold mb-3">Follow Us</h6>
-        <div class="d-flex gap-3">
-          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
-        </div>
+        <h6 class="fw-bold mb-3">Social</h6>
+        <p class="small">Keep up to date with all our latest offers</p>
+
+        <a href="https://www.facebook.com/profile.php?id=61585209765956" target="_blank" class="footer-link d-inline-flex align-items-center gap-2">
+          <i class="fa-brands fa-facebook social-icon"></i>
+          Follow us on Facebook
+        </a>
+
+        <hr class="border-light my-3" />
+
+        <h6 class="fw-bold">Subscribe</h6>
+        <p class="small">Get exclusive offers and discount codes by subscribing to our monthly newsletter</p>
+        <!-- Mailchimp form here -->
+
         <p class="small mt-3 mb-0">&copy; {{ now|date:'Y' }} Tarh Tastyhub. All rights reserved.</p>
       </div>
     </div>
