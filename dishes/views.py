@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
-from django.db.models import Q
-
+from django.db.models import Q, Min
 from .models import Category, Dish
 from .forms import DishForm, DishPortionFormSet, DishImageFormSet, CategoryForm
+from .utils import get_cached_categories
 
 
 def admin_required(user):
@@ -13,22 +13,12 @@ def admin_required(user):
     return user.is_staff
 
 
-def get_cached_categories():
-    """Return all categories cached for 1 hour."""
-    key = "cached_category_menu"
-    categories = cache.get(key)
-    if not categories:
-        categories = Category.objects.all().order_by("name")
-        cache.set(key, categories, 3600)
-    return categories
-
-
 def all_dishes(request):
     """Show all dishes with search, filters, category, and pagination."""
     search_term = request.GET.get("q", "").strip()
     category_slug = request.GET.get("category", "").strip()
-    dietary = request.GET.get("dietary", "").strip()
-    ingredient = request.GET.get("ingredient", "").strip()
+    dietary_list = request.GET.getlist("dietary")
+    ingredient_list = request.GET.getlist("ingredient")
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
     page = request.GET.get("page", 1)
@@ -39,10 +29,11 @@ def all_dishes(request):
         .with_portions()
         .with_images()
         .select_related("category")
+        .annotate(min_portion_price=Min('portions__price'))
+        .order_by('name')
     )
 
     current_category = None
-
     if category_slug:
         current_category = get_object_or_404(Category, slug=category_slug)
         dishes = dishes.filter(category=current_category)
@@ -54,37 +45,65 @@ def all_dishes(request):
             Q(dietary_info__icontains=search_term)
         )
 
-    if dietary:
-        dishes = dishes.filter(dietary_info__iexact=dietary)
+    if dietary_list:
+        q_dietary = Q()
+        for d in dietary_list:
+            q_dietary |= Q(dietary_info__iexact=d)
+        dishes = dishes.filter(q_dietary)
 
-    if ingredient:
-        dishes = dishes.filter(ingredients__icontains=ingredient)
+    if ingredient_list:
+        q_ingredients = Q()
+        for ing in ingredient_list:
+            q_ingredients |= Q(ingredients__icontains=ing)
+        dishes = dishes.filter(q_ingredients)
 
     if min_price:
-        dishes = dishes.filter(price__gte=min_price)
+        try:
+            min_price_val = float(min_price)
+            dishes = dishes.filter(
+                Q(price__gte=min_price_val) | Q(min_portion_price__gte=min_price_val)
+            )
+        except ValueError:
+            pass
 
     if max_price:
-        dishes = dishes.filter(price__lte=max_price)
+        try:
+            max_price_val = float(max_price)
+            dishes = dishes.filter(
+                Q(price__lte=max_price_val) | Q(min_portion_price__lte=max_price_val)
+            )
+        except ValueError:
+            pass
 
     paginator = Paginator(dishes.distinct(), 8)
-
     try:
         dishes_page = paginator.page(page)
     except (PageNotAnInteger, EmptyPage):
         dishes_page = paginator.page(1)
 
+    dietary_choices = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Spicy']
+    ingredient_choices = ['butter', 'cheese', 'oil', 'salt', 'pepper']
+
+    get_params = request.GET.copy()
+    if 'page' in get_params:
+        get_params.pop('page')
+    get_params_encoded = get_params.urlencode()
+
     return render(
         request,
-        "dishes/dishes.html",
+        "dishes/dish_list.html",
         {
             "dishes": dishes_page,
             "categories": categories,
             "current_category": current_category,
             "search_term": search_term,
-            "dietary": dietary,
-            "ingredient": ingredient,
+            "dietary": dietary_list,
+            "ingredient": ingredient_list,
             "min_price": min_price,
             "max_price": max_price,
+            "dietary_choices": dietary_choices,
+            "ingredient_choices": ingredient_choices,
+            "get_params": get_params_encoded,
         }
     )
 
