@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 
     const searchForms = [
@@ -9,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchForms.forEach(({ inputId, formId }) => {
         const input = document.getElementById(inputId);
         const form = document.getElementById(formId);
+
         if (!input || !form) return;
 
         input.addEventListener('keydown', e => {
@@ -21,15 +21,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.portion-select').forEach(select => {
         select.addEventListener('change', () => {
+
             const card = select.closest('.card-body');
+            if (!card) return;
+
             const qtyInput = card.querySelector('.dish-qty');
             const priceEl = card.querySelector('.dish-price');
 
-            const price = parseFloat(
-                select.options[select.selectedIndex].textContent.split('- $')[1]
-            ) || 0;
+            if (!qtyInput || !priceEl) return;
 
-            const qty = parseInt(qtyInput.value) || 1;
+            const optionText = select.options[select.selectedIndex]?.textContent || '';
+            const pricePart = optionText.split('- $')[1];
+            const price = parseFloat(pricePart) || 0;
+
+            const qty = parseInt(qtyInput.value, 10) || 1;
 
             priceEl.textContent = `$${(price * qty).toFixed(2)}`;
 

@@ -24,13 +24,23 @@ def get_cached_categories():
 
 
 def all_dishes(request):
-    """Show all dishes with optional search, category filter, and pagination."""
+    """Show all dishes with search, filters, category, and pagination."""
     search_term = request.GET.get("q", "").strip()
     category_slug = request.GET.get("category", "").strip()
+    dietary = request.GET.get("dietary", "").strip()
+    ingredient = request.GET.get("ingredient", "").strip()
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
     page = request.GET.get("page", 1)
 
     categories = get_cached_categories()
-    dishes = Dish.objects.available().with_portions().with_images().select_related("category")
+    dishes = (
+        Dish.objects.available()
+        .with_portions()
+        .with_images()
+        .select_related("category")
+    )
+
     current_category = None
 
     if category_slug:
@@ -44,7 +54,20 @@ def all_dishes(request):
             Q(dietary_info__icontains=search_term)
         )
 
-    paginator = Paginator(dishes, 8)
+    if dietary:
+        dishes = dishes.filter(dietary_info__iexact=dietary)
+
+    if ingredient:
+        dishes = dishes.filter(ingredients__icontains=ingredient)
+
+    if min_price:
+        dishes = dishes.filter(price__gte=min_price)
+
+    if max_price:
+        dishes = dishes.filter(price__lte=max_price)
+
+    paginator = Paginator(dishes.distinct(), 8)
+
     try:
         dishes_page = paginator.page(page)
     except (PageNotAnInteger, EmptyPage):
@@ -58,6 +81,10 @@ def all_dishes(request):
             "categories": categories,
             "current_category": current_category,
             "search_term": search_term,
+            "dietary": dietary,
+            "ingredient": ingredient,
+            "min_price": min_price,
+            "max_price": max_price,
         }
     )
 
