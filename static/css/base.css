@@ -37,6 +37,11 @@ main {
   color: black;
 }
 
+.shop-now-button:hover {
+  background-color: #e55b2c;
+  color: #fff;
+}
+
 /* Navbar */
 .navbar-brand {
     font-size: 1.5rem;

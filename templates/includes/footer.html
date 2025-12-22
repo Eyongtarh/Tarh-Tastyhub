@@ -43,29 +43,52 @@
             <a href="{% url 'privacy' %}" class="footer-link">Privacy Policy</a>
           </li>
           <li>
-            <a href="{% url 'terms' %}" class="footer-link">Terms & Conditions</a>
+            <a href="{% url 'terms' %}" class="footer-link">Terms &amp; Conditions</a>
           </li>
         </ul>
       </div>
 
-      <!-- Social -->
+      <!-- Social + Newsletter -->
       <div class="col-12 col-md-4">
         <h6 class="fw-bold mb-3">Social</h6>
         <p class="small">Keep up to date with all our latest offers</p>
-
-        <a href="https://www.facebook.com/profile.php?id=61585209765956" target="_blank" class="footer-link d-inline-flex align-items-center gap-2">
-          <i class="fa-brands fa-facebook social-icon"></i>
-          Follow us on Facebook
-        </a>
+        <a href="https://www.facebook.com/profile.php?id=61585209765956" target="_blank" class="footer-link d-inline-flex align-items-center gap-2"><i class="fa-brands fa-facebook social-icon"></i> Follow us on Facebook</a>
 
         <hr class="border-light my-3" />
 
         <h6 class="fw-bold">Subscribe</h6>
         <p class="small">Get exclusive offers and discount codes by subscribing to our monthly newsletter</p>
-        <!-- Mailchimp form here -->
+
+        <!-- Mailchimp Form -->
+        <div id="mc_embed_shell">
+          <form action="https://herokuapp.us11.list-manage.com/subscribe/post?u=f0819ad8b11e88d2989ff37b0&amp;id=2495c1c929" method="post" target="_blank" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate d-flex gap-2">
+            <input type="email" name="EMAIL" class="form-control form-control-sm required email" id="mce-EMAIL" placeholder="Email address" required />
+            <input type="text" name="b_f0819ad8b11e88d2989ff37b0_2495c1c929" tabindex="-1" style="position:absolute; left:-5000px;" />
+            <button type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn btn-warning btn-sm shop-now-button">Subscribe</button>
+          </form>
+          <div id="mc-message" class="small mt-2"></div>
+        </div>
 
         <p class="small mt-3 mb-0">&copy; {{ now|date:'Y' }} Tarh Tastyhub. All rights reserved.</p>
       </div>
     </div>
   </div>
 </footer>
+
+<!-- Mailchimp validation script -->
+<script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('mc-embedded-subscribe-form')
+    const emailInput = document.getElementById('mce-EMAIL')
+    const message = document.getElementById('mc-message')
+  
+    if (!form || !emailInput || !message) return
+  
+    form.addEventListener('submit', function (e) {
+      if (!emailInput.value) return
+  
+      message.textContent = 'Subscribed'
+    })
+  })
+</script>

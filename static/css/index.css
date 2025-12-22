@@ -28,11 +28,6 @@
   max-width: 600px;
 }
 
-.shop-now-button:hover {
-  background-color: #e55b2c;
-  color: #fff;
-}
-
 /* Media Queries */
 @media (max-width: 767px) {
   .hero-overlay {
