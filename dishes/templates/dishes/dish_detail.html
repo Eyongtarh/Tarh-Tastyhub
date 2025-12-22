@@ -2,8 +2,8 @@
 {% load static %}
 {% load dishes_extras %}
 
-{% block title %}
-  {{ dish.name }} Tarh Tastyhub
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
 {% endblock %}
 
 {% block content %}
