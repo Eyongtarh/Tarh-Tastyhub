@@ -17,7 +17,7 @@
   <!-- SEARCH -->
   <form method="get" action="{% url 'dish_list' %}" class="d-flex justify-content-center mb-4 gap-2 flex-wrap">
     <input type="text" id="search-input" name="q" value="{{ search_term }}" placeholder="Search dishes..." class="form-control w-50" />
-    <button class="btn btn-warning fw-bold"><i class="fas fa-search"></i></button>
+    <button class="btn btn-warning fw-bold shop-now-button"><i class="fas fa-search fa-icon"></i></button>
   </form>
 
   <!-- CATEGORY FILTER -->
@@ -39,7 +39,7 @@
 
       <!-- PRICE -->
       <div class="dropdown">
-        <button class="btn btn-outline-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+        <button class="btn btn-warning btn-sm dropdown-toggle shop-now-button" data-bs-toggle="dropdown">
           Price
         </button>
         <ul class="dropdown-menu">
@@ -51,7 +51,7 @@
 
       <!-- DIETARY -->
       <div class="dropdown">
-        <button class="btn btn-outline-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+        <button class="btn btn-warning btn-sm dropdown-toggle shop-now-button" data-bs-toggle="dropdown">
           Dietary
         </button>
         <ul class="dropdown-menu">
@@ -63,7 +63,7 @@
 
       <!-- INGREDIENT -->
       <div class="dropdown">
-        <button class="btn btn-outline-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+        <button class="btn btn-warning btn-sm dropdown-toggle shop-now-button" data-bs-toggle="dropdown">
           Ingredients
         </button>
         <ul class="dropdown-menu">
@@ -74,9 +74,7 @@
       </div>
 
       <!-- RESET -->
-      <a href="{% url 'dish_list' %}" class="btn btn-outline-secondary btn-sm">
-        Reset Filters
-      </a>
+      <a href="{% url 'dish_list' %}" class="btn btn-secondary btn-sm px-2 py-1 small">Reset Filters</a>
     </div>
   {% endwith %}
 
@@ -124,14 +122,14 @@
             </div>
 
             <!-- Add to Bag -->
-            <button class="btn btn-warning fw-bold add-to-bag w-100"
+            <button class="btn btn-warning fw-bold add-to-bag w-100 add-bag-button"
                     data-id="{{ dish.id }}"
                     data-portion-id="{% if dish.portions.exists %}{{ dish.portions.first.id }}{% else %}{{ dish.id }}{% endif %}">
               Add to Bag
             </button>
 
             <!-- View Details -->
-            <a href="{{ dish.get_absolute_url }}" class="btn btn-dark btn-sm w-100 mt-2">
+            <a href="{{ dish.get_absolute_url }}" class="btn btn-secondary btn-sm w-100 mt-2">
               View Details
             </a>
 
