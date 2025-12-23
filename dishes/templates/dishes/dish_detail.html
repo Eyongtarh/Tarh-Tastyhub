@@ -3,188 +3,79 @@
 {% load dishes_extras %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}">
+  <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
 {% endblock %}
 
 {% block content %}
 <div class="container py-5">
-
-  <!-- TITLE -->
-  <h2 class="fw-bold text-center mb-4 text-white">
-    <i class="fa-solid fa-plate-wheat"></i> Our Dishes
-  </h2>
-
-  <!-- SEARCH -->
-  <form method="get"
-        action="{% url 'dish_list' %}"
-        id="search-form"
-        class="d-flex justify-content-center mb-4 gap-2 flex-wrap">
-
-    {% if current_category %}
-      <input type="hidden" name="category" value="{{ current_category.slug }}">
-    {% endif %}
-
-    <input type="text"
-           id="search-input"
-           name="q"
-           value="{{ search_term }}"
-           placeholder="Search dishes..."
-           class="form-control w-50">
-
-    <button class="btn btn-warning fw-bold shop-now-button">
-      <i class="fas fa-search"></i>
-    </button>
-  </form>
-
-  <!-- CATEGORY FILTER -->
-  <div class="category-filter mb-4 text-center">
-    {% with base=request.GET|remove_keys:'category,page' %}
-      <a href="{% url 'dish_list' %}"
-         class="badge all {% if not current_category %}active{% endif %}">
-         All
-      </a>
-
-      {% for category in categories %}
-        <a href="?{{ base }}{% if base %}&{% endif %}category={{ category.slug }}"
-           class="badge category {% if current_category and current_category.slug == category.slug %}active{% endif %}">
-           {{ category.name }}
-        </a>
-      {% endfor %}
-    {% endwith %}
-  </div>
-
-  <!-- ADVANCED FILTERS -->
-  <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
-    {% with base=request.GET|remove_keys:'page' %}
-
-    <!-- PRICE -->
-    <div class="dropdown">
-      <button class="btn btn-warning btn-sm dropdown-toggle shop-now-button" data-bs-toggle="dropdown">
-        Price
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="?{{ base }}&max_price=10">Under $10</a></li>
-        <li><a class="dropdown-item" href="?{{ base }}&min_price=10&max_price=20">$10 – $20</a></li>
-        <li><a class="dropdown-item" href="?{{ base }}&min_price=20">Over $20</a></li>
-      </ul>
+  <div class="row">
+    <!-- Dish Image -->
+    <div class="col-md-6">
+      {% if dish.image %}
+        <img src="{{ dish.image.url }}" class="img-fluid rounded-4" alt="{{ dish.name }}" />
+      {% else %}
+        <img src="{% static 'images/no-image.png' %}" class="img-fluid rounded-4" alt="No Image" />
+      {% endif %}
     </div>
 
-    <!-- DIETARY -->
-    <div class="dropdown">
-      <button class="btn btn-warning btn-sm dropdown-toggle shop-now-button" data-bs-toggle="dropdown">
-        Dietary
-      </button>
-      <ul class="dropdown-menu">
-        {% for option in dietary_choices %}
-          <li>
-            <a class="dropdown-item" href="?{{ base }}&dietary={{ option }}">
-              {{ option }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
+    <!-- Dish Info -->
+    <div class="col-md-6">
+      <h2 class="fw-bold">{{ dish.name }}</h2>
+      <p class="text-muted">{{ dish.description }}</p>
 
-    <!-- INGREDIENT -->
-    <div class="dropdown">
-      <button class="btn btn-warning btn-sm dropdown-toggle shop-now-button" data-bs-toggle="dropdown">
-        Ingredients
-      </button>
-      <ul class="dropdown-menu">
-        {% for ing in ingredient_choices %}
-          <li>
-            <a class="dropdown-item" href="?{{ base }}&ingredient={{ ing }}">
-              {{ ing|capfirst }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
+      <!-- Portion Select -->
+      {% if dish.portions.exists %}
+        <select class="form-select mb-2 portion-select" aria-label="Select portion">
+          {% for portion in dish.portions.all %}
+            <option value="{{ portion.id }}" data-price="{{ portion.price }}" {% if forloop.first %}selected{% endif %}>
+              {{ portion.size }} - ${{ portion.price }}
+            </option>
+          {% endfor %}
+        </select>
+        <p class="fw-bold text-warning dish-price">$ {{ dish.portions.first.price }}</p>
+        {% with portion_id=dish.portions.first.id %}
+          {% comment %}Used in data-portion-id for JS{% endcomment %}
+        {% endwith %}
+      {% else %}
+        <p class="fw-bold text-warning dish-price">$ {{ dish.price }}</p>
+        {% with portion_id=dish.id %}
+        {% endwith %}
+      {% endif %}
 
-    <!-- RESET -->
-    <a href="{% url 'dish_list' %}" class="btn btn-secondary btn-sm">
-      Reset Filters
-    </a>
-
-    {% endwith %}
-  </div>
-
-  <!-- DISH GRID -->
-  <div class="row g-4">
-    {% for dish in dishes %}
-      <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card h-100 shadow-sm border-0 dish-card">
-
-          {% if dish.image %}
-            <img src="{{ dish.image.url }}" class="card-img-top rounded-top-4">
-          {% else %}
-            <img src="{% static 'images/no-image.png' %}" class="card-img-top rounded-top-4">
-          {% endif %}
-
-          <div class="card-body text-center">
-            <h6 class="fw-bold">{{ dish.name }}</h6>
-            <p class="text-muted small">{{ dish.description|truncatewords:12 }}</p>
-
-            {% if dish.portions.exists %}
-              <select class="form-select mb-2 portion-select">
-                {% for portion in dish.portions.all %}
-                  <option value="{{ portion.id }}"
-                          data-price="{{ portion.price }}"
-                          {% if forloop.first %}selected{% endif %}>
-                    {{ portion.size }} - ${{ portion.price }}
-                  </option>
-                {% endfor %}
-              </select>
-              <p class="fw-bold text-warning dish-price">
-                ${{ dish.portions.first.price }}
-              </p>
-            {% else %}
-              <p class="fw-bold text-warning dish-price">${{ dish.price }}</p>
-            {% endif %}
-
-            <div class="d-flex justify-content-center gap-2 mb-2">
-              <button type="button" class="btn btn-outline-secondary dish-qty-decrement">-</button>
-              <input type="number" class="form-control dish-qty" value="1" min="1" style="width:70px;">
-              <button type="button" class="btn btn-outline-secondary dish-qty-increment">+</button>
-            </div>
-
-            <button class="btn btn-warning fw-bold w-100 add-bag-button"
-                    data-id="{{ dish.id }}">
-              Add to Bag
-            </button>
-
-            <a href="{{ dish.get_absolute_url }}" class="btn btn-secondary btn-sm w-100 mt-2">
-              View Details
-            </a>
-          </div>
-        </div>
+      <!-- Quantity Controls -->
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <button type="button" class="btn btn-outline-secondary dish-qty-decrement">-</button>
+        <input type="number"
+               class="form-control dish-qty"
+               value="{{ quantity }}"
+               min="1"
+               style="width:70px;"
+               data-portion-id="{% if dish.portions.exists %}{{ dish.portions.first.id }}{% else %}{{ dish.id }}{% endif %}" />
+        <button type="button" class="btn btn-outline-secondary dish-qty-increment">+</button>
       </div>
-    {% empty %}
-      <p class="text-center text-muted">No dishes found.</p>
-    {% endfor %}
+
+      <!-- Add to Bag Button -->
+      <button class="btn btn-warning fw-bold add-to-bag shop-now-button"
+              data-id="{{ dish.id }}"
+              data-portion-id="{% if dish.portions.exists %}{{ dish.portions.first.id }}{% else %}{{ dish.id }}{% endif %}">
+        Add to Bag
+      </button>
+
+      <!-- Optional Dish Info -->
+      {% if dish.ingredients %}
+        <hr />
+        <h6>Ingredients:</h6>
+        <p>{{ dish.ingredients }}</p>
+      {% endif %}
+
+      {% if dish.dietary_info %}
+        <p><strong>Dietary Info:</strong> {{ dish.dietary_info }}</p>
+      {% endif %}
+
+      {% if dish.prep_time %}
+        <p><strong>Preparation Time:</strong> {{ dish.prep_time }} min</p>
+      {% endif %}
+    </div>
   </div>
-
-  <!-- PAGINATION -->
-  {% if dishes.has_other_pages %}
-    <nav class="mt-4">
-      <ul class="pagination justify-content-center">
-        {% for num in dishes.paginator.page_range %}
-          {% with base=request.GET|remove_keys:'page' %}
-            <li class="page-item {% if dishes.number == num %}active{% endif %}">
-              <a class="page-link" href="?{{ base }}{% if base %}&{% endif %}page={{ num }}">
-                {{ num }}
-              </a>
-            </li>
-          {% endwith %}
-        {% endfor %}
-      </ul>
-    </nav>
-  {% endif %}
-
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'dishes/js/bag.js' %}"></script>
-<script src="{% static 'dishes/js/search.js' %}"></script>
 {% endblock %}

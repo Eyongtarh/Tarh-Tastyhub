@@ -3,26 +3,40 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm d-none d-lg-block">
   <div class="container">
+    <!-- Brand / Logo -->
     <a href="{% url 'home' %}" class="brand-logo text-decoration-none">
       <i class="fa-solid fa-utensils brand-icon"></i>
       <span class="brand-accent">Tarh</span>
       <span class="brand-main">Tastyhub</span>
     </a>
 
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto">
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <!-- Left Nav -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
 
+        <!-- Dishes Dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Dishes</a>
-          <ul class="dropdown-menu">
-            {% for category in categories %}
+          <a class="nav-link dropdown-toggle" href="#" id="dishesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dishes</a>
+
+          <ul class="dropdown-menu" aria-labelledby="dishesDropdown">
+            {% if categories %}
+              {% for category in categories %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'dish_list' %}?category={{ category.slug }}">{{ category.name }}</a>
+                </li>
+              {% endfor %}
+            {% else %}
               <li>
-                <a class="dropdown-item" href="{% url 'dish_list' %}?category={{ category.slug }}">{{ category.name }}</a>
+                <span class="dropdown-item disabled text-muted">No categories</span>
               </li>
-            {% endfor %}
+            {% endif %}
           </ul>
         </li>
 
@@ -32,6 +46,48 @@
 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'checkout' %}">Checkout</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'feedback' %}">Contact</a>
+        </li>
+      </ul>
+
+      <!-- Right Nav -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+          <!-- User Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-user me-1"></i>{{ user.username }}</a>
+
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              {% if user.is_superuser %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                </li>
+              {% endif %}
+
+              <li>
+                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+              </li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+          </li>
+        {% endif %}
+
+        <!-- Bag Icon -->
+        <li class="nav-item ms-3 position-relative">
+          <a class="nav-link position-relative" href="{% url 'bag' %}">
+            <i class="fa-solid fa-shopping-bag fs-4"></i>
+            <span id="bag-count" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size: 0.75rem;">{{ bag_count|default:'0' }}</span>
+          </a>
         </li>
       </ul>
     </div>
