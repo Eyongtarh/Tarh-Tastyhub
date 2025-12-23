@@ -15,8 +15,15 @@ from profiles.models import UserProfile
 
 logger = logging.getLogger(__name__)
 
+# Delivery fee settings
+MIN_FREE_DELIVERY = getattr(settings, "MIN_FREE_DELIVERY", Decimal("60.00"))
+DEFAULT_DELIVERY = getattr(settings, "DEFAULT_DELIVERY_FEE", Decimal("4.00"))
+
 
 def _to_decimal(value, fallback=Decimal("0.00")):
+    """
+    Safely convert a value to a Decimal rounded to two decimal places.
+    """
     try:
         if value is None or value == "":
             return fallback
@@ -28,12 +35,18 @@ def _to_decimal(value, fallback=Decimal("0.00")):
 
 
 class StripeWH_Handler:
-    """Handles Stripe webhooks."""
+    """
+    Handles incoming Stripe webhook events and creates orders
+    when payments are successfully completed.
+    """
 
     def __init__(self, request):
         self.request = request
 
     def _send_confirmation_email(self, order, email_override=None):
+        """
+        Send an order confirmation email to the customer.
+        """
         email = (
             email_override
             or order.email
@@ -42,24 +55,33 @@ class StripeWH_Handler:
         if not email:
             logger.warning(f"No email for order {order.order_number}")
             return
+
         subject = render_to_string(
             "checkout/confirmation_emails/confirmation_email_subject.txt",
             {"order": order},
         ).strip()
+
         body = render_to_string(
             "checkout/confirmation_emails/confirmation_email_body.txt",
             {"order": order, "contact_email": settings.DEFAULT_FROM_EMAIL},
         )
+
         try:
             send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [email])
         except Exception as e:
             logger.exception(f"Email send failed for order {order.order_number}: {e}")
 
     def handle_event(self, event):
+        """
+        Default handler for unrecognized Stripe events.
+        """
         logger.info(f"Unhandled webhook: {event.get('type')}")
         return HttpResponse("Unhandled event", status=200)
 
     def _parse_bag(self, bag_raw):
+        """
+        Parse and clean bag data from Stripe metadata.
+        """
         try:
             data = json.loads(bag_raw) if isinstance(bag_raw, str) else bag_raw
         except Exception:
@@ -77,17 +99,11 @@ class StripeWH_Handler:
                 logger.warning(f"Invalid bag entry: {pid}:{qty}")
         return cleaned
 
-    def _compute_delivery_fee_for_subtotal(self, subtotal):
-        try:
-            min_free = _to_decimal(getattr(settings, "MIN_FREE_DELIVERY", Decimal("20.00")))
-            default_fee = _to_decimal(getattr(settings, "DEFAULT_DELIVERY_FEE", Decimal("3.99")))
-        except Exception:
-            min_free = Decimal("20.00")
-            default_fee = Decimal("3.99")
-
-        return Decimal("0.00") if subtotal >= min_free else default_fee
-
     def handle_payment_intent_succeeded(self, event):
+        """
+        Handle successful Stripe payment intents by
+        creating the corresponding Order.
+        """
         intent = event["data"]["object"]
         pid = intent.get("id")
         metadata = intent.get("metadata", {}) or {}
@@ -95,6 +111,7 @@ class StripeWH_Handler:
         bag_raw = metadata.get("bag", "{}")
         bag = self._parse_bag(bag_raw)
 
+        # Get billing email from Stripe charge object
         try:
             charge = intent.get("charges", {}).get("data", [{}])[0]
             billing_email = charge.get("billing_details", {}).get("email")
@@ -114,6 +131,11 @@ class StripeWH_Handler:
             except UserProfile.DoesNotExist:
                 profile = None
 
+        delivery_type = metadata.get("delivery_type", "delivery")
+        pickup_time = metadata.get("pickup_time") or None
+        local = metadata.get("local", "")
+
+        # Check if order already exists
         try:
             existing = Order.objects.get(stripe_pid=pid)
             self._send_confirmation_email(existing)
@@ -136,12 +158,15 @@ class StripeWH_Handler:
                     town_or_city=(addr.get("city") or "").strip()[:40],
                     county=(addr.get("state") or "").strip()[:80],
                     postcode=(addr.get("postal_code") or "").strip()[:20],
+                    local=local,
+                    delivery_type=delivery_type,
+                    pickup_time=pickup_time,
                     original_bag=bag_raw,
                     stripe_pid=pid,
                 )
 
+                # Compute running total and create line items
                 running_total = Decimal("0.00")
-
                 for portion_id, qty in bag.items():
                     try:
                         portion = DishPortion.objects.select_related("dish").get(pk=int(portion_id))
@@ -149,9 +174,7 @@ class StripeWH_Handler:
                         logger.warning(f"Missing or invalid portion id {portion_id}, skipping.")
                         continue
 
-                    line_total = (portion.price * int(qty)).quantize(
-                        Decimal("0.01"), rounding=ROUND_HALF_UP
-                    )
+                    line_total = (portion.price * int(qty)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
                     running_total += line_total
 
                     OrderLineItem.objects.create(
@@ -161,17 +184,20 @@ class StripeWH_Handler:
                         price=portion.price,
                     )
 
-                metadata_delivery = metadata.get("delivery_fee")
-                delivery_fee = (
-                    _to_decimal(metadata_delivery, fallback=Decimal("0.00"))
-                    if metadata_delivery
-                    else self._compute_delivery_fee_for_subtotal(running_total)
-                )
+                # Compute delivery fee
+                if running_total >= MIN_FREE_DELIVERY:
+                    delivery_fee = _to_decimal(0.00)
+                else:
+                    delivery_fee = _to_decimal(DEFAULT_DELIVERY)
 
                 order.delivery_fee = delivery_fee
-                order.grand_total = (running_total + delivery_fee).quantize(
-                    Decimal("0.01"), rounding=ROUND_HALF_UP
+                order.grand_total = _to_decimal(running_total + delivery_fee)
+
+                logger.info(
+                    f"Order {order.order_number} created: subtotal={running_total}, "
+                    f"delivery_fee={delivery_fee}, grand_total={order.grand_total}"
                 )
+
                 order.save()
 
         except Exception as e:
@@ -179,16 +205,24 @@ class StripeWH_Handler:
             return HttpResponse("Order error", status=500)
 
         self._send_confirmation_email(order)
-
         logger.info(f"Order created OK: {order.order_number}")
         return HttpResponse("Success", status=200)
 
     def handle_payment_intent_payment_failed(self, event):
+        """
+        Handle failed Stripe payment intents.
+        """
         intent = event["data"]["object"]
         pid = intent.get("id")
         metadata = intent.get("metadata", {}) or {}
+
         try:
-            logger.info("Payment failed for pid=%s metadata=%s", pid, json.dumps(metadata))
+            logger.info(
+                "Payment failed for pid=%s metadata=%s",
+                pid,
+                json.dumps(metadata),
+            )
         except Exception:
             logger.info("Payment failed (could not dump metadata)")
+
         return HttpResponse("Payment failed", status=200)

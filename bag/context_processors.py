@@ -4,11 +4,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# Default delivery fee and threshold for free delivery
 DEFAULT_DELIVERY = Decimal("4.00")
-MIN_FREE_DELIVERY = Decimal("80.00")
+MIN_FREE_DELIVERY = Decimal("60.00")
 
 
 def bag_contents(request):
+    """
+    Retrieve and normalize the shopping bag from the session,
+    calculate totals, and determine delivery fees.
+    """
     session_bag = request.session.get("bag", {})
     if not isinstance(session_bag, dict):
         session_bag = {}
@@ -32,7 +37,11 @@ def bag_contents(request):
     request.session.modified = True
 
     portion_ids = [int(pid) for pid in normalized.keys()]
-    portions = DishPortion.objects.select_related("dish").filter(id__in=portion_ids)
+    portions = (
+        DishPortion.objects
+        .select_related("dish")
+        .filter(id__in=portion_ids)
+    )
     portion_map = {p.id: p for p in portions}
 
     items = []
@@ -45,7 +54,9 @@ def bag_contents(request):
         portion = portion_map.get(pid)
 
         if not portion:
-            logger.warning(f"Bag contains missing DishPortion id={pid}; removing.")
+            logger.warning(
+                "Bag contains missing DishPortion id=%s; removing.", pid
+            )
             session_bag.pop(pid_str, None)
             removed_missing_items = True
             continue
@@ -54,14 +65,16 @@ def bag_contents(request):
         total += line_total
         count += qty
 
-        items.append({
-            "portion_id": pid,
-            "portion": portion,
-            "dish": portion.dish,
-            "quantity": qty,
-            "price": portion.price,
-            "line_total": line_total,
-        })
+        items.append(
+            {
+                "portion_id": pid,
+                "portion": portion,
+                "dish": portion.dish,
+                "quantity": qty,
+                "price": portion.price,
+                "line_total": line_total,
+            }
+        )
 
     if removed_missing_items:
         request.session["bag"] = session_bag
@@ -72,7 +85,7 @@ def bag_contents(request):
         delivery_fee_display = "Free"
     else:
         delivery_fee = DEFAULT_DELIVERY
-        delivery_fee_display = f"${DEFAULT_DELIVERY:.2f}"
+        delivery_fee_display = "${:.2f}".format(DEFAULT_DELIVERY)
 
     grand_total = total + delivery_fee
 
