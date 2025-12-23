@@ -14,7 +14,6 @@ def admin_required(user):
 
 
 def all_dishes(request):
-    """Show all dishes with search, filters, category, and pagination."""
     search_term = request.GET.get("q", "").strip()
     category_slug = request.GET.get("category", "").strip()
     dietary_list = request.GET.getlist("dietary")
@@ -24,13 +23,14 @@ def all_dishes(request):
     page = request.GET.get("page", 1)
 
     categories = get_cached_categories()
+
     dishes = (
         Dish.objects.available()
         .with_portions()
         .with_images()
         .select_related("category")
-        .annotate(min_portion_price=Min('portions__price'))
-        .order_by('name')
+        .annotate(min_portion_price=Min("portions__price"))
+        .order_by("name")
     )
 
     current_category = None
@@ -46,31 +46,31 @@ def all_dishes(request):
         )
 
     if dietary_list:
-        q_dietary = Q()
+        q = Q()
         for d in dietary_list:
-            q_dietary |= Q(dietary_info__iexact=d)
-        dishes = dishes.filter(q_dietary)
+            q |= Q(dietary_info__iexact=d)
+        dishes = dishes.filter(q)
 
     if ingredient_list:
-        q_ingredients = Q()
+        q = Q()
         for ing in ingredient_list:
-            q_ingredients |= Q(ingredients__icontains=ing)
-        dishes = dishes.filter(q_ingredients)
+            q |= Q(ingredients__icontains=ing)
+        dishes = dishes.filter(q)
 
     if min_price:
         try:
-            min_price_val = float(min_price)
+            val = float(min_price)
             dishes = dishes.filter(
-                Q(price__gte=min_price_val) | Q(min_portion_price__gte=min_price_val)
+                Q(price__gte=val) | Q(min_portion_price__gte=val)
             )
         except ValueError:
             pass
 
     if max_price:
         try:
-            max_price_val = float(max_price)
+            val = float(max_price)
             dishes = dishes.filter(
-                Q(price__lte=max_price_val) | Q(min_portion_price__lte=max_price_val)
+                Q(price__lte=val) | Q(min_portion_price__lte=val)
             )
         except ValueError:
             pass
@@ -81,13 +81,8 @@ def all_dishes(request):
     except (PageNotAnInteger, EmptyPage):
         dishes_page = paginator.page(1)
 
-    dietary_choices = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Spicy']
-    ingredient_choices = ['butter', 'cheese', 'oil', 'salt', 'pepper']
-
-    get_params = request.GET.copy()
-    if 'page' in get_params:
-        get_params.pop('page')
-    get_params_encoded = get_params.urlencode()
+    dietary_choices = ["Vegetarian", "Vegan", "Gluten-Free", "Spicy"]
+    ingredient_choices = ["butter", "cheese", "oil", "salt", "pepper"]
 
     return render(
         request,
@@ -103,45 +98,7 @@ def all_dishes(request):
             "max_price": max_price,
             "dietary_choices": dietary_choices,
             "ingredient_choices": ingredient_choices,
-            "get_params": get_params_encoded,
-        }
-    )
-
-
-def dish_list_by_category(request, category_slug):
-    """Show all dishes in a category."""
-    category = get_object_or_404(Category, slug=category_slug)
-    page = request.GET.get("page", 1)
-    categories = get_cached_categories()
-
-    cache_key = f"category_dishes_{category_slug}"
-    dishes = cache.get(cache_key)
-
-    if not dishes:
-        dishes = (
-            Dish.objects.available()
-            .filter(category=category)
-            .with_portions()
-            .with_images()
-            .select_related("category")
-        )
-        cache.set(cache_key, dishes, 3600)
-
-    paginator = Paginator(dishes, 12)
-    try:
-        dishes_page = paginator.page(page)
-    except (PageNotAnInteger, EmptyPage):
-        dishes_page = paginator.page(1)
-
-    return render(
-        request,
-        "dishes/dishes.html",
-        {
-            "dishes": dishes_page,
-            "categories": categories,
-            "current_category": category,
-            "search_term": "",
-        }
+        },
     )
 
 
