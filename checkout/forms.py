@@ -3,6 +3,11 @@ from .models import Order
 
 
 class OrderForm(forms.ModelForm):
+    """
+    Form for creating/updating an Order.
+    Includes fields for customer info, delivery type,
+    and optional pickup time.
+    """
     pickup_time = forms.DateTimeField(
         required=False,
         widget=forms.DateTimeInput(
@@ -21,7 +26,9 @@ class OrderForm(forms.ModelForm):
 
     delivery_type = forms.ChoiceField(
         choices=DELIVERY_CHOICES,
-        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        widget=forms.RadioSelect(
+            attrs={'class': 'form-check-input'}
+        ),
         label='Delivery Method',
     )
 
@@ -32,7 +39,10 @@ class OrderForm(forms.ModelForm):
             attrs={
                 'readonly': True,
                 'class': 'form-control-plaintext text-muted small mb-2',
-                'value': 'Your card details are securely processed by Stripe and never stored on our servers.',
+                'value': (
+                    'Your card details are securely processed by Stripe '
+                    'and never stored on our servers.'
+                ),
                 'tabindex': '-1',
             }
         )
@@ -53,12 +63,15 @@ class OrderForm(forms.ModelForm):
             'pickup_time',
         ]
         widgets = {
-            'local': forms.Select(attrs={
-                'class': 'form-control mb-2 stripe-style-input',
-            }),
+            'local': forms.Select(
+                attrs={'class': 'form-control mb-2 stripe-style-input'}
+            ),
         }
 
     def __init__(self, *args, **kwargs):
+        """
+        Add default CSS classes and placeholders to all fields.
+        """
         super().__init__(*args, **kwargs)
 
         for name, field in self.fields.items():
@@ -79,9 +92,16 @@ class OrderForm(forms.ModelForm):
             field.label = ''
 
     def clean(self):
+        """
+        Ensure pickup_time is provided if
+        delivery_type is 'pickup'.
+        """
         cleaned = super().clean()
 
-        if cleaned.get('delivery_type') == 'pickup' and not cleaned.get('pickup_time'):
+        if (
+            cleaned.get('delivery_type') == 'pickup' and
+            not cleaned.get('pickup_time')
+        ):
             self.add_error(
                 'pickup_time',
                 'Pickup time is required for pickup orders.'

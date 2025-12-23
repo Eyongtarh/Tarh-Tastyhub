@@ -21,11 +21,10 @@ STATUS_COLORS = {
 @staff_member_required
 def admin_dashboard(request):
     """
-    Staff dashboard with:
+    Staff-only dashboard view displaying:
     - Orders
-    - Dishes
-    - Categories
-    - Feedback (filter + pagination)
+    - All Dishes and Categories
+    - Feedback messages
     """
     orders = (
         Order.objects
@@ -33,6 +32,7 @@ def admin_dashboard(request):
         .prefetch_related('lineitems__portion__dish')
         .order_by('-date')[:200]
     )
+
     for order in orders:
         order.status_color = STATUS_COLORS.get(order.status, 'secondary')
 
@@ -48,7 +48,6 @@ def admin_dashboard(request):
         feedback_qs = Feedback.objects.all()
 
     feedback_qs = feedback_qs.order_by('-created_at')
-
     paginator = Paginator(feedback_qs, 10)
     page_number = request.GET.get("page")
     feedback_list = paginator.get_page(page_number)
@@ -60,13 +59,19 @@ def admin_dashboard(request):
         'feedback_list': feedback_list,
         'filter_status': filter_status,
     }
-    return render(request, 'checkout/admin_dashboard.html', context)
+
+    return render(
+        request,
+        'checkout/admin_dashboard.html',
+        context
+    )
 
 
 @staff_member_required
 def update_order_status(request, order_id):
     """
-    Update the status of an order (non-ajax).
+    Update the status of a specific order
+    and only staff members can access
     """
     order = get_object_or_404(Order, pk=order_id)
 
@@ -75,13 +80,19 @@ def update_order_status(request, order_id):
         if new_status:
             order.status = new_status
             order.save()
-            messages.success(request, f"Order #{order.id} updated to '{new_status}'.")
+            messages.success(
+                request,
+                f"Order #{order.id} updated to '{new_status}'."
+            )
     return redirect('admin_dashboard')
 
 
 @staff_member_required
 @require_POST
 def mark_feedback_handled(request, feedback_id):
+    """
+    Mark a specific feedback entry as handled.
+    """
     fb = get_object_or_404(Feedback, pk=feedback_id)
     fb.handled = True
     fb.save()
@@ -91,6 +102,9 @@ def mark_feedback_handled(request, feedback_id):
 @staff_member_required
 @require_POST
 def mark_feedback_unhandled(request, feedback_id):
+    """
+    Mark a specific feedback entry as unhandled.
+    """
     fb = get_object_or_404(Feedback, pk=feedback_id)
     fb.handled = False
     fb.save()
@@ -99,16 +113,25 @@ def mark_feedback_unhandled(request, feedback_id):
 
 @staff_member_required
 def cancel_order(request, order_id):
+    """
+    Cancel an order is only allowed if order is not already completed
+    """
     order = get_object_or_404(Order, pk=order_id)
 
     if order.status == "Completed":
-        messages.error(request, "Completed orders cannot be cancelled.")
+        messages.error(
+            request,
+            "Completed orders cannot be cancelled."
+        )
         return redirect("admin_dashboard")
 
     if request.method == "POST":
         order.status = "Cancelled"
         order.save()
-        messages.success(request, f"Order #{order.order_number} has been cancelled.")
+        messages.success(
+            request,
+            f"Order #{order.order_number} has been cancelled."
+        )
         return redirect("admin_dashboard")
 
     context = {"order": order}

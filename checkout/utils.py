@@ -12,23 +12,26 @@ logger = logging.getLogger(__name__)
 
 def validate_bag(bag):
     """
-    Validate bag structure and contents.
-    Expect bag as {dish_portion_id: quantity}
+    Validate the shopping bag structure and contents.
     """
     if not isinstance(bag, dict):
         raise ValidationError("Bag must be a dictionary.")
 
     for portion_id, quantity in bag.items():
         if not isinstance(quantity, int) or quantity < 1:
-            raise ValidationError(f"Invalid quantity for portion {portion_id}")
+            raise ValidationError(
+                f"Invalid quantity for portion {portion_id}"
+            )
         if not DishPortion.objects.filter(id=portion_id).exists():
-            raise ValidationError(f"Dish portion with ID {portion_id} does not exist.")
+            raise ValidationError(
+                f"Dish portion with ID {portion_id} does not exist."
+            )
 
 
 @transaction.atomic
 def create_order_from_bag(user, bag, form_data):
     """
-    Create an order and line items from bag/session using DishPortion.
+    Create an Order and related OrderLineItems from a validated bag.
     """
     validate_bag(bag)
 
@@ -46,34 +49,48 @@ def create_order_from_bag(user, bag, form_data):
     order.save()
 
     for portion_id, quantity in bag.items():
-        portion = get_object_or_404(DishPortion, pk=portion_id)
+        portion = get_object_or_404(
+            DishPortion,
+            pk=portion_id,
+        )
         line_item = OrderLineItem(
             order=order,
             dish=portion.dish,
             portion=portion,
             quantity=quantity,
-            lineitem_total=portion.price * quantity
+            lineitem_total=portion.price * quantity,
         )
         line_item.save()
 
-    logger.info(f"Order {order.order_number} created for user {user}")
+    logger.info(
+        f"Order {order.order_number} created for user {user}"
+    )
     return order
 
 
 def calculate_bag_total(bag):
     """
-    Calculate total price for a bag with DishPortions.
+    Calculate and return the total price of all items in the bag.
     """
     total = Decimal("0.00")
+
     for portion_id, quantity in bag.items():
-        portion = get_object_or_404(DishPortion, pk=portion_id)
+        portion = get_object_or_404(
+            DishPortion,
+            pk=portion_id,
+        )
         total += portion.price * quantity
+
     return total
 
 
-def prevent_order_spam(request, key='last_order_time', cooldown_seconds=30):
+def prevent_order_spam(
+    request,
+    key='last_order_time',
+    cooldown_seconds=30,
+):
     """
-    Prevent repeated order submissions in a short time.
+    Prevent repeated order submissions.
     """
     now = timezone.now()
     last_time = request.session.get(key)
@@ -81,7 +98,11 @@ def prevent_order_spam(request, key='last_order_time', cooldown_seconds=30):
     if last_time:
         elapsed = (now - last_time).total_seconds()
         if elapsed < cooldown_seconds:
-            raise ValidationError(f"Please wait {int(cooldown_seconds - elapsed)} seconds before placing another order.")
+            raise ValidationError(
+                f"Please wait "
+                f"{int(cooldown_seconds - elapsed)} seconds "
+                f"before placing another order."
+            )
 
     request.session[key] = now
     request.session.modified = True

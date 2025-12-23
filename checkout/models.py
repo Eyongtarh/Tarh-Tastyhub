@@ -8,11 +8,17 @@ from decimal import Decimal, ROUND_HALF_UP
 
 
 def generate_order_number():
-    """Generate random order number."""
+    """
+    Generate a unique random order number.
+    """
     return uuid.uuid4().hex[:12].upper()
 
 
 class Order(models.Model):
+    """
+    Stores a single customer order, including delivery details,
+    payment info, and order status.
+    """
     DELIVERY_CHOICES = (
         ("delivery", "Delivery"),
         ("pickup", "Pickup"),
@@ -34,7 +40,11 @@ class Order(models.Model):
         related_name="orders",
     )
 
-    order_number = models.CharField(max_length=32, unique=True, default=generate_order_number)
+    order_number = models.CharField(
+        max_length=32,
+        unique=True,
+        default=generate_order_number,
+    )
     full_name = models.CharField(max_length=50)
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
@@ -44,14 +54,28 @@ class Order(models.Model):
     county = models.CharField(max_length=80, blank=True)
     postcode = models.CharField(max_length=20, blank=True)
     local = models.CharField(max_length=80, blank=True)
-
     date = models.DateTimeField(auto_now_add=True)
-    delivery_type = models.CharField(max_length=10, choices=DELIVERY_CHOICES, default="delivery")
+    delivery_type = models.CharField(
+        max_length=10,
+        choices=DELIVERY_CHOICES,
+        default="delivery",
+    )
     pickup_time = models.DateTimeField(null=True, blank=True)
-
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default="Pending")
-    grand_total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
-    delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, default=Decimal("0.00"))
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default="Pending",
+    )
+    grand_total = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("0.00"),
+    )
+    delivery_fee = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=Decimal("0.00"),
+    )
     stripe_pid = models.CharField(max_length=254, null=True, blank=True)
     original_bag = models.TextField(null=True, blank=True)
     public_tracking = models.BooleanField(default=False)
@@ -65,6 +89,9 @@ class Order(models.Model):
 
     @property
     def progress_percent(self):
+        """
+        Return order progress percentage based on status.
+        """
         value = {
             "pending": 25,
             "preparing": 50,
@@ -75,25 +102,49 @@ class Order(models.Model):
 
 
 class OrderLineItem(models.Model):
-    order = models.ForeignKey(Order, related_name="lineitems", on_delete=models.CASCADE)
-    portion = models.ForeignKey(DishPortion, on_delete=models.CASCADE)
+    """
+    Represents a single dish portion within an order.
+    """
+    order = models.ForeignKey(
+        Order,
+        related_name="lineitems",
+        on_delete=models.CASCADE,
+    )
+    portion = models.ForeignKey(
+        DishPortion,
+        on_delete=models.CASCADE,
+    )
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal("0.00"))
+    price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=Decimal("0.00"),
+    )
 
     class Meta:
         unique_together = ("order", "portion")
 
     @property
     def lineitem_total(self):
+        """
+        Calculate and return the total price for this line item.
+        """
         qty = int(self.quantity or 0)
-        price = Decimal(self.price or self.portion.price or Decimal("0.00"))
-        return (price * qty).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        price = Decimal(
+            self.price or
+            self.portion.price or
+            Decimal("0.00")
+        )
+        return (price * qty).quantize(
+            Decimal("0.01"),
+            rounding=ROUND_HALF_UP,
+        )
 
 
 @receiver(post_save, sender=Order)
 def delete_cancelled_order(sender, instance, **kwargs):
     """
-    Automatically delete an order after it is cancelled.
+    Automatically delete an order once its status is set to Cancelled.
     """
     if instance.status == "Cancelled":
         instance.delete()
