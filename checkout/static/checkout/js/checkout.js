@@ -116,36 +116,4 @@ document.addEventListener("DOMContentLoaded", function () {
             this.style.backgroundColor = statusColors[newStatus] || "#6c757d";
         });
     });
-
-    function getCSRFToken() {
-        return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1] || '';
-    }
-
-    const feedbackTbody = document.getElementById('feedback-tbody');
-    if (!feedbackTbody) return;
-
-    feedbackTbody.addEventListener('click', function(e) {
-        const target = e.target;
-        const id = target.dataset.fbId;
-        if (!id) return;
-
-        let form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '';
-
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = 'csrfmiddlewaretoken';
-        csrfInput.value = getCSRFToken();
-        form.appendChild(csrfInput);
-
-        if (target.classList.contains('fb-mark-handled-btn')) {
-            form.action = `/feedback/mark-handled/${id}/`;
-        } else if (target.classList.contains('fb-mark-unhandled-btn')) {
-            form.action = `/feedback/mark-unhandled/${id}/`;
-        } else return;
-
-        document.body.appendChild(form);
-        form.submit();
-    });
 });

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('', views.all_dishes, name='dish_list'),
     path('category/add/', views.add_category, name='add_category'),

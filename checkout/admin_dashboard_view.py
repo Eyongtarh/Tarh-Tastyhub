@@ -82,43 +82,19 @@ def update_order_status(request, order_id):
 @staff_member_required
 @require_POST
 def mark_feedback_handled(request, feedback_id):
-    """
-    AJAX endpoint: mark a Feedback as handled.
-    Expects POST and returns JSON: {"success": True, "handled": True}
-    """
-    if request.headers.get('x-requested-with') != 'XMLHttpRequest':
-        return HttpResponseBadRequest("Invalid request")
-
     fb = get_object_or_404(Feedback, pk=feedback_id)
-    if not fb.handled:
-        fb.handled = True
-        fb.save()
-    return JsonResponse({
-        'success': True,
-        'handled': True,
-        'feedback_id': fb.id,
-    })
+    fb.handled = True
+    fb.save()
+    return redirect('admin_dashboard')
 
 
 @staff_member_required
 @require_POST
 def mark_feedback_unhandled(request, feedback_id):
-    """
-    AJAX endpoint: mark a Feedback as unhandled (not handled).
-    Expects POST and returns JSON.
-    """
-    if request.headers.get('x-requested-with') != 'XMLHttpRequest':
-        return HttpResponseBadRequest("Invalid request")
-
     fb = get_object_or_404(Feedback, pk=feedback_id)
-    if fb.handled:
-        fb.handled = False
-        fb.save()
-    return JsonResponse({
-        'success': True,
-        'handled': False,
-        'feedback_id': fb.id,
-    })
+    fb.handled = False
+    fb.save()
+    return redirect('admin_dashboard')
 
 
 @staff_member_required
