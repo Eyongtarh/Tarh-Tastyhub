@@ -1,0 +1,3 @@
+User-agent: *
+Dissallow:
+Sitemap: https://tarh-tastyhub-4071346c00af.herokuapp.com/sitemap.xlm
