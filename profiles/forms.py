@@ -5,6 +5,9 @@ from .models import UserProfile
 
 
 class UserProfileForm(forms.ModelForm):
+    """
+    Form for updating user profile information.
+    """
     class Meta:
         model = UserProfile
         fields = (
@@ -38,6 +41,9 @@ class UserProfileForm(forms.ModelForm):
 
 
 class UserRegisterForm(UserCreationForm):
+    """
+    Form for registering a new user with email validation.
+    """
     email = forms.EmailField(required=True)
 
     class Meta:
