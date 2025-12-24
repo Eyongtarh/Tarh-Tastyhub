@@ -1,3 +1,6 @@
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
@@ -69,22 +72,73 @@ def admin_dashboard(request):
 
 @staff_member_required
 def update_order_status(request, order_id):
-    """
-    Update the status of a specific order
-    and only staff members can access
-    """
     order = get_object_or_404(Order, pk=order_id)
 
-    if request.method == 'POST':
-        new_status = request.POST.get('status')
-        if new_status:
-            order.status = new_status
-            order.save()
-            messages.success(
-                request,
-                f"Order #{order.id} updated to '{new_status}'."
-            )
-    return redirect('admin_dashboard')
+    if request.method != "POST":
+        return redirect("admin_dashboard")
+
+    new_status = request.POST.get("status")
+    if not new_status:
+        return redirect("admin_dashboard")
+
+    old_status = order.status
+    order.status = new_status
+    order.save()
+
+    messages.success(
+        request,
+        f"Order #{order.id} updated to '{new_status}'."
+    )
+
+    EMAIL_STATUSES = [
+        "Preparing",
+        "Out for Delivery",
+        "Ready for Pickup",
+        "Completed",
+    ]
+
+    if new_status not in EMAIL_STATUSES:
+        return redirect("admin_dashboard")
+
+    current_site = get_current_site(request)
+    site_url = f"https://{current_site.domain}"
+
+    subject = f"Your order #{order.order_number} is now {new_status}"
+
+    address_lines = [order.street_address1]
+    if order.street_address2:
+        address_lines.append(order.street_address2)
+    city_line = order.town_or_city
+    if order.county:
+        city_line += f", {order.county}"
+    city_line += f", {order.local}"
+    address_lines.append(city_line)
+    delivery_address = "\n".join(address_lines)
+
+    message = (
+        f"Hi {order.full_name},\n\n"
+        "Thanks for ordering from Tarh Tastyhub!\n\n"
+        f"Your order #{order.order_number} status has been updated "
+        f"to '{new_status}'.\n\n"
+        f"Order Total: ₦{order.grand_total}\n"
+        "Delivery Address:\n"
+        f"{delivery_address}\n\n"
+        f"If you have any questions, contact us at {site_url}/feedback/\n\n"
+        "Bon appétit!\n"
+        "The Tarh Tastyhub Team"
+    )
+
+    recipient_list = [order.email]
+
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        recipient_list,
+        fail_silently=False,
+    )
+
+    return redirect("admin_dashboard")
 
 
 @staff_member_required
