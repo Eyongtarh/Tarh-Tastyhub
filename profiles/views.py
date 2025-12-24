@@ -16,6 +16,11 @@ from django.utils.encoding import force_str
 
 logger = logging.getLogger(__name__)
 
+"""
+Views for user registration, login, profile
+management, and email verification.
+"""
+
 
 def register(request):
     """Register a new user with email verification."""
@@ -27,10 +32,16 @@ def register(request):
             user.save()
 
             send_verification_email(request, user)
-            messages.success(request, "Account created! Please verify your email before logging in.")
+            messages.success(
+                request,
+                "Account created! Please verify your email before logging in."
+            )
             return redirect('login')
         else:
-            messages.error(request, "There were errors in your form. Please fix them.")
+            messages.error(
+                request,
+                "There were errors in your form. Please fix them."
+            )
     else:
         form = UserRegisterForm()
 
@@ -45,11 +56,17 @@ def login_view(request):
             user = form.get_user()
 
             if not user.is_active:
-                messages.warning(request, "Your email is not verified. Please check your inbox.")
+                messages.warning(
+                    request,
+                    "Your email is not verified. Please check your inbox."
+                )
                 return redirect('resend_verification')
 
             login(request, user)
-            messages.success(request, f"Welcome back, {user.username}!")
+            messages.success(
+                request,
+                f"Welcome back, {user.username}!"
+            )
             return redirect('profile')
 
         messages.error(request, "Invalid username or password.")
@@ -79,7 +96,10 @@ def activate_account(request, uidb64, token):
         user.save()
 
         login(request, user)
-        messages.success(request, "Your email has been verified. Welcome!")
+        messages.success(
+            request,
+            "Your email has been verified. Welcome!"
+        )
         return redirect('profile')
 
     messages.error(request, "Activation link expired or invalid.")
@@ -87,6 +107,9 @@ def activate_account(request, uidb64, token):
 
 
 def resend_verification(request):
+    """
+    Resend verification email to user if account is inactive.
+    """
     if request.method == 'POST':
         email = request.POST.get('email')
 
@@ -99,7 +122,8 @@ def resend_verification(request):
 
         messages.success(
             request,
-            "If an account exists for that email, a verification message has been sent."
+            "If an account exists for that email,"
+            "a verification message has been sent."
         )
         return redirect('login')
 
@@ -108,16 +132,24 @@ def resend_verification(request):
 
 @login_required
 def profile(request):
-    """Display and update user profile."""
+    """
+    Display and update user profile.
+    """
     profile = get_object_or_404(UserProfile, user=request.user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, "Profile updated successfully")
+            messages.success(
+                request,
+                "Profile updated successfully"
+            )
         else:
-            messages.error(request, "Update failed. Please ensure the form is valid.")
+            messages.error(
+                request,
+                "Update failed. Please ensure the form is valid."
+            )
     else:
         form = UserProfileForm(instance=profile)
 
@@ -132,9 +164,15 @@ def profile(request):
 
 @login_required
 def order_history(request, order_number):
-    """Display a specific order for the logged-in user."""
+    """
+    Display a specific order for the logged-in user.
+    """
     order = get_object_or_404(Order, order_number=order_number)
-    messages.info(request, f'This is a past confirmation for order number {order_number}. A confirmation email was sent on the order date.')
+    messages.info(
+        request,
+        f'This is a past confirmation for order number {order_number}. '
+        'A confirmation email was sent on the order date.'
+    )
 
     context = {
         'order': order,
@@ -145,12 +183,17 @@ def order_history(request, order_number):
 
 @login_required
 def delete_account(request):
-    """Delete user account permanently."""
+    """
+    Delete user account permanently.
+    """
     if request.method == 'POST':
         user = request.user
         logout(request)
         user.delete()
-        messages.success(request, "Your account has been deleted.")
+        messages.success(
+            request,
+            "Your account has been deleted."
+        )
         return redirect('home')
 
     return render(request, 'profiles/delete_account.html')
@@ -158,5 +201,7 @@ def delete_account(request):
 
 @login_required
 def password_change(request):
-    """Redirect to Django Allauth password change page."""
+    """
+    Redirect to Django Allauth password change page.
+    """
     return redirect('/accounts/password/change/')
