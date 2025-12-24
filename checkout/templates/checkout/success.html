@@ -8,20 +8,80 @@
 
 {% block content %}
   <div class="container mt-5">
-    <div>
-      <h2>Order Placed Successfully!</h2>
-      <p>Thank you for your order, {{ order.full_name }}.</p>
+    <!-- success message -->
+    <div class="mb-4">
+      <h2 class="text-success text-white"><i class="bi bi-check-lg text-warning"></i>Order Placed Successfully!</h2>
+      <p>
+        Thank you for your order, <strong>{{ order.full_name }}</strong>.
+      </p>
       <p>
         Order Number: <strong>{{ order.order_number }}</strong>
       </p>
-      <p>We have sent a confirmation email to: {{ order.email }}</p>
+      <p>
+        We have sent a confirmation email to:
+        <strong>{{ order.email }}</strong>
+      </p>
+
       <a href="{% url 'profile' %}" class="btn btn-primary mt-3">Go To My Profile</a>
     </div>
+
+    <!-- OOder summary -->
+    <div class="card shadow-sm border-0 mt-4">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">Order Summary</h5>
+
+        <table class="table table-borderless align-middle">
+          <thead class="border-bottom">
+            <tr>
+              <th>Dish</th>
+              <th class="text-center">Qty</th>
+              <th class="text-end">Total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for item in order.lineitems.all %}
+              <tr>
+                <td>{{ item.portion.dish.name }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-end">${{ item.lineitem_total }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+
+          <tfoot class="border-top">
+            <tr>
+              <td colspan="2" class="text-end fw-bold">Subtotal:</td>
+              <td class="text-end">${{ order.order_total }}</td>
+            </tr>
+
+            <tr>
+              <td colspan="2" class="text-end fw-bold">Delivery:</td>
+              <td class="text-end">
+                {% if order.delivery_fee > 0 %}
+                  ${{ order.delivery_fee }}
+                {% else %}
+                  Free
+                {% endif %}
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2" class="text-end fw-bold">Grand Total:</td>
+              <td class="text-end fw-bold text-warning">${{ order.grand_total }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Continue to shop -->
     <div class="text-center mt-4">
-      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping</a>
+      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button">Continue Shopping</a>
     </div>
   </div>
 {% endblock %}
+
 {% block postloadjs %}
   <script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}

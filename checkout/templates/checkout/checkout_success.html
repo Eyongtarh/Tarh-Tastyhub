@@ -8,31 +8,39 @@
 
 {% block content %}
   <div class="container py-5">
+    <!-- HEADER -->
     <div class="text-center mb-5">
       <h2 class="fw-bold text-success mb-2"><i class="bi bi-check-lg text-warning"></i></h2>
+
       <p class="text-muted">
-        Thank you, {{ order.full_name }}! Your meal is on the way
-        <span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>
+        <span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>Thank you, {{ order.full_name }}! Your meal is on the way
       </p>
+
       <p>
-        Delivery Type: <strong>{{ order.delivery_type|title }}</strong>
+        Delivery Type:
+        <strong>{{ order.delivery_type|title }}</strong>
       </p>
+
       {% if order.delivery_type == 'pickup' and order.pickup_time %}
         <p>
-          Pickup Time: <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
+          Pickup Time:
+          <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
         </p>
       {% endif %}
     </div>
 
+    <!-- ORDER STATUS -->
     <div class="mb-4">
       <div class="progress" style="height: 30px;">
         <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
       </div>
     </div>
 
+    <!-- ORDER SUMMARY -->
     <div class="card shadow-sm border-0 mb-4">
       <div class="card-body">
         <h5 class="fw-bold mb-3">Order Summary</h5>
+
         <table class="table table-borderless align-middle">
           <thead class="border-bottom">
             <tr>
@@ -42,6 +50,7 @@
               <th class="text-end">Total</th>
             </tr>
           </thead>
+
           <tbody>
             {% for item in order.lineitems.all %}
               <tr>
@@ -52,7 +61,24 @@
               </tr>
             {% endfor %}
           </tbody>
+
           <tfoot class="border-top">
+            <tr>
+              <td colspan="3" class="text-end fw-bold">Subtotal:</td>
+              <td class="text-end">${{ order.order_total }}</td>
+            </tr>
+
+            <tr>
+              <td colspan="3" class="text-end fw-bold">Delivery:</td>
+              <td class="text-end">
+                {% if order.delivery_fee > 0 %}
+                  ${{ order.delivery_fee }}
+                {% else %}
+                  Free
+                {% endif %}
+              </td>
+            </tr>
+
             <tr>
               <td colspan="3" class="text-end fw-bold">Grand Total:</td>
               <td class="text-end fw-bold text-warning">${{ order.grand_total }}</td>
@@ -62,8 +88,10 @@
       </div>
     </div>
 
+    <!-- ACTION BUTTONS -->
     <div class="text-center mt-4">
-      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping</a>
+      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button">Continue Shopping</a>
+
       <a href="{% url 'order_tracking' order_number=order.order_number %}" class="btn btn-primary fw-bold ms-2">Track Order</a>
     </div>
   </div>
