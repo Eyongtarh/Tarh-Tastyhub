@@ -5,29 +5,49 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
 {% endblock %}
+
 {% block title %}
-  uccess | Tarh Tastyhub
+  Success | Tarh Tastyhub
 {% endblock %}
+
 {% block content %}
   <div class="container mt-5">
-    <!-- success message -->
+    <!-- SUCCESS MESSAGE -->
     <div class="mb-4">
-      <h2 class="text-success text-white"><i class="bi bi-check-lg text-warning"></i>Order Placed Successfully!</h2>
+      <h2 class="text-success text-white">
+        <i class="bi bi-check-lg text-warning"></i>
+        Order Placed Successfully!
+      </h2>
+
       <p>
-        Thank you for your order, <strong>{{ order.full_name }}</strong>.
+        Thank you for your order, <strong>{{ order.full_name }}</strong>.{% if order.delivery_type == 'pickup' %}
+          Your order will be ready for pickup.
+        {% else %}
+          Your meal is on the way.
+        {% endif %}
       </p>
+
       <p>
-        Order Number: <strong>{{ order.order_number }}</strong>
+        Order Number:
+        <strong>{{ order.order_number }}</strong>
       </p>
+
       <p>
         We have sent a confirmation email to:
         <strong>{{ order.email }}</strong>
       </p>
 
-      <a href="{% url 'profile' %}" class="btn btn-primary mt-3">Go To My Profile</a>
+      {% if order.delivery_type == 'pickup' and order.pickup_time %}
+        <p>
+          Pickup Time:
+          <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
+        </p>
+      {% endif %}
+
+      <a href="{% url 'profile' %}" class="btn btn-primary mt-3" aria-label="Go To My Profile" title="View your profile and orders">Go To My Profile</a>
     </div>
 
-    <!-- OOder summary -->
+    <!-- ORDER SUMMARY -->
     <div class="card shadow-sm border-0 mt-4">
       <div class="card-body">
         <h5 class="fw-bold mb-3">Order Summary</h5>
@@ -57,16 +77,23 @@
               <td class="text-end">${{ order.order_total }}</td>
             </tr>
 
-            <tr>
-              <td colspan="2" class="text-end fw-bold">Delivery:</td>
-              <td class="text-end">
-                {% if order.delivery_fee > 0 %}
-                  ${{ order.delivery_fee }}
-                {% else %}
-                  Free
-                {% endif %}
-              </td>
-            </tr>
+            {% if order.delivery_type == 'delivery' %}
+              <tr>
+                <td colspan="2" class="text-end fw-bold">Delivery:</td>
+                <td class="text-end">
+                  {% if order.delivery_fee > 0 %}
+                    ${{ order.delivery_fee }}
+                  {% else %}
+                    Free
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="2" class="text-end fw-bold">Pickup:</td>
+                <td class="text-end">Free</td>
+              </tr>
+            {% endif %}
 
             <tr>
               <td colspan="2" class="text-end fw-bold">Grand Total:</td>
@@ -77,9 +104,9 @@
       </div>
     </div>
 
-    <!-- Continue to shop -->
+    <!-- CONTINUE SHOPPING -->
     <div class="text-center mt-4">
-      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button">Continue Shopping</a>
+      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button" aria-label="Continue Shopping" title="Continue shopping for more dishes">Continue Shopping</a>
     </div>
   </div>
 {% endblock %}

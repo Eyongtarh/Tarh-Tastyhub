@@ -3,37 +3,50 @@
 {% load dishes_extras %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
+  <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
 {% endblock %}
+
 {% block title %}
-  Cancel Oder | Tarh Tastyhub
+  Cancel Order | Tarh Tastyhub
 {% endblock %}
+
 {% block content %}
   <div class="container my-5">
+    <!-- HEADER -->
     <div class="text-center mb-4">
-      <h2 class="section-title"><i class="fa-solid fa-trash me-2"></i> Cancel Order</h2>
+      <h2 class="fw-bold text-danger">
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+        Cancel Order
+      </h2>
     </div>
 
-    <div class="form-container mx-auto" style="max-width: 700px;">
+    <div class="mx-auto" style="max-width: 700px;">
       {% if order and order.pk %}
-        <div class="warning-box">
-          <i class="fa-solid fa-triangle-exclamation fa-icon"></i>
-          Are you sure you want to cancel order
-          <span class="order-number"><strong>#{{ order.order_number }}</strong></span>
-          placed by <strong>{{ order.full_name }}</strong>?
+        <!-- WARNING -->
+        <div class="alert alert-danger text-center">
+          <i class="fa-solid fa-trash me-2"></i>
+          You are about to cancel
+          <strong>Order #{{ order.order_number }}</strong>
+          placed by
+          <strong>{{ order.full_name }}</strong>.
+          <br />
+          <span class="text-muted">This action cannot be undone.</span>
         </div>
 
-        <form method="post">
+        <!-- CONFIRM FORM -->
+        <form method="POST" class="text-center">
           {% csrf_token %}
-          <div class="text-center mt-4">
-            <button type="submit" class="btn-danger">Confirm Cancel</button>
-            <a href="{% url 'admin_dashboard' %}" class="btn-cancel">Back to Dashboard</a>
-          </div>
+
+          <button type="submit" class="btn btn-danger me-2" aria-label="Confirm cancellation of Order #{{ order.order_number }}" title="Confirm cancellation of this order">Confirm Cancellation</button>
+
+          <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary" aria-label="Back to Admin Dashboard" title="Return to the Admin Dashboard">Back to Dashboard</a>
         </form>
       {% else %}
-        <div class="warning-box">Order not found or cannot be cancelled.</div>
-        <div class="text-center mt-4">
-          <a href="{% url 'admin_dashboard' %}" class="btn-secondary">Back to Dashboard</a>
+        <!-- ERROR -->
+        <div class="alert alert-warning text-center">Order not found or cannot be cancelled.</div>
+
+        <div class="text-center">
+          <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary" aria-label="Back to Admin Dashboard" title="Return to the Admin Dashboard">Back to Dashboard</a>
         </div>
       {% endif %}
     </div>
