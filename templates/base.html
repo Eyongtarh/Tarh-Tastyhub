@@ -7,122 +7,108 @@
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
       <!-- Dynamic SEO -->
       <meta name="description"
         content="{% block meta_description %}
           
-          
           Delicious meals delivered fast from Tarh Tastyhub restaurant.
-
 
         {% endblock %}" />
       <meta name="keywords"
         content="{% block meta_keywords %}
           
-          
           Tarh Tastyhub, restaurant, food, delivery, meals, dishes, cuisine
-
 
         {% endblock %}" />
       <meta name="author" content="Tarh Tastyhub" />
-
       <!-- Open Graph / Facebook -->
       <meta property="og:title"
         content="{% block og_title %}
           
-          
           Tarh Tastyhub
-
 
         {% endblock %}" />
       <meta property="og:description"
         content="{% block og_description %}
           
-          
           Enjoy tasty meals from Tarh Tastyhub restaurant.
-
 
         {% endblock %}" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-
       <title>
         {% block title %}
           Tarh Tastyhub | Delicious Meals Delivered Fast
         {% endblock %}
       </title>
     {% endblock %}
-
     {% block corecss %}
       <!-- Favicon -->
       <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon_io/apple-touch-icon.png' %}" />
       <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon_io/favicon-32x32.png' %}" />
       <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon_io/favicon-16x16.png' %}" />
-
       <!-- Stylesheets -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
       <link rel="stylesheet" href="{% static 'css/base.css' %}?v=2" />
-
       <!-- Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+      <!-- HEADER FIX: Add padding-top for main content -->
     {% endblock %}
-
     {% block extra_css %}
 
     {% endblock %}
-
     {% block corejs %}
       <!-- jQuery -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
       <!-- Bootstrap Bundle -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-
       <!-- Stripe -->
       <script src="https://js.stripe.com/v3/"></script>
     {% endblock %}
-
     {% block extra_js %}
 
     {% endblock %}
   </head>
-
   <body>
-    <header>
-      <!-- DESKTOP -->
+    <!-- HEADER -->
+    <header class="fixed-top">
+      <!-- Desktop Nav -->
       <div class="d-none d-lg-block">
         {% include 'includes/main-nav.html' with show_bag_count=True %}
       </div>
-
-      <!-- MOBILE -->
+      <!-- Mobile Nav -->
       <div class="d-lg-none">
         {% include 'includes/mobile-top-header.html' %}
       </div>
+      <!-- Delivery Banner -->
+      <div class="w-100 text-center bg-warning text-black d-none d-lg-block py-1">
+        <h4 class="m-0">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</h4>
+      </div>
     </header>
+    <!-- PAGE HEADER -->
+    {% block page_header %}
 
-    <main class="py-3">
+    {% endblock %}
+    <!-- MAIN CONTENT -->
+    <main>
       {% block content %}
 
       {% endblock %}
     </main>
-
+    <!-- FOOTER -->
     {% include 'includes/footer.html' %}
-
     <!-- Toast Container -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 2000;">
       <div id="toast-container"></div>
     </div>
-
     <!-- Global App Scripts -->
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/bag.js' %}"></script>
     <script src="{% static 'js/search.js' %}"></script>
-
     <!-- Render Django Messages -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
@@ -146,7 +132,30 @@
         });
       });
     </script>
-
+    <script>
+function adjustMainPadding() {
+  const main = document.querySelector('main');
+  if (!main) return;
+  let totalHeight = 0;
+  // Desktop header + banner
+  const desktopHeader = document.querySelector('header.fixed-top .d-none.d-lg-block');
+  const desktopBanner = document.querySelector('header.fixed-top .d-none.d-lg-block ~ .w-100.bg-warning');
+  if (window.innerWidth >= 992) {
+    if (desktopHeader) totalHeight += desktopHeader.offsetHeight;
+    if (desktopBanner) totalHeight += desktopBanner.offsetHeight;
+  }
+  // Mobile header + mobile delivery banner
+  const mobileHeader = document.querySelector('.d-lg-none');
+  const mobileBanner = document.querySelector('#delivery-banner-mobile');
+  if (window.innerWidth < 992) {
+    if (mobileHeader) totalHeight += mobileHeader.offsetHeight;
+    if (mobileBanner) totalHeight += mobileBanner.offsetHeight;
+  }
+  main.style.paddingTop = totalHeight + 'px';
+}
+window.addEventListener('load', adjustMainPadding);
+window.addEventListener('resize', adjustMainPadding);
+</script>
     {% block postloadjs %}
 
     {% endblock %}

@@ -15,8 +15,6 @@ window.getCSRFToken = function(name = 'csrftoken') {
     }
     return cookieValue;
 };
-
-
 /* 
    Unified Toast Handler
 */
@@ -57,8 +55,6 @@ window.showToast = function(message, variant = 'info', timeout = 5000) {
     }
     simpleToast(message, variant);
 };
-
-
 /*
    Fallback Toast
 */

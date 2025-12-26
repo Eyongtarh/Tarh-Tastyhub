@@ -1,91 +1,97 @@
 {% load static %}
 {% load dishes_extras %}
 
-<!-- Mobile Header -->
-<div class="d-lg-none bg-white sticky-top shadow-sm">
+<!-- MOBILE NAVBAR -->
+<div class="d-lg-none bg-white shadow-sm">
   <div class="d-flex justify-content-between align-items-center px-3 py-2">
-    <!-- Logo -->
-    <a href="{% url 'home' %}" class="brand-logo text-decoration-none">
-      <i class="fa-solid fa-utensils brand-icon"></i>
+    <!-- Brand / Logo -->
+    <a href="{% url 'home' %}" class="brand-logo text-decoration-none" aria-label="Go to homepage" title="Tarh Tastyhub home">
+      <i class="fa-solid fa-utensils brand-icon" aria-hidden="true"></i>
       <span class="brand-accent">Tarh</span>
       <span class="brand-main">Tastyhub</span>
     </a>
-    <div class="d-flex align-items-center gap-2">
-      <!-- Mobile Bag Count -->
-      <a href="{% url 'bag' %}" class="position-relative text-dark">
-        <i class="fa-solid fa-shopping-bag fs-5"></i>
-        <span id="bag-count-mobile" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark text-warning">{{ bag_count|default:'0' }}</span>
-      </a>
 
-      <!-- Hamburger Menu Button -->
-      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+    <!-- Shopping bag and Hamburger -->
+    <div class="d-flex align-items-center gap-2">
+      <!-- Shopping bag -->
+      <a href="{% url 'bag' %}" class="position-relative text-dark" aria-label="View shopping bag" title="Shopping Bag">
+        <i class="fa-solid fa-shopping-bag fs-5"></i>
+        <span id="bag-count-mobile" class="bag-count" aria-label="Items in bag">{{ bag_count|default:'0' }}</span>
+      </a>
+      <!-- Hamburger button to open offcanvas menu -->
+      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-label="Open menu" title="Open menu"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
+
+  <!-- Delivery banner -->
+  <div id="delivery-banner-mobile" class="text-center bg-warning text-black py-1" aria-label="Free delivery info">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</div>
 </div>
 
-<!-- Mobile Offcanvas Menu -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+<!-- OFFCANVAS MENU -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title fw-bold" id="mobileMenuLabel">Menu</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <h5 class="offcanvas-title">Menu</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close menu" title="Close menu"></button>
   </div>
 
-  <div class="offcanvas-body p-3">
-    <ul class="list-unstyled mb-0">
-      <!-- Home -->
+  <div class="offcanvas-body">
+    <ul class="list-unstyled">
+      <!-- Home link -->
       <li>
-        <a href="{% url 'home' %}" class="text-decoration-none d-block py-1">Home</a>
+        <a href="{% url 'home' %}" aria-label="Go to Home page" title="Home">Home</a>
       </li>
 
-      <!-- Categories -->
-      <li class="mt-2">
-        <strong>Dishes</strong>
-
-        {% if categories %}
-          <ul class="ps-3 mb-0">
-            {% for category in categories %}
-              <li>
-                <!-- category navigation -->
-                <a href="{% url 'dish_list' %}?category={{ category.slug }}" class="text-decoration-none d-block py-1">{{ category.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="text-muted small ps-1 mb-0">No categories available</p>
-        {% endif %}
-      </li>
-
-      <!-- Other Pages -->
-      <li class="mt-2">
-        <a href="{% url 'dish_list' %}" class="text-decoration-none d-block py-1">Browse Dishes</a>
-      </li>
-
+      <!-- Dishes collapsible submenu -->
       <li>
-        <a href="{% url 'checkout' %}" class="text-decoration-none d-block py-1">Checkout</a>
+        <button class="btn btn-toggle w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#mobileDishes" aria-expanded="false" aria-controls="mobileDishes">Dishes</button>
+        <ul class="collapse list-unstyled ps-3" id="mobileDishes">
+          {% for category in categories %}
+            <li>
+              <a href="{% url 'dish_list' %}?category={{ category.slug }}" aria-label="View {{ category.name }} dishes" title="{{ category.name }}">{{ category.name }}</a>
+            </li>
+          {% empty %}
+            <li>
+              <span class="text-muted">No categories available</span>
+            </li>
+          {% endfor %}
+        </ul>
       </li>
 
+      <!-- Browse Dishes -->
       <li>
-        <a href="{% url 'feedback' %}" class="text-decoration-none d-block py-1">Contact</a>
+        <a href="{% url 'dish_list' %}" aria-label="Browse all dishes" title="Browse Dishes">Browse Dishes</a>
       </li>
 
-      <!-- Authentication Links -->
+      <!-- Checkout -->
+      <li>
+        <a href="{% url 'checkout' %}" aria-label="Go to checkout page" title="Checkout">Checkout</a>
+      </li>
+
+      <!-- Contact -->
+      <li>
+        <a href="{% url 'feedback' %}" aria-label="Contact us" title="Contact">Contact</a>
+      </li>
+
+      <!-- User account links -->
       {% if user.is_authenticated %}
         {% if user.is_superuser %}
-          <li class="mt-2">
-            <a href="{% url 'admin_dashboard' %}" class="text-decoration-none d-block py-1">Admin Dashboard</a>
+          <!-- Admin dashboard -->
+          <li>
+            <a href="{% url 'admin_dashboard' %}" aria-label="Go to Admin Dashboard" title="Admin Dashboard">Admin Dashboard</a>
           </li>
         {% endif %}
-
+        <!-- Profile -->
         <li>
-          <a href="{% url 'profile' %}" class="text-decoration-none d-block py-1">Profile</a>
+          <a href="{% url 'profile' %}" aria-label="View your profile" title="Profile">Profile</a>
         </li>
-
+        <!-- Logout -->
         <li>
-          <a href="{% url 'account_logout' %}" class="text-decoration-none d-block py-1">Logout</a>
+          <a href="{% url 'account_logout' %}" aria-label="Logout from your account" title="Logout">Logout</a>
         </li>
       {% else %}
-        <li class="mt-2">
-          <a href="{% url 'account_login' %}" class="text-decoration-none d-block py-1">Login</a>
+        <!-- Login link -->
+        <li>
+          <a href="{% url 'account_login' %}" aria-label="Login to your account" title="Login">Login</a>
         </li>
       {% endif %}
     </ul>
