@@ -5,9 +5,11 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
 {% endblock %}
+
 {% block title %}
   Checkout | Tarh Tastyhub
 {% endblock %}
+
 {% block content %}
   <div class="container my-5">
     <h2 class="text-center mb-4">Checkout</h2>
@@ -20,7 +22,6 @@
             <div class="card-header bg-dark text-white">
               <h5 class="mb-0">Your Order</h5>
             </div>
-
             <div class="card-body">
               <ul class="list-group mb-3">
                 {% for item in bag_items %}
@@ -34,34 +35,26 @@
                   </li>
                 {% endfor %}
               </ul>
-
               <hr />
-
-              <!-- SUBTOTAL -->
               <p class="text-end mb-1">
                 <strong>Subtotal:</strong> ${{ bag_total }}
               </p>
-
-              <!-- DELIVERY FEE -->
               <p class="text-end mb-1">
                 <strong>Delivery:</strong> {{ delivery_fee_display }}
               </p>
-
               <hr />
-
-              <!-- GRAND TOTAL -->
               <h5 class="text-end">Total: ${{ grand_total }}</h5>
             </div>
+            <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button" aria-label="Continue Shopping" title="Continue shopping for more dishes">Continue Shopping</a>
           </div>
         </div>
 
         <!-- CHECKOUT FORM -->
         <div class="col-12 col-lg-7">
           <div class="card shadow-sm checkout-card position-relative">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-dark text-white">
               <h5 class="mb-0">Enter Your Details</h5>
             </div>
-
             <div class="card-body">
               <form method="post" id="payment-form">
                 {% csrf_token %}
@@ -93,7 +86,7 @@
                   </div>
 
                   <!-- PICKUP TIME -->
-                  <div class="col-12 mt-3" id="pickup-time-container">
+                  <div class="col-12 mt-3" id="pickup-time-container" style="display: none;">
                     {{ form.pickup_time }}
                     <div class="text-danger">{{ form.pickup_time.errors }}</div>
                   </div>
@@ -117,7 +110,7 @@
                   <div class="spinner-border text-light" role="status"></div>
                 </div>
 
-                <button id="submit-button" class="btn btn-success w-100 mt-3 fw-bold">Pay Now</button>
+                <button id="submit-button" class="btn btn-success w-100 mt-3 fw-bold" aria-label="Pay Now" title="Submit payment for your order">Pay Now</button>
               </form>
             </div>
           </div>
@@ -126,7 +119,7 @@
     {% else %}
       <div class="alert alert-warning text-center">
         Your bag is empty.<br /><br />
-        <a href="{% url 'dish_list' %}" class="btn btn-primary">Browse Dishes</a>
+        <a href="{% url 'dish_list' %}" class="btn btn-primary" aria-label="Browse Dishes" title="Browse available dishes to add to your bag">Browse Dishes</a>
       </div>
     {% endif %}
   </div>

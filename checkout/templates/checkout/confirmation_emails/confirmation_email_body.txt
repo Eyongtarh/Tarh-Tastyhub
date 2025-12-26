@@ -3,16 +3,27 @@ Hi {{ order.full_name }},
 Thanks for ordering from Tarh Tastyhub!
 
 Your order #{{ order.order_number }} has been received and is being processed.
-We'll notify you when it's out for delivery.
 
-Order Total: ₦{{ order.grand_total }}
+{% if order.delivery_type == "pickup" %}
+We'll notify you when your order is ready for pickup.
+{% else %}
+We'll notify you when it's out for delivery.
+{% endif %}
+
+Order Total: ${{ order.grand_total }}
+
+{% if order.delivery_type == "delivery" %}
 Delivery Address:
 {{ order.street_address1 }}
 {% if order.street_address2 %}{{ order.street_address2 }}{% endif %}
-{{ order.town_or_city }},{% if order.county %} {{ order.county }}{% endif %}
+{{ order.town_or_city }}
+{% if order.county %}{{ order.county }}{% endif %}
 {{ order.local }}
+{% else %}
+This order is marked for PICKUP.
+{% endif %}
 
-If you have any questions, contact us at https://{{ current_site.domain }}/feedback/
+If you have any questions, contact us at: https://{{ current_site.domain }}/feedback/
 
 Bon appétit!
 The Tarh Tastyhub Team

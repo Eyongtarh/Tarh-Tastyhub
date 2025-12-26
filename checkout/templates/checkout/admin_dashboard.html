@@ -5,13 +5,15 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
 {% endblock extra_css %}
+
 {% block title %}
-  Admin Dashboard | Tarh Tastyhub
+Admin Dashboard | Tarh Tastyhub
 {% endblock %}
+
 {% block content %}
 <div class="container my-5">
 
-    <!-- Header -->
+    <!-- HEADER -->
     <div class="text-center mb-4">
         <h2 class="fw-bold text-white">
             <i class="fa-solid fa-screwdriver-wrench me-2"></i>
@@ -19,12 +21,14 @@
         </h2>
     </div>
 
-    <!-- Action Buttons -->
-    <div class="mb-3 text-center">
-        <a href="{% url 'add_dish' %}" class="btn btn-primary me-2">
+    <!-- ACTION BUTTONS -->
+    <div class="mb-4 text-center">
+        <a href="{% url 'add_dish' %}" class="btn btn-primary me-2"
+           aria-label="Add Dish" title="Add a new dish">
             <i class="fa-solid fa-plus"></i> Add Dish
         </a>
-        <a href="{% url 'add_category' %}" class="btn btn-primary">
+        <a href="{% url 'add_category' %}" class="btn btn-primary"
+           aria-label="Add Category" title="Add a new category">
             <i class="fa-solid fa-plus"></i> Add Category
         </a>
     </div>
@@ -32,61 +36,110 @@
     <!-- ORDERS -->
     <div class="table-responsive shadow-sm rounded mb-5">
         <h4 class="fw-bold mb-3">Orders</h4>
+
         <table class="table table-hover align-middle">
             <thead class="table-dark text-center">
                 <tr>
                     <th>ID</th>
                     <th>Customer</th>
-                    <th>Total ($)</th>
+                    <th class="text-end">Total ($)</th>
                     <th>Status</th>
-                    <th>Progress</th>
+                    <th style="min-width:220px;">Progress</th>
                     <th>Actions</th>
                 </tr>
             </thead>
+
             <tbody>
-                {% for order in orders %}
+            {% for order in orders %}
                 <tr>
-                    <td class="text-center">{{ order.id }}</td>
+                    <td class="text-center">{{ order.order_number }}</td>
                     <td>{{ order.full_name }}</td>
                     <td class="text-end">${{ order.grand_total }}</td>
+
+                    <!-- STATUS BADGE -->
                     <td class="text-center">
                         <span class="badge bg-{{ order.status_color }}">
                             {{ order.status }}
                         </span>
                     </td>
-                    <td style="min-width:200px;">
+
+                    <!-- PROGRESS BAR -->
+                    <td>
                         <div class="progress" style="height:20px;">
-                            <div class="progress-bar progress-bar-striped bg-{{ order.status_color }}"
-                                 role="progressbar"
-                                 style="width:{{ order.progress_percent }}%;">
+                            <div
+                                class="progress-bar progress-bar-striped bg-{{ order.status_color }}"
+                                role="progressbar"
+                                style="width: {{ order.progress_percent }}%;"
+                            >
                                 {{ order.status }}
                             </div>
                         </div>
                     </td>
-                    <td class="d-flex flex-column gap-2 align-items-center">
+
+                    <!-- ACTIONS -->
+                    <td class="text-center">
+
                         <!-- UPDATE STATUS -->
-                        <form method="POST" action="{% url 'update_order_status' order.id %}">
+                        <form
+                            method="POST"
+                            action="{% url 'update_order_status' order.id %}"
+                            class="mb-2"
+                        >
                             {% csrf_token %}
-                            <select name="status" class="form-select form-select-sm mb-1">
-                                <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
-                                <option {% if order.status == 'Preparing' %}selected{% endif %}>Preparing</option>
-                                <option {% if order.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
-                                <option {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            <select
+                                name="status"
+                                class="form-select form-select-sm mb-1"
+                                required
+                            >
+                                <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>
+                                    Pending
+                                </option>
+
+                                <option value="Preparing" {% if order.status == "Preparing" %}selected{% endif %}>
+                                    Preparing
+                                </option>
+
+                                {% if order.delivery_type == "delivery" %}
+                                    <option value="Out for Delivery" {% if order.status == "Out for Delivery" %}selected{% endif %}>
+                                        Out for Delivery
+                                    </option>
+                                {% else %}
+                                    <option value="Ready for Pickup" {% if order.status == "Ready for Pickup" %}selected{% endif %}>
+                                        Ready for Pickup
+                                    </option>
+                                {% endif %}
+
+                                <option value="Completed" {% if order.status == "Completed" %}selected{% endif %}>
+                                    Completed
+                                </option>
                             </select>
-                            <button class="btn btn-warning btn-sm w-100">Update</button>
+
+                            <button class="btn btn-warning btn-sm w-100"
+                                    aria-label="Update Order Status" title="Update the status of this order">
+                                Update Status
+                            </button>
                         </form>
 
-                        <!-- CANCEL ORDER -->
-                        <a href="{% url 'cancel_order' order.id %}" class="btn btn-danger btn-sm">
+                        <!-- CANCEL -->
+                        {% if order.status != "Completed" and order.status != "Cancelled" %}
+                        <a
+                            href="{% url 'cancel_order' order.id %}"
+                            class="btn btn-danger btn-sm w-100"
+                            aria-label="Cancel Order #{{ order.order_number }}"
+                            title="Cancel this order"
+                        >
                             Cancel Order
                         </a>
+                        {% endif %}
                     </td>
                 </tr>
-                {% empty %}
+            {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-3">No orders found.</td>
+                    <td colspan="6" class="text-center text-muted py-3">
+                        No orders found.
+                    </td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -94,31 +147,45 @@
     <!-- DISHES -->
     <div class="table-responsive shadow-sm rounded mb-5">
         <h4 class="fw-bold mb-3">Dishes</h4>
+
         <table class="table table-hover align-middle">
             <thead class="table-secondary text-center">
                 <tr>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Price ($)</th>
+                    <th class="text-end">Price ($)</th>
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                {% for dish in dishes %}
+            {% for dish in dishes %}
                 <tr>
                     <td>{{ dish.name }}</td>
                     <td>{{ dish.category.name }}</td>
                     <td class="text-end">${{ dish.price }}</td>
                     <td class="text-center">
-                        <a href="{% url 'edit_dish' dish.slug %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_dish' dish.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'edit_dish' dish.slug %}"
+                           class="btn btn-warning btn-sm"
+                           aria-label="Edit {{ dish.name }}"
+                           title="Edit this dish">
+                            Edit
+                        </a>
+                        <a href="{% url 'delete_dish' dish.slug %}"
+                           class="btn btn-danger btn-sm"
+                           aria-label="Delete {{ dish.name }}"
+                           title="Delete this dish">
+                            Delete
+                        </a>
                     </td>
                 </tr>
-                {% empty %}
+            {% empty %}
                 <tr>
-                    <td colspan="4" class="text-center text-muted py-3">No dishes available.</td>
+                    <td colspan="4" class="text-center text-muted py-3">
+                        No dishes available.
+                    </td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -126,6 +193,7 @@
     <!-- CATEGORIES -->
     <div class="table-responsive shadow-sm rounded mb-5">
         <h4 class="fw-bold mb-3">Categories</h4>
+
         <table class="table table-hover align-middle">
             <thead class="table-secondary text-center">
                 <tr>
@@ -133,20 +201,33 @@
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                {% for category in categories %}
+            {% for category in categories %}
                 <tr>
                     <td>{{ category.name }}</td>
                     <td class="text-center">
-                        <a href="{% url 'edit_category' category.slug %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_category' category.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'edit_category' category.slug %}"
+                           class="btn btn-warning btn-sm"
+                           aria-label="Edit {{ category.name }}"
+                           title="Edit this category">
+                            Edit
+                        </a>
+                        <a href="{% url 'delete_category' category.slug %}"
+                           class="btn btn-danger btn-sm"
+                           aria-label="Delete {{ category.name }}"
+                           title="Delete this category">
+                            Delete
+                        </a>
                     </td>
                 </tr>
-                {% empty %}
+            {% empty %}
                 <tr>
-                    <td colspan="2" class="text-center text-muted py-3">No categories found.</td>
+                    <td colspan="2" class="text-center text-muted py-3">
+                        No categories found.
+                    </td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -157,11 +238,13 @@
 
         <form method="GET" class="d-flex gap-3 mb-3">
             <select name="filter" class="form-select w-auto">
-                <option value="all" {% if filter_status == 'all' %}selected{% endif %}>All</option>
-                <option value="unread" {% if filter_status == 'unread' %}selected{% endif %}>Unread</option>
-                <option value="handled" {% if filter_status == 'handled' %}selected{% endif %}>Handled</option>
+                <option value="all" {% if filter_status == "all" %}selected{% endif %}>All</option>
+                <option value="unread" {% if filter_status == "unread" %}selected{% endif %}>Unread</option>
+                <option value="handled" {% if filter_status == "handled" %}selected{% endif %}>Handled</option>
             </select>
-            <button class="btn btn-primary">Apply</button>
+            <button class="btn btn-primary" aria-label="Apply Feedback Filter" title="Filter feedback">
+                Apply
+            </button>
         </form>
 
         <table class="table table-hover align-middle">
@@ -175,8 +258,9 @@
                     <th>Handled</th>
                 </tr>
             </thead>
+
             <tbody>
-                {% for fb in feedback_list %}
+            {% for fb in feedback_list %}
                 <tr>
                     <td>{{ fb.name }}</td>
                     <td>{{ fb.email }}</td>
@@ -185,54 +269,71 @@
                     <td>{{ fb.created_at|date:"Y-m-d H:i" }}</td>
                     <td class="text-center">
                         {% if fb.handled %}
-                            <form method="POST" action="{% url 'mark_feedback_unhandled' fb.id %}?{% if filter_status %}filter={{ filter_status }}{% endif %}">
+                            <form method="POST" action="{% url 'mark_feedback_unhandled' fb.id %}">
                                 {% csrf_token %}
-                                <button class="btn btn-success btn-sm">Handled</button>
+                                <button class="btn btn-success btn-sm"
+                                        aria-label="Mark feedback from {{ fb.name }} as unhandled"
+                                        title="Mark feedback as unhandled">
+                                    Handled
+                                </button>
                             </form>
                         {% else %}
-                            <form method="POST" action="{% url 'mark_feedback_handled' fb.id %}?{% if filter_status %}filter={{ filter_status }}{% endif %}">
+                            <form method="POST" action="{% url 'mark_feedback_handled' fb.id %}">
                                 {% csrf_token %}
-                                <button class="btn btn-danger btn-sm">Mark as Handled</button>
+                                <button class="btn btn-danger btn-sm"
+                                        aria-label="Mark feedback from {{ fb.name }} as handled"
+                                        title="Mark feedback as handled">
+                                    Mark as Handled
+                                </button>
                             </form>
                         {% endif %}
                     </td>
                 </tr>
-                {% empty %}
+            {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-3">No feedback found.</td>
+                    <td colspan="6" class="text-center text-muted py-3">
+                        No feedback found.
+                    </td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
 
-        <!-- Pagination -->
+        <!-- PAGINATION -->
         {% if feedback_list.has_other_pages %}
-        <nav aria-label="Feedback pagination">
-            <ul class="pagination justify-content-center mt-3">
+        <nav class="mt-3">
+            <ul class="pagination justify-content-center">
                 {% if feedback_list.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ feedback_list.previous_page_number }}{% if filter_status %}&filter={{ filter_status }}{% endif %}">&laquo;</a>
-                </li>
-                {% else %}
-                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ feedback_list.previous_page_number }}&filter={{ filter_status }}"
+                           aria-label="Previous Page"
+                           title="Go to previous page">
+                           &laquo;
+                        </a>
+                    </li>
                 {% endif %}
 
                 {% for num in feedback_list.paginator.page_range %}
-                    {% if feedback_list.number == num %}
-                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                    {% else %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ num }}{% if filter_status %}&filter={{ filter_status }}{% endif %}">{{ num }}</a>
-                        </li>
-                    {% endif %}
+                    <li class="page-item {% if feedback_list.number == num %}active{% endif %}">
+                        <a class="page-link"
+                           href="?page={{ num }}&filter={{ filter_status }}"
+                           aria-label="Page {{ num }}"
+                           title="Go to page {{ num }}">
+                           {{ num }}
+                        </a>
+                    </li>
                 {% endfor %}
 
                 {% if feedback_list.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ feedback_list.next_page_number }}{% if filter_status %}&filter={{ filter_status }}{% endif %}">&raquo;</a>
-                </li>
-                {% else %}
-                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ feedback_list.next_page_number }}&filter={{ filter_status }}"
+                           aria-label="Next Page"
+                           title="Go to next page">
+                           &raquo;
+                        </a>
+                    </li>
                 {% endif %}
             </ul>
         </nav>

@@ -5,26 +5,39 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
 {% endblock %}
+
 {% block title %}
   Order Tracking | Tarh Tastyhub
 {% endblock %}
+
 {% block content %}
   <div class="container text-center py-5">
+    <!-- HEADER -->
     <h2 class="fw-bold mb-4">
       <span class="fa-icon"><i class="fa-solid fa-box"></i></span>
       Order Tracking
     </h2>
+
     <p class="lead">Order #{{ order.order_number }}</p>
 
-    <div class="progress mb-3" style="height:30px;">
+    <!-- PROGRESS BAR -->
+    <div class="progress mb-3" style="height: 30px;">
       <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
     </div>
 
-    <p class="mt-3 text-muted">We'll update you when your meal is being prepared, out for delivery, or ready for pickup.</p>
+    <!-- STATUS MESSAGE -->
+    <p class="mt-3 text-muted">
+      {% if order.delivery_type == 'pickup' %}
+        We'll notify you when your order is being prepared or ready for pickup.
+      {% else %}
+        We'll update you when your meal is being prepared or out for delivery.
+      {% endif %}
+    </p>
 
+    <!-- ACTION BUTTONS -->
     <div class="mt-4">
-      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping</a>
-      <a href="{% url 'profile' %}" class="btn btn-primary fw-bold">Go To My Profile</a>
+      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold" aria-label="Continue Shopping" title="Continue shopping for more dishes">Continue Shopping</a>
+      <a href="{% url 'profile' %}" class="btn btn-primary fw-bold" aria-label="Go To My Profile" title="View your profile and orders">Go To My Profile</a>
     </div>
   </div>
 {% endblock %}

@@ -5,9 +5,11 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
 {% endblock %}
+
 {% block title %}
   Checkout Success | Tarh Tastyhub
 {% endblock %}
+
 {% block content %}
   <div class="container py-5">
     <!-- HEADER -->
@@ -15,12 +17,23 @@
       <h2 class="fw-bold text-success mb-2"><i class="bi bi-check-lg text-warning"></i></h2>
 
       <p class="text-muted">
-        <span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>Thank you, {{ order.full_name }}! Your meal is on the way
+        <span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>
+        Thank you, <strong>{{ order.full_name }}</strong>!{% if order.delivery_type == 'pickup' %}
+          Your order will be ready for pickup.
+        {% else %}
+          Your meal is on the way.
+        {% endif %}
       </p>
 
       <p>
         Delivery Type:
-        <strong>{{ order.delivery_type|title }}</strong>
+        <strong>
+          {% if order.delivery_type == 'pickup' %}
+            Pickup
+          {% else %}
+            Delivery
+          {% endif %}
+        </strong>
       </p>
 
       {% if order.delivery_type == 'pickup' and order.pickup_time %}
@@ -48,7 +61,6 @@
             <tr>
               <th>Dish</th>
               <th class="text-center">Qty</th>
-              <th class="text-end">Price</th>
               <th class="text-end">Total</th>
             </tr>
           </thead>
@@ -58,31 +70,37 @@
               <tr>
                 <td>{{ item.portion.dish.name }}</td>
                 <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-end">${{ item.price }}</td>
-                <td class="text-end fw-bold">${{ item.lineitem_total }}</td>
+                <td class="text-end">${{ item.lineitem_total }}</td>
               </tr>
             {% endfor %}
           </tbody>
 
           <tfoot class="border-top">
             <tr>
-              <td colspan="3" class="text-end fw-bold">Subtotal:</td>
+              <td colspan="2" class="text-end fw-bold">Subtotal:</td>
               <td class="text-end">${{ order.order_total }}</td>
             </tr>
 
-            <tr>
-              <td colspan="3" class="text-end fw-bold">Delivery:</td>
-              <td class="text-end">
-                {% if order.delivery_fee > 0 %}
-                  ${{ order.delivery_fee }}
-                {% else %}
-                  Free
-                {% endif %}
-              </td>
-            </tr>
+            {% if order.delivery_type == 'delivery' %}
+              <tr>
+                <td colspan="2" class="text-end fw-bold">Delivery:</td>
+                <td class="text-end">
+                  {% if order.delivery_fee > 0 %}
+                    ${{ order.delivery_fee }}
+                  {% else %}
+                    Free
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="2" class="text-end fw-bold">Pickup:</td>
+                <td class="text-end">Free</td>
+              </tr>
+            {% endif %}
 
             <tr>
-              <td colspan="3" class="text-end fw-bold">Grand Total:</td>
+              <td colspan="2" class="text-end fw-bold">Grand Total:</td>
               <td class="text-end fw-bold text-warning">${{ order.grand_total }}</td>
             </tr>
           </tfoot>
@@ -93,7 +111,6 @@
     <!-- ACTION BUTTONS -->
     <div class="text-center mt-4">
       <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button">Continue Shopping</a>
-
       <a href="{% url 'order_tracking' order_number=order.order_number %}" class="btn btn-primary fw-bold ms-2">Track Order</a>
     </div>
   </div>
