@@ -6,6 +6,7 @@ if os.path.isfile("env.py"):
 
 import dj_database_url
 from django.contrib.messages import constants as messages
+from decimal import Decimal
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -222,8 +223,8 @@ if not USE_AWS:
     STATIC_URL = "/static/"
     STATICFILES_DIRS = [BASE_DIR / "static"]
 
-FREE_DELIVERY_THRESHOLD = 60.00
-DEFAULT_DELIVERY_FEE = 4.00
+FREE_DELIVERY_THRESHOLD = Decimal("60.00")
+DEFAULT_DELIVERY_FEE = Decimal("4.00")
 
 STRIPE_CURRENCY = "usd"
 STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")

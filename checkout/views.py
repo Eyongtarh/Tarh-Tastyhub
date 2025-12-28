@@ -8,11 +8,9 @@ from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
 from django.views.decorators.http import require_http_methods, require_POST
-
+from django.contrib.admin.views.decorators import staff_member_required
 import stripe
-
 from .forms import OrderForm
 from .services import OrderService, OrderServiceError
 from .models import Order
@@ -69,10 +67,8 @@ def checkout(request):
         return redirect("bag")
 
     subtotal = _to_decimal(ctx.get("bag_total", 0))
-
     MIN_FREE = _to_decimal(settings.FREE_DELIVERY_THRESHOLD)
     DEFAULT_DELIVERY = _to_decimal(settings.DEFAULT_DELIVERY_FEE)
-
     delivery_type = request.POST.get("delivery_type", "delivery")
 
     delivery_fee = (
@@ -80,29 +76,19 @@ def checkout(request):
         if delivery_type == "pickup" or subtotal >= MIN_FREE
         else DEFAULT_DELIVERY
     )
-
     grand_total = (subtotal + delivery_fee).quantize(
         Decimal("0.01"), rounding=ROUND_HALF_UP
     )
-
     delivery_fee_display = "Free" if delivery_fee == 0 else f"${delivery_fee:.2f}"
 
-    # -------------------
-    # POST: create order
-    # -------------------
     if request.method == "POST":
         form = OrderForm(request.POST)
-
         if form.is_valid():
             try:
                 stripe_pid = request.POST.get("stripe_pid")
-
                 if stripe_pid and Order.objects.filter(stripe_pid=stripe_pid).exists():
                     existing = Order.objects.get(stripe_pid=stripe_pid)
-                    return redirect(
-                        "checkout_success",
-                        order_number=existing.order_number,
-                    )
+                    return redirect("checkout_success", order_number=existing.order_number)
 
                 form_data = form.cleaned_data.copy()
                 form_data["delivery_fee"] = str(delivery_fee)
@@ -117,12 +103,8 @@ def checkout(request):
 
                 request.session["bag"] = {}
                 request.session.modified = True
-
                 messages.success(request, "Order placed successfully!")
-                return redirect(
-                    "checkout_success",
-                    order_number=order.order_number,
-                )
+                return redirect("checkout_success", order_number=order.order_number)
 
             except OrderServiceError as e:
                 messages.error(request, str(e))
@@ -147,12 +129,9 @@ def checkout(request):
                 "postcode": getattr(profile, "default_postcode", ""),
                 "local": getattr(profile, "default_local", ""),
             }
-
         form = OrderForm(initial=initial)
 
-    # -------------------
-    # Stripe PaymentIntent (GET ONLY)
-    # -------------------
+    # Create Stripe PaymentIntent (GET only)
     client_secret = None
     if request.method == "GET":
         try:
@@ -160,10 +139,7 @@ def checkout(request):
                 amount=int(grand_total * 100),
                 currency=settings.STRIPE_CURRENCY,
                 payment_method_types=["card"],
-                metadata={
-                    "delivery_type": delivery_type,
-                    "delivery_fee": str(delivery_fee),
-                },
+                metadata={"delivery_type": delivery_type, "delivery_fee": str(delivery_fee)},
             )
             client_secret = intent.client_secret
         except Exception:
@@ -187,28 +163,18 @@ def checkout(request):
 
 def checkout_success(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
-
     if not order.email_sent:
         subject = render_to_string(
             "checkout/confirmation_emails/confirmation_email_subject.txt",
             {"order": order},
         ).strip()
-
         body = render_to_string(
             "checkout/confirmation_emails/confirmation_email_body.txt",
-            {"order": order, "current_site": get_current_site(request)},
+            {"order": order, "current_site": request.get_host()},
         )
-
-        send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [order.email],
-        )
-
+        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [order.email])
         order.email_sent = True
         order.save(update_fields=["email_sent"])
-
     return render(request, "checkout/success.html", {"order": order})
 
 
@@ -216,12 +182,17 @@ def checkout_success(request, order_number):
 def update_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     new_status = request.POST.get("status")
-
     if new_status not in dict(Order.STATUS_CHOICES):
         messages.error(request, "Invalid status.")
         return redirect(request.META.get("HTTP_REFERER", "/"))
-
     order.status = new_status
     order.save()
     messages.success(request, "Order status updated.")
     return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
+@staff_member_required
+def print_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    html = render_to_string('checkout/print_order.html', {'order': order})
+    return HttpResponse(html)

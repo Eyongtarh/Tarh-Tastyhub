@@ -9,9 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const stripe = Stripe(stripePublicKey);
     const elements = stripe.elements();
 
+    // Mount the card element
     const card = elements.create("card");
     card.mount("#card-element");
 
+    // Display card errors
     card.on("change", (event) => {
         document.getElementById("card-errors").textContent =
             event.error ? event.error.message : "";
@@ -23,32 +25,43 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            document.getElementById("submit-button").disabled = true;
-            document.getElementById("loading-overlay").style.display = "flex";
+            // Disable button and show loader
+            const submitButton = document.getElementById("submit-button");
+            const loadingOverlay = document.getElementById("loading-overlay");
+            submitButton.disabled = true;
+            loadingOverlay.style.display = "flex";
 
             const csrfToken = document.querySelector(
                 "input[name='csrfmiddlewaretoken']"
             ).value;
 
             const email = form.email.value.trim();
+            const deliveryType = document.querySelector(
+                "input[name='delivery_type']:checked"
+            )?.value || "delivery";
+            const pickupTime = form.pickup_time?.value || "";
 
+            // Cache checkout data in Django session / Stripe metadata
             const cacheData = new FormData();
             cacheData.append("csrfmiddlewaretoken", csrfToken);
             cacheData.append("client_secret", clientSecret);
-            cacheData.append(
-                "delivery_type",
-                document.querySelector("input[name='delivery_type']:checked")?.value
-            );
-            cacheData.append("pickup_time", form.pickup_time?.value || "");
+            cacheData.append("delivery_type", deliveryType);
+            cacheData.append("pickup_time", pickupTime);
             cacheData.append("email", email);
 
-            await fetch("/checkout/cache_checkout_data/", {
-                method: "POST",
-                body: cacheData,
-            });
+            try {
+                await fetch("/checkout/cache_checkout_data/", {
+                    method: "POST",
+                    body: cacheData,
+                });
+            } catch (err) {
+                console.error("Failed to cache checkout data:", err);
+            }
 
+            // Confirm the payment with Stripe
             const result = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
+                payment_method_data: {
+                    type: "card",
                     card: card,
                     billing_details: {
                         name: form.full_name.value,
@@ -69,9 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (result.error) {
                 document.getElementById("card-errors").textContent =
                     result.error.message;
-                document.getElementById("submit-button").disabled = false;
-                document.getElementById("loading-overlay").style.display = "none";
+                submitButton.disabled = false;
+                loadingOverlay.style.display = "none";
             } else if (result.paymentIntent.status === "succeeded") {
+                // Add hidden input with Stripe PaymentIntent ID and submit form
                 const pidInput = document.createElement("input");
                 pidInput.type = "hidden";
                 pidInput.name = "stripe_pid";
@@ -103,5 +117,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
         applyColor();
         dropdown.addEventListener("change", applyColor);
+    });
+
+    /* ============================
+       SHOW PICKUP TIME FIELD DYNAMICALLY
+       ============================ */
+    const deliveryRadios = document.querySelectorAll("input[name='delivery_type']");
+    const pickupContainer = document.getElementById("pickup-time-container");
+
+    deliveryRadios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+            if (radio.value === "pickup") {
+                pickupContainer.style.display = "block";
+            } else {
+                pickupContainer.style.display = "none";
+            }
+        });
+
+        // Initialize on page load
+        if (radio.checked && radio.value === "pickup") {
+            pickupContainer.style.display = "block";
+        }
     });
 });

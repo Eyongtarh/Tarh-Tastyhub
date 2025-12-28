@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dishes_extras %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
+  <style>
+    /* Adjust print styles */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block title %}
+  Print Order #{{ order.order_number }} | Tarh Tastyhub
+{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <!-- HEADER -->
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-success mb-2"><i class="bi bi-receipt text-warning"></i></h2>
+      <p class="text-muted">
+        Order <strong>#{{ order.order_number }}</strong> for <strong>{{ order.full_name }}</strong>
+      </p>
+
+      <p>
+        Delivery Type:
+        <strong>
+          {% if order.delivery_type == 'pickup' %}
+            Pickup
+          {% else %}
+            Delivery
+          {% endif %}
+        </strong>
+      </p>
+
+      {% if order.delivery_type == 'pickup' and order.pickup_time %}
+        <p>
+          Pickup Time: <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
+        </p>
+      {% elif order.delivery_type == 'delivery' %}
+        <p>
+          Delivery Address: <strong>
+            {{ order.street_address1 }}{% if order.street_address2 %}
+              , {{ order.street_address2 }}
+            {% endif %}, {{ order.town_or_city }}{% if order.county %}
+              , {{ order.county }}
+            {% endif %}, {{ order.local }}
+          </strong>
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- ORDER STATUS -->
+    <div class="mb-4">
+      <div class="progress" style="height: 30px;">
+        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+      </div>
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">Order Summary</h5>
+
+        <table class="table table-borderless align-middle">
+          <thead class="border-bottom">
+            <tr>
+              <th>Dish</th>
+              <th class="text-center">Qty</th>
+              <th class="text-end">Total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for item in order.lineitems.all %}
+              <tr>
+                <td>
+                  {{ item.portion.dish.name }}{% if item.portion.name %}
+                    ({{ item.portion.name }})
+                  {% endif %}
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-end">${{ item.lineitem_total }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3" class="text-center text-muted">No items in this order.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+
+          <tfoot class="border-top">
+            <tr>
+              <td colspan="2" class="text-end fw-bold">Subtotal:</td>
+              <td class="text-end">${{ order.order_total }}</td>
+            </tr>
+
+            {% if order.delivery_type == 'delivery' %}
+              <tr>
+                <td colspan="2" class="text-end fw-bold">Delivery:</td>
+                <td class="text-end">
+                  {% if order.delivery_fee > 0 %}
+                    ${{ order.delivery_fee }}
+                  {% else %}
+                    Free
+                  {% endif %}
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="2" class="text-end fw-bold">Pickup:</td>
+                <td class="text-end">Free</td>
+              </tr>
+            {% endif %}
+
+            <tr>
+              <td colspan="2" class="text-end fw-bold">Grand Total:</td>
+              <td class="text-end fw-bold text-warning">${{ order.grand_total }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="text-center mt-4 no-print">
+      <button onclick="window.print()" class="btn btn-secondary fw-bold me-2">Print Order</button>
+      <a href="{% url 'admin_dashboard' %}" class="btn btn-primary fw-bold">Back to Dashboard</a>
+    </div>
+  </div>
+{% endblock %}
