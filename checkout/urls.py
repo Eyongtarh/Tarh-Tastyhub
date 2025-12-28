@@ -34,5 +34,8 @@ urlpatterns = [
         admin_dashboard_view.cancel_order,
         name='cancel_order'
      ),
-
+    path(
+        'cache_checkout_data/',
+        views.cache_checkout_data,
+        name='cache_checkout_data'),
 ]
