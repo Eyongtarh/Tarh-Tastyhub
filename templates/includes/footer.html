@@ -85,11 +85,28 @@
   
     if (!form || !emailInput || !message) return
   
+    // Initial styles for animation
+    message.style.transition = 'all 0.5s ease'
+    message.style.opacity = 0
+    message.style.transform = 'scale(0.8)'
+    message.style.padding = '10px'
+    message.style.borderRadius = '5px'
+    message.style.display = 'inline-block'
+  
     form.addEventListener('submit', function (e) {
       if (!emailInput.value) return
   
-      message.textContent = 'Subscribed'
+      message.textContent = 'Subscribed!'
       message.classList.add('text-black')
+      message.style.backgroundColor = '#ffc107'
+      message.style.border = '1px solid #28a745'
+      message.style.opacity = 1
+      message.style.transform = 'scale(1)'
+  
+      setTimeout(() => {
+        message.style.opacity = 0
+        message.style.transform = 'scale(0.8)'
+      }, 3000)
     })
   })
 </script>

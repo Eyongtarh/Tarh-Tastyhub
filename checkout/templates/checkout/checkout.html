@@ -106,7 +106,7 @@
                 </div>
 
                 <!-- LOADING OVERLAY -->
-                <div id="loading-overlay">
+                <div id="loading-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:10;">
                   <div class="spinner-border text-light" role="status"></div>
                 </div>
 
@@ -127,6 +127,7 @@
 
 {% block postloadjs %}
   {{ block.super }}
+  <script src="https://js.stripe.com/v3/"></script>
   {{ stripe_public_key|json_script:'id_stripe_public_key' }}
   {{ client_secret|json_script:'id_client_secret' }}
   <script src="{% static 'checkout/js/checkout.js' %}"></script>
