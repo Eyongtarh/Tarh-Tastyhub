@@ -38,4 +38,7 @@ urlpatterns = [
         'cache_checkout_data/',
         views.cache_checkout_data,
         name='cache_checkout_data'),
+    path(
+        'admin/order/print/<int:order_id>/',
+        views.print_order, name='print_order'),
 ]
