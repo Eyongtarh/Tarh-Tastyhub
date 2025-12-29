@@ -5,9 +5,9 @@ Thanks for ordering from Tarh Tastyhub!
 Your order #{{ order.order_number }} has been received and is being processed.
 
 {% if order.delivery_type == "pickup" %}
-We'll notify you when your order is ready for pickup.
+We'll notify you when your order is being prepared and when it's ready for pickup.
 {% else %}
-We'll notify you when it's out for delivery.
+We'll notify you when it's is being prepared and when it's out for delivery.
 {% endif %}
 
 Order Total: ${{ order.grand_total }}
