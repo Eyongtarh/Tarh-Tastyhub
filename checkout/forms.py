@@ -27,7 +27,9 @@ class OrderForm(forms.ModelForm):
 
     delivery_type = forms.ChoiceField(
         choices=DELIVERY_CHOICES,
-        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        widget=forms.RadioSelect(
+            attrs={'class': 'form-check-input'}
+        ),
         label='Delivery Method',
     )
 
@@ -56,7 +58,9 @@ class OrderForm(forms.ModelForm):
         ]
         widgets = {
             'local': forms.Select(
-                attrs={'class': 'form-control mb-2 stripe-style-input'}
+                attrs={
+                    'class': 'form-control mb-2 stripe-style-input'
+                }
             ),
         }
 
@@ -73,49 +77,72 @@ class OrderForm(forms.ModelForm):
                 ).strip()
             if not isinstance(field.widget, (forms.Select, forms.RadioSelect)):
                 field.widget.attrs.setdefault(
-                    'placeholder', name.replace('_', ' ').title()
+                    'placeholder',
+                    name.replace('_', ' ').title()
                 )
         for field in self.fields.values():
             field.label = ''
 
     def clean(self):
         """
-        Validate pickup time according to
-        delivery type and opening hours.
+        Validate pickup/delivery time according to
+        delivery type and working hours.
         """
         cleaned = super().clean()
         delivery_type = cleaned.get('delivery_type')
         pickup_time = cleaned.get('pickup_time')
-
+        now = timezone.now()
+        min_time = now + timedelta(minutes=15)
         if delivery_type == 'pickup':
             if not pickup_time:
                 self.add_error(
                     'pickup_time',
                     'Pickup time is required for pickup orders.'
                 )
+            elif pickup_time < min_time:
+                self.add_error(
+                    'pickup_time',
+                    'Pickup time must be at least 15 minutes from now.'
+                )
             else:
-                now = timezone.now()
-                min_time = now + timedelta(minutes=15)
-                if pickup_time < min_time:
-                    self.add_error(
-                        'pickup_time',
-                        'Pickup time must be at least 15 minutes from now.'
-                    )
                 day = pickup_time.weekday()
                 hour_decimal = pickup_time.hour + pickup_time.minute / 60
-                if 0 <= day <= 4:  # Weekdays
+                if 0 <= day <= 4:
                     if not (7 <= hour_decimal <= 22):
                         self.add_error(
                             'pickup_time',
-                            'Pickup time must be between '
-                            '07:00 and 22:00 on weekdays.'
+                            'Pickup time must be between 07:00 and 22:00 '
+                            'on weekdays.'
                         )
-                else:  # Weekends
+                else:
                     if not (7 <= hour_decimal <= 21):
                         self.add_error(
                             'pickup_time',
-                            'Pickup time must be between '
-                            '07:00 and 21:00 on weekends.'
+                            'Pickup time must be between 07:00 and 21:00 '
+                            'on weekends.'
                         )
+
+        if delivery_type == 'delivery' and pickup_time:
+            if pickup_time < min_time:
+                self.add_error(
+                    'pickup_time',
+                    'Delivery time must be at least 15 minutes from now.'
+                )
+            day = pickup_time.weekday()
+            hour_decimal = pickup_time.hour + pickup_time.minute / 60
+            if 0 <= day <= 4:
+                if not (7 <= hour_decimal <= 22):
+                    self.add_error(
+                        'pickup_time',
+                        'Delivery time must be between 07:00 and 22:00 '
+                        'on weekdays.'
+                    )
+            else:
+                if not (7 <= hour_decimal <= 21):
+                    self.add_error(
+                        'pickup_time',
+                        'Delivery time must be between 07:00 and 21:00 '
+                        'on weekends.'
+                    )
 
         return cleaned

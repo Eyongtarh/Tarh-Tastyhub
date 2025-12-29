@@ -1,72 +1,66 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ============================
+  /* 
      STRIPE SETUP
-  ============================ */
-
+ */
   const stripePublicKey = JSON.parse(
     document.getElementById("id_stripe_public_key").textContent
   );
-
   const clientSecret = JSON.parse(
     document.getElementById("id_client_secret").textContent
   );
-
   const stripe = Stripe(stripePublicKey);
   const elements = stripe.elements();
   const card = elements.create("card");
-
   card.mount("#card-element");
-
   card.on("change", (event) => {
     document.getElementById("card-errors").textContent =
       event.error ? event.error.message : "";
   });
-
-  /* ============================
+  /* 
      PAYMENT FORM SUBMISSION
-  ============================ */
-
+  */
   const form = document.getElementById("payment-form");
-
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const submitButton = document.getElementById("submit-button");
       const loadingOverlay = document.getElementById("loading-overlay");
-
       submitButton.disabled = true;
       loadingOverlay.style.display = "flex";
-
       const email = form.email?.value?.trim() || "";
       const deliveryType =
         document.querySelector("input[name='delivery_type']:checked")?.value || "delivery";
       const pickupTime = form.pickup_time?.value || "";
-
-      /* ============================
+      /*
          CACHE CHECKOUT DATA
-      ============================ */
+      */
       const stripePid = clientSecret.split("_secret")[0];
       const cacheData = new FormData();
       cacheData.append("stripe_pid", stripePid);
       cacheData.append("delivery_type", deliveryType);
       cacheData.append("pickup_time", pickupTime);
       cacheData.append("email", email);
-
       try {
-        await fetch("/checkout/cache_checkout_data/", {
+        const response = await fetch("/checkout/cache_checkout_data/", {
           method: "POST",
           body: cacheData,
         });
+        if (!response.ok) {
+          throw new Error("Failed to cache checkout data");
+        }
+
       } catch (err) {
-        console.error("Failed to cache checkout data:", err);
+        console.error(err);
+        document.getElementById("card-errors").textContent =
+          "Failed to cache checkout data. Please try again.";
+        submitButton.disabled = false;
+        loadingOverlay.style.display = "none";
+        return;
       }
-
-      /* ============================
+      /* 
          CONFIRM PAYMENT WITH STRIPE
-      ============================ */
-
+      */
       try {
         const result = await stripe.confirmCardPayment(clientSecret, {
           payment_method: {
@@ -86,14 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
             },
           },
         });
-
         if (result.error) {
           document.getElementById("card-errors").textContent = result.error.message;
           submitButton.disabled = false;
           loadingOverlay.style.display = "none";
           return;
         }
-
         if (result.paymentIntent?.status === "succeeded") {
           const pidInput = document.createElement("input");
           pidInput.type = "hidden";
@@ -102,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
           form.appendChild(pidInput);
           form.submit();
         }
-
       } catch (err) {
         console.error("Stripe payment failed:", err);
         document.getElementById("card-errors").textContent =
@@ -112,11 +103,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  /* ============================
+  /* 
      ADMIN ORDER STATUS COLORS
-  ============================ */
-
+  */
   const statusColors = {
     Pending: "#ffc107",
     Preparing: "#0d6efd",
@@ -133,20 +122,16 @@ document.addEventListener("DOMContentLoaded", () => {
     applyColor();
     dropdown.addEventListener("change", applyColor);
   });
-
-  /* ============================
+  /* 
      PICKUP TIME TOGGLE
-  ============================ */
-
+ */
   const deliveryRadios = document.querySelectorAll("input[name='delivery_type']");
   const pickupContainer = document.getElementById("pickup-time-container");
-
   const togglePickup = () => {
     const selected =
       document.querySelector("input[name='delivery_type']:checked")?.value;
     pickupContainer.style.display = selected === "pickup" ? "block" : "none";
   };
-
   deliveryRadios.forEach((radio) => {
     radio.addEventListener("change", togglePickup);
   });
