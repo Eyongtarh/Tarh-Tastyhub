@@ -25,40 +25,38 @@
             <div class="card-body">
               <ul class="list-group mb-3">
                 {% for item in bag_items %}
-                  <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start">
+                  <li class="list-group-item d-flex justify-content-between">
                     <div>
                       <strong>{{ item.portion.dish.name }}</strong><br />
                       Portion: {{ item.portion.size }}<br />
                       Quantity: {{ item.quantity }}
                     </div>
-                    <span class="mt-2 mt-md-0">${{ item.line_total }}</span>
+                    <span>${{ item.line_total }}</span>
                   </li>
                 {% endfor %}
               </ul>
               <hr />
-              <p class="text-end mb-1">
+              <p class="text-end">
                 <strong>Subtotal:</strong> ${{ bag_total }}
               </p>
-              <p class="text-end mb-1">
+              <p class="text-end">
                 <strong>Delivery:</strong> {{ delivery_fee_display }}
               </p>
               <hr />
               <h5 class="text-end">Total: ${{ grand_total }}</h5>
             </div>
-            <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button" aria-label="Continue Shopping" title="Continue shopping for more dishes">Continue Shopping</a>
           </div>
         </div>
 
         <!-- CHECKOUT FORM -->
         <div class="col-12 col-lg-7">
-          <div class="card shadow-sm checkout-card position-relative">
+          <div class="card shadow-sm position-relative">
             <div class="card-header bg-dark text-white">
               <h5 class="mb-0">Enter Your Details</h5>
             </div>
             <div class="card-body">
               <form method="post" id="payment-form">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
 
                 <div class="row">
                   {% for field in form %}
@@ -72,54 +70,35 @@
                 </div>
 
                 <!-- DELIVERY TYPE -->
-                <div class="row mb-3">
-                  <div class="col-12">
-                    <label class="form-label fw-bold">Delivery Type</label>
-                    <div class="d-flex flex-column flex-md-row gap-3">
-                      {% for choice in form.delivery_type %}
-                        <div class="form-check">
-                          {{ choice.tag }}
-                          <label class="form-check-label">{{ choice.choice_label }}</label>
-                        </div>
-                      {% endfor %}
+                <div class="mb-3">
+                  <label class="fw-bold">Delivery Type</label>
+                  {% for choice in form.delivery_type %}
+                    <div class="form-check">
+                      {{ choice.tag }}
+                      <label class="form-check-label">{{ choice.choice_label }}</label>
                     </div>
-                  </div>
-
-                  <!-- PICKUP TIME -->
-                  <div class="col-12 mt-3" id="pickup-time-container" style="display: none;">
-                    {{ form.pickup_time }}
-                    <div class="text-danger">{{ form.pickup_time.errors }}</div>
-                  </div>
+                  {% endfor %}
                 </div>
 
-                <!-- CARD DETAILS -->
+                <!-- PICKUP TIME -->
+                <div id="pickup-time-container" style="display:none;">{{ form.pickup_time }}</div>
+
+                <!-- CARD -->
                 <div class="mb-3">
-                  <label class="form-label">Card Details</label>
+                  <label>Card Details</label>
                   <div id="card-element" class="form-control"></div>
                   <div id="card-errors" class="text-danger mt-2"></div>
                 </div>
 
-                <!-- SAVE INFO -->
-                <div class="form-check mb-3">
-                  <input type="checkbox" id="id-save-info" class="form-check-input" />
-                  <label class="form-check-label" for="id-save-info">Save payment info</label>
+                <div id="loading-overlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,.5); z-index:10; justify-content:center; align-items:center;">
+                  <div class="spinner-border text-light"></div>
                 </div>
 
-                <!-- LOADING OVERLAY -->
-                <div id="loading-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:10;">
-                  <div class="spinner-border text-light" role="status"></div>
-                </div>
-
-                <button id="submit-button" class="btn btn-success w-100 mt-3 fw-bold" aria-label="Pay Now" title="Submit payment for your order">Pay Now</button>
+                <button id="submit-button" class="btn btn-success w-100 mt-3">Pay Now</button>
               </form>
             </div>
           </div>
         </div>
-      </div>
-    {% else %}
-      <div class="alert alert-warning text-center">
-        Your bag is empty.<br /><br />
-        <a href="{% url 'dish_list' %}" class="btn btn-primary" aria-label="Browse Dishes" title="Browse available dishes to add to your bag">Browse Dishes</a>
       </div>
     {% endif %}
   </div>
@@ -128,7 +107,9 @@
 {% block postloadjs %}
   {{ block.super }}
   <script src="https://js.stripe.com/v3/"></script>
+
   {{ stripe_public_key|json_script:'id_stripe_public_key' }}
   {{ client_secret|json_script:'id_client_secret' }}
+
   <script src="{% static 'checkout/js/checkout.js' %}"></script>
 {% endblock %}
