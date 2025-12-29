@@ -13,7 +13,7 @@
 {% block content %}
   <div class="container mt-5">
     <!-- SUCCESS MESSAGE -->
-    <div class="mb-4">
+    <div class="mb-4 text-center">
       <h2 class="text-success text-white">
         <i class="bi bi-check-lg text-warning"></i>
         Order Placed Successfully!
@@ -28,23 +28,19 @@
       </p>
 
       <p>
-        Order Number:
-        <strong>{{ order.order_number }}</strong>
+        Order Number: <strong>{{ order.order_number }}</strong>
       </p>
-
       <p>
-        We have sent a confirmation email to:
-        <strong>{{ order.email }}</strong>
+        Confirmation email sent to: <strong>{{ order.email }}</strong>
       </p>
 
       {% if order.delivery_type == 'pickup' and order.pickup_time %}
         <p>
-          Pickup Time:
-          <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
+          Pickup Time: <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
         </p>
       {% endif %}
 
-      <a href="{% url 'profile' %}" class="btn btn-primary mt-3" aria-label="Go To My Profile" title="View your profile and orders">Go To My Profile</a>
+      <a href="{% url 'profile' %}" class="btn btn-primary mt-3">Go To My Profile</a>
     </div>
 
     <!-- ORDER SUMMARY -->
@@ -77,23 +73,16 @@
               <td class="text-end">${{ order.order_total }}</td>
             </tr>
 
-            {% if order.delivery_type == 'delivery' %}
-              <tr>
-                <td colspan="2" class="text-end fw-bold">Delivery:</td>
-                <td class="text-end">
-                  {% if order.delivery_fee > 0 %}
-                    ${{ order.delivery_fee }}
-                  {% else %}
-                    Free
-                  {% endif %}
-                </td>
-              </tr>
-            {% else %}
-              <tr>
-                <td colspan="2" class="text-end fw-bold">Pickup:</td>
-                <td class="text-end">Free</td>
-              </tr>
-            {% endif %}
+            <tr>
+              <td colspan="2" class="text-end fw-bold">
+                {% if order.delivery_type == 'pickup' %}
+                  Pickup:
+                {% else %}
+                  Delivery:
+                {% endif %}
+              </td>
+              <td class="text-end">{{ delivery_display }}</td>
+            </tr>
 
             <tr>
               <td colspan="2" class="text-end fw-bold">Grand Total:</td>
@@ -106,7 +95,7 @@
 
     <!-- CONTINUE SHOPPING -->
     <div class="text-center mt-4">
-      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button" aria-label="Continue Shopping" title="Continue shopping for more dishes">Continue Shopping</a>
+      <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button">Continue Shopping</a>
     </div>
   </div>
 {% endblock %}
