@@ -1,22 +1,26 @@
-{% extends "account/base_reauthenticate.html" %}
+{% extends 'account/base_reauthenticate.html' %}
 {% load allauth %}
 {% load i18n %}
+
 {% block reauthenticate_content %}
-    {% element p %}
-        {% blocktranslate %}Enter your password:{% endblocktranslate %}
+  <hr />
+  <h2 class="logo-font mb-4">{% trans 'Re-enter Password' %}</h2>
+  <hr />
+
+  <p>
+    {% blocktranslate %}Enter your password:{% endblocktranslate %}
+  </p>
+
+  {% url 'account_reauthenticate' as action_url %}
+  <form method="post" action="{{ action_url }}" class="reauthenticate_form">
+    {% csrf_token %}
+    {% element fields form=form unlabeled=True %}
     {% endelement %}
-    {% url 'account_reauthenticate' as action_url %}
-    {% element form form=form method="post" action=action_url %}
-        {% slot body %}
-            {% csrf_token %}
-            {% element fields form=form unlabeled=True %}
-            {% endelement %}
-            {{ redirect_field }}
-        {% endslot %}
-        {% slot actions %}
-            {% element button type="submit" tags="primary,reauthenticate" %}
-                {% trans "Confirm" %}
-            {% endelement %}
-        {% endslot %}
-    {% endelement %}
+    {{ redirect_field }}
+
+    <div class="mt-3">
+      <button type="submit" class="btn btn-primary btn-sm">{% trans 'Confirm' %}</button>
+      <a class="btn btn-outline-primary btn-sm ms-2" href="{% url 'account_login' %}">← Back to Login</a>
+    </div>
+  </form>
 {% endblock %}
