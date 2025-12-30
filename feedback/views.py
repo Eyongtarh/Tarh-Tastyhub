@@ -1,3 +1,8 @@
+"""
+Views for Feedback app.
+(user submission with rate limiting and admin staff actions
+to mark feedback as handled or unhandled)
+"""
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django_ratelimit.decorators import ratelimit
@@ -20,26 +25,40 @@ def feedback_view(request):
             feedback = form.save(commit=False)
             if request.user.is_authenticated:
                 feedback.user = request.user
-                feedback.name = request.user.get_full_name() or request.user.username
+                feedback.name = (
+                    request.user.get_full_name() or request.user.username
+                )
                 feedback.email = request.user.email
             else:
                 if not feedback.name or not feedback.email:
-                    messages.error(request, "Name and email are required for anonymous feedback.")
-                    return render(request, 'feedback/feedback.html', {'form': form, 'hidden_fields': ['name', 'email']})
-
+                    messages.error(
+                        request,
+                        "Name and email are required for anonymous feedback."
+                    )
+                    return render(
+                        request,
+                        'feedback/feedback.html',
+                        {'form': form, 'hidden_fields': ['name', 'email']}
+                    )
             try:
                 feedback.save()
                 messages.success(request, "Thanks for your feedback!")
                 return redirect('feedback')
             except Exception as e:
                 logger.error(f"Error saving feedback: {e}")
-                messages.error(request, "An error occurred. Please try again.")
+                messages.error(
+                    request,
+                    "An error occurred. Please try again."
+                )
         else:
             messages.error(request, "Please correct the errors below.")
     else:
         form = FeedbackForm(user=request.user)
-
-    return render(request, 'feedback/feedback.html', {'form': form, 'hidden_fields': ['name', 'email']})
+    return render(
+        request,
+        'feedback/feedback.html',
+        {'form': form, 'hidden_fields': ['name', 'email']}
+    )
 
 
 @staff_member_required

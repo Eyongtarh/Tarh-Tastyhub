@@ -1,3 +1,7 @@
+"""
+Forms for managing Dish, DishPortion, DishImage, and Category models.
+(ModelForms and inline formsets for portions and images)
+"""
 from django import forms
 from django.forms import inlineformset_factory
 from .models import Dish, Category, DishImage, DishPortion

@@ -1,9 +1,18 @@
+"""
+Model for user Feedback submissions.
+Supports optional user link, subject, message, and handling status.
+"""
 from django.db import models
 from django.contrib.auth.models import User
 
 
 class Feedback(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     name = models.CharField(max_length=100)
     email = models.EmailField()
     subject = models.CharField(max_length=150)

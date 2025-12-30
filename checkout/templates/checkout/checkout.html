@@ -110,7 +110,7 @@
                   <div class="spinner-border text-light" role="status"></div>
                 </div>
 
-                <button id="submit-button" class="btn btn-success w-100 mt-3 fw-bold" aria-label="Pay Now" title="Submit payment for your order">Pay Now</button>
+                <button id="submit-button" type="submit" class="btn btn-success w-100 mt-3 fw-bold" aria-label="Pay Now" title="Submit payment for your order">Pay Now</button>
               </form>
             </div>
           </div>
@@ -130,5 +130,5 @@
   <script src="https://js.stripe.com/v3/"></script>
   {{ stripe_public_key|json_script:'id_stripe_public_key' }}
   {{ client_secret|json_script:'id_client_secret' }}
-  <script src="{% static 'checkout/js/checkout.js' %}"></script>
+  <script src="{% static 'checkout/js/checkout.js' %}?v=2"></script>
 {% endblock %}
