@@ -4,19 +4,16 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 html, body {
     max-width: 100%;
     overflow-x: hidden;
     font-family: 'Poppins', 'Segoe UI', sans-serif;
     color: #212529;
 }
-
 body {
     background-color: rgba(39, 143, 106, 0.843);
     width: 100%;
 }
-
 header.fixed-top {
     position: fixed;
     top: 0;
@@ -24,24 +21,30 @@ header.fixed-top {
     width: 100%;
     z-index: 1030;
 }
-
 main {
     max-width: 1200px;
     margin: 0 auto;
     padding-top: 160px;
 }
-
 /* Text Colors */
 .text-white { color: #fff; }
 .text-yellow { color: #ffc107; }
 .text-black { color: black; }
-
+/* Account buttons */
+.text-white-link {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s, text-decoration 0.3s;
+  }
+  .text-white-link:hover {
+    color: #ffc107; 
+    text-decoration: underline;
+  }
 /* Buttons */
 .shop-now-button:hover {
     background-color: #e55b2c;
     color: #fff;
 }
-
 /* Navbar */
 .navbar-brand {
     font-size: 1.5rem;
@@ -59,7 +62,6 @@ main {
     font-size: x-large;
     padding: 0 5px;
 }
-
 /* Dropdowns */
 .dropdown-menu {
     background-color: #ffffff;
@@ -72,7 +74,6 @@ main {
     background-color: #ffc107;
     color: #000 !important;
 }
-
 /* Bag Count */
 .bag-count {
     font-size: 0.75rem !important;
@@ -88,7 +89,6 @@ main {
     font-weight: bold;
     transform: translateX(50%);
 }
-
 /* Logo */
 .brand-logo {
     font-size: 1.6rem;
@@ -104,10 +104,8 @@ main {
 .brand-main { color: #212529; }
 .brand-logo:hover .brand-main { color: #198754; }
 .brand-logo:active { transform: scale(0.97); opacity: 0.9; }
-
 /* Smooth fade-out */
 .removing { opacity: 0; transition: opacity 0.2s ease-out; }
-
 /* Quantity Inputs */
 .dish-qty {
     width: 50px;
@@ -132,10 +130,8 @@ main {
 .bag-qty-increment:hover, .bag-qty-decrement:hover {
     background-color: #e68900;
 }
-
 /* Line Total */
 .line-total strong { color: #4caf50; }
-
 /* Remove from Bag */
 .remove-from-bag {
     background-color: #f44336;
@@ -147,7 +143,6 @@ main {
     transition: background-color 0.2s;
 }
 .remove-from-bag:hover { background-color: #d32f2f; }
-
 /* Feedback Section */
 .feedback_back {
     background: url('/static/images/feedback_pic.jpg') center center / cover no-repeat;
@@ -156,11 +151,9 @@ main {
     align-items: center;
     flex-direction: column;
 }
-
 /* Hero */
 .hero h1 { font-size: 3rem; font-weight: 700; }
 .hero p { font-size: 1.2rem; }
-
 /* Cards */
 .card {
     border-radius: 12px;
@@ -176,10 +169,8 @@ main {
     width: 100%;
     object-fit: cover;
 }
-
 /* Buttons */
 .btn-warning { color: #000 !important; font-weight: 600; }
-
 .btn-password, .btn-delete {
     padding: 8px 16px;
     border-radius: 8px;
@@ -211,7 +202,6 @@ main {
     box-shadow: 0 0 5px rgba(255,193,7,0.5);
     outline: none;
 }
-
 /* Flying Bag Animation */
 #flying-image {
     position: fixed;
@@ -222,7 +212,6 @@ main {
     z-index: 9999;
     transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s;
 }
-
 /* Search Dropdown */
 #search-results, #mobile-search-results {
     position: absolute;
@@ -250,7 +239,6 @@ main {
 .tarh-footer .social-icon:hover { color: #e55b2c; transform: translateY(-2px); }
 .tarh-footer h6, .tarh-footer h4 { color: #fff; }
 .tarh-footer ul li { margin-bottom: 6px; }
-
 /* Mobile Header & Offcanvas */
 .d-lg-none.bg-warning { padding: 0.5rem 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 1050; }
 .btn-hamburger {
@@ -270,7 +258,6 @@ main {
 .offcanvas-body ul ul li a { padding-left: 1rem; font-weight: 400; font-size: 0.95rem; }
 .offcanvas-header { border-bottom: 1px solid #ddd; }
 .offcanvas-header .btn-close { z-index: 1070; }
-
 /* Toast */
 #notification-toast {
     position: fixed;
@@ -291,7 +278,6 @@ main {
 }
 #notification-toast.show { opacity: 1; transform: translateY(0); }
 #notification-toast.hide { opacity: 0; transform: translateY(-20px); }
-
 /* Errors Image */
 .banner404 {
     background-image: url("../images/banner_404.jpg");
@@ -309,7 +295,6 @@ main {
     aspect-ratio: 16/9;
     overflow: hidden;
 }
-
 /* Media Queries */
 @media (max-width: 1200px) { .text-center .btn { gap: 6px; } }
 @media (max-width: 991px) { main { padding-top: 120px; } }

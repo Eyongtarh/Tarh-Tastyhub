@@ -31,7 +31,7 @@ if (window.dishBagJSLoaded) {
             if (response.status === 401 || json?.error === 'AUTH_REQUIRED') {
                 toast(
                     json.message || 'Please log in or sign up to add items to your bag.',
-                    'warning'
+                    'danger'
                 );
                 return null;
             }
@@ -73,7 +73,7 @@ if (window.dishBagJSLoaded) {
             if (qty > MAX_PER_DISH) {
                 toast(
                     `You can only order up to ${MAX_PER_DISH} of this dish per day.`,
-                    'warning'
+                    'danger'
                 );
                 input.value = previousQty;
                 return;
@@ -136,7 +136,7 @@ if (window.dishBagJSLoaded) {
                     if (quantity > MAX_PER_DISH) {
                         toast(
                             `You can only order up to ${MAX_PER_DISH} of this dish per day.`,
-                            'warning'
+                            'danger'
                         );
                         return;
                     }
