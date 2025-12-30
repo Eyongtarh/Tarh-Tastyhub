@@ -19,12 +19,10 @@ class OrderForm(forms.ModelForm):
             }
         )
     )
-
     DELIVERY_CHOICES = [
         ('delivery', 'Delivery'),
         ('pickup', 'Pickup'),
     ]
-
     delivery_type = forms.ChoiceField(
         choices=DELIVERY_CHOICES,
         widget=forms.RadioSelect(
@@ -32,7 +30,6 @@ class OrderForm(forms.ModelForm):
         ),
         label='Delivery Method',
     )
-
     card_helper = forms.CharField(
         required=False,
         label='',

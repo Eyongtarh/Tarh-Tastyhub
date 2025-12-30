@@ -4,7 +4,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from dishes.models import Dish, DishPortion
+from dishes.models import DishPortion
 from .models import Order, OrderLineItem
 
 logger = logging.getLogger(__name__)

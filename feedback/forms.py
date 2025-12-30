@@ -1,3 +1,8 @@
+"""
+Form for user Feedback submission.
+(anti-spam honeypot, field validation, and pre-filling for authenticated users)
+"""
+
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Feedback
@@ -10,10 +15,22 @@ class FeedbackForm(forms.ModelForm):
         model = Feedback
         fields = ['name', 'email', 'subject', 'message']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Name'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Your Email'}),
-            'subject': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
-            'message': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your Message', 'rows': 5}),
+            'name': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Your Name'}
+            ),
+            'email': forms.EmailInput(
+                attrs={'class': 'form-control', 'placeholder': 'Your Email'}
+            ),
+            'subject': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Subject'}
+            ),
+            'message': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Your Message',
+                    'rows': 5
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -24,9 +41,9 @@ class FeedbackForm(forms.ModelForm):
             self.fields['email'].initial = user.email
 
     def clean_honeypot(self):
-        '''
+        """
         Fail if honeypot is filled (spam bot likely)
-        '''
+        """
         data = self.cleaned_data.get('honeypot')
         if data:
             raise ValidationError('Spam detected.')
@@ -39,9 +56,9 @@ class FeedbackForm(forms.ModelForm):
         return name.strip()
 
     def clean_email(self):
-        '''
+        """
         Ensure email is lowercase and valid
-        '''
+        """
         email = self.cleaned_data.get('email')
         if not email:
             raise ValidationError('Email is required.')
@@ -53,14 +70,18 @@ class FeedbackForm(forms.ModelForm):
     def clean_subject(self):
         subject = self.cleaned_data.get('subject')
         if not subject or len(subject.strip()) < 3:
-            raise ValidationError('Subject must be at least 3 characters long.')
+            raise ValidationError(
+                'Subject must be at least 3 characters long.'
+            )
         return subject.strip()
 
     def clean_message(self):
-        '''
+        """
         Prevent extremely short or repetitive messages
-        '''
+        """
         message = self.cleaned_data.get('message')
         if not message or len(message.strip()) < 10:
-            raise ValidationError('Message is too short. Please provide more details.')
+            raise ValidationError(
+                'Message is too short. Please provide more details.'
+            )
         return message.strip()

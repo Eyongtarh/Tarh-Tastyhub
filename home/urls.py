@@ -1,5 +1,10 @@
+"""
+URL patterns for index.html pages.
+(home, privacy policy, and terms & conditions pages)
+"""
 from django.urls import path
 from . import views
+
 
 urlpatterns = [
     path('', views.index, name='home'),

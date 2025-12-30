@@ -106,9 +106,9 @@
       <div id="toast-container"></div>
     </div>
     <!-- Global App Scripts -->
-    <script src="{% static 'js/base.js' %}"></script>
-    <script src="{% static 'js/bag.js' %}"></script>
-    <script src="{% static 'js/search.js' %}"></script>
+    <script src="{% static 'js/base.js' %}?v=2"></script>
+    <script src="{% static 'js/bag.js' %}?v=2"></script>
+    <script src="{% static 'js/search.js' %}?v=2"></script>
     <!-- Render Django Messages -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
@@ -122,7 +122,6 @@
             showToast("{{ message|escapejs }}", type, 5000);
           {% endfor %}
         {% endif %}
-
         document.querySelectorAll('.add-to-bag-btn').forEach(btn => {
           btn.addEventListener('click', e => {
             e.preventDefault();
@@ -132,6 +131,21 @@
         });
       });
     </script>
+    <!-- Add aria-label and title to all links dynamically -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a').forEach(function(link) {
+        // Only add if not already set
+        if (!link.hasAttribute('aria-label')) {
+          link.setAttribute('aria-label', link.textContent.trim() || 'Link');
+        }
+        if (!link.hasAttribute('title')) {
+          link.setAttribute('title', link.textContent.trim() || 'Link');
+        }
+      });
+    });
+  </script>
+    <!-- Mail chimp -->
     <script>
 function adjustMainPadding() {
   const main = document.querySelector('main');

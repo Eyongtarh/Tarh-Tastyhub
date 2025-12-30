@@ -13,7 +13,11 @@ def menu_dishes(request):
         menu = {}
         menu_types = ['Breakfast', 'Lunch', 'Grill', 'Drinks']
         for menu_type in menu_types:
-            categories = Category.objects.filter(menu_type=menu_type).prefetch_related('dishes')
+            categories = (
+                Category.objects
+                .filter(menu_type=menu_type)
+                .prefetch_related('dishes')
+            )
             menu[menu_type] = {
                 category.name: category.dishes.filter(available=True)
                 for category in categories

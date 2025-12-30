@@ -20,18 +20,13 @@ logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-# CACHE CHECKOUT DATA
-# CACHE CHECKOUT DATA
 @csrf_exempt
 @require_POST
 def cache_checkout_data(request):
     try:
         pid = request.POST.get("stripe_pid")
-
-        # Use form POST data if available, else default to 'delivery'
         delivery_type = request.POST.get("delivery_type", "delivery")
         pickup_time = request.POST.get("pickup_time", "")
-
         stripe.PaymentIntent.modify(
             pid,
             metadata={
@@ -46,23 +41,22 @@ def cache_checkout_data(request):
                 ),
             },
         )
-
         return JsonResponse({"status": "ok"})
-
     except Exception as e:
         logger.exception("cache_checkout_data failed")
         return JsonResponse({"error": str(e)}, status=400)
 
 
-# UTILS
 def _to_decimal(value, fallback=Decimal("0.00")):
     try:
-        return Decimal(str(value)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        return Decimal(str(value)).quantize(
+            Decimal("0.01"),
+            rounding=ROUND_HALF_UP
+        )
     except Exception:
         return fallback
 
 
-# CHECKOUT
 @require_http_methods(["GET", "POST"])
 def checkout(request):
     from bag.context_processors import bag_contents
@@ -71,58 +65,56 @@ def checkout(request):
     if not bag:
         messages.error(request, "Your bag is empty.")
         return redirect("bag")
-
     subtotal = Decimal(str(ctx["bag_total"]))
     delivery_fee = Decimal(str(ctx["delivery_fee"]))
     grand_total = Decimal(str(ctx["grand_total"]))
     delivery_fee_display = ctx["delivery_fee_display"]
-
-    # Use session values if present
     delivery_type = request.session.get("delivery_type", "delivery")
     pickup_time = request.session.get("pickup_time")
-
     if delivery_type == "pickup":
         delivery_fee = Decimal("0.00")
         delivery_fee_display = "Free"
         grand_total = subtotal
-
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
-            # Ensure delivery_type is always set
-            delivery_type = form.cleaned_data.get("delivery_type") or "delivery"
+            delivery_type = (
+                form.cleaned_data.get("delivery_type") or "delivery"
+            )
             pickup_time = form.cleaned_data.get("pickup_time")
-
             form.cleaned_data["delivery_fee"] = delivery_fee
             form.cleaned_data["delivery_type"] = delivery_type
             form.cleaned_data["pickup_time"] = pickup_time
-
             stripe_pid = request.POST.get("stripe_pid")
-            if stripe_pid and Order.objects.filter(stripe_pid=stripe_pid).exists():
+            if (
+                stripe_pid
+                and Order.objects.filter(stripe_pid=stripe_pid).exists()
+            ):
                 order = Order.objects.get(stripe_pid=stripe_pid)
-                return redirect("checkout_success", order_number=order.order_number)
-
+                return redirect(
+                    "checkout_success",
+                    order_number=order.order_number
+                )
             order = OrderService.create_order_from_bag(
                 user=request.user if request.user.is_authenticated else None,
                 bag=bag,
                 form_data=form.cleaned_data,
                 stripe_pid=stripe_pid,
             )
-            # Clear session bag and delivery info
             request.session["bag"] = {}
             request.session.pop("delivery_type", None)
             request.session.pop("pickup_time", None)
-
-            return redirect("checkout_success", order_number=order.order_number)
+            return redirect(
+                "checkout_success",
+                order_number=order.order_number
+            )
     else:
         form = OrderForm()
-
     intent = stripe.PaymentIntent.create(
         amount=int(grand_total * 100),
         currency=settings.STRIPE_CURRENCY,
         automatic_payment_methods={"enabled": True},
     )
-
     return render(
         request,
         "checkout/checkout.html",
@@ -138,10 +130,8 @@ def checkout(request):
     )
 
 
-# CHECKOUT SUCCESS
 def checkout_success(request, order_number):
     order = get_object_or_404(Order, order_number=order_number)
-
     if not order.email_sent:
         current_site = get_current_site(request)
         subject = render_to_string(
@@ -155,12 +145,10 @@ def checkout_success(request, order_number):
         send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [order.email])
         order.email_sent = True
         order.save(update_fields=["email_sent"])
-
     if order.delivery_type == "pickup" or order.delivery_fee == 0:
         delivery_display = "Free"
     else:
         delivery_display = f"${order.delivery_fee:.2f}"
-
     return render(
         request,
         "checkout/success.html",
@@ -168,7 +156,6 @@ def checkout_success(request, order_number):
     )
 
 
-# ADMIN UTILITIES
 @require_POST
 def update_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
