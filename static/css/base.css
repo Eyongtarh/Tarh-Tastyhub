@@ -74,6 +74,21 @@ main {
     background-color: #ffc107;
     color: #000 !important;
 }
+/* Mobile-top-header bag icon */
+.mobile-bag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: 6px;
+    position: relative;
+}
+.mobile-bag .bag-count {
+    top: 4px;
+    right: 4px;
+    transform: none;
+}
 /* Bag Count */
 .bag-count {
     font-size: 0.75rem !important;
