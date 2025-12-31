@@ -85,8 +85,8 @@ main {
     position: relative;
 }
 .mobile-bag .bag-count {
-    top: 4px;
-    right: 4px;
+    top: -4px;
+    right: -4px;
     transform: none;
 }
 /* Bag Count */
