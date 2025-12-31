@@ -290,7 +290,7 @@ main {
     justify-content: center;
     border-radius: 12px;
     margin: 2%;
-    width: 80%;
+    width: 100%;
     height: auto;
     aspect-ratio: 16/9;
     overflow: hidden;

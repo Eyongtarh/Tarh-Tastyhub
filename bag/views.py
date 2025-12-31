@@ -22,7 +22,7 @@ def _auth_required_response(request):
             "error": "AUTH_REQUIRED",
             "message": message,
         }, status=401)
-    messages.warning(request, message)
+    messages.error(request, message)
     return redirect(reverse("account_login"))
 
 
@@ -101,7 +101,7 @@ def add_to_bag(request, portion_id):
                 "error": "DAILY_LIMIT_REACHED",
                 "message": message,
             })
-        messages.warning(request, message)
+        messages.error(request, message)
         return redirect(reverse("dish_list"))
     bag[str(portion_id)] = existing_quantity + requested_quantity
     request.session["bag"] = bag
@@ -152,7 +152,7 @@ def adjust_bag(request, portion_id):
                 "error": "DAILY_LIMIT_REACHED",
                 "message": message,
             })
-        messages.warning(request, message)
+        messages.error(request, message)
         requested_quantity = MAX_PER_DISH_PER_DAY
     bag = request.session.get("bag", {})
     key = str(portion_id)

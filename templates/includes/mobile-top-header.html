@@ -1,6 +1,5 @@
 {% load static %}
 {% load dishes_extras %}
-
 <!-- MOBILE NAVBAR -->
 <div class="d-lg-none bg-white shadow-sm">
   <div class="d-flex justify-content-between align-items-center px-3 py-2">
@@ -10,7 +9,6 @@
       <span class="brand-accent">Tarh</span>
       <span class="brand-main">Tastyhub</span>
     </a>
-
     <!-- Shopping bag and Hamburger -->
     <div class="d-flex align-items-center gap-2">
       <!-- Shopping bag -->
@@ -22,25 +20,21 @@
       <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-label="Open menu" title="Open menu"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
-
   <!-- Delivery banner -->
   <div id="delivery-banner-mobile" class="text-center bg-warning text-black py-1" aria-label="Free delivery info">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</div>
 </div>
-
 <!-- OFFCANVAS MENU -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title">Menu</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close menu" title="Close menu"></button>
   </div>
-
   <div class="offcanvas-body">
     <ul class="list-unstyled">
       <!-- Home link -->
       <li>
         <a href="{% url 'home' %}" aria-label="Go to Home page" title="Home">Home</a>
       </li>
-
       <!-- Dishes collapsible submenu -->
       <li>
         <button class="btn btn-toggle w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#mobileDishes" aria-expanded="false" aria-controls="mobileDishes">Dishes</button>
@@ -56,22 +50,18 @@
           {% endfor %}
         </ul>
       </li>
-
       <!-- Browse Dishes -->
       <li>
         <a href="{% url 'dish_list' %}" aria-label="Browse all dishes" title="Browse Dishes">Browse Dishes</a>
       </li>
-
       <!-- Checkout -->
       <li>
         <a href="{% url 'checkout' %}" aria-label="Go to checkout page" title="Checkout">Checkout</a>
       </li>
-
       <!-- Contact -->
       <li>
         <a href="{% url 'feedback' %}" aria-label="Contact us" title="Contact">Contact</a>
       </li>
-
       <!-- User account links -->
       {% if user.is_authenticated %}
         {% if user.is_superuser %}
@@ -89,9 +79,12 @@
           <a href="{% url 'account_logout' %}" aria-label="Logout from your account" title="Logout">Logout</a>
         </li>
       {% else %}
-        <!-- Login link -->
+        <!-- Login/Signup link -->
         <li>
           <a href="{% url 'account_login' %}" aria-label="Login to your account" title="Login">Login</a>
+        </li>
+        <li>
+          <a href="{% url 'account_signup' %}" aria-label="Sign Up" title="Signup">signup</a>
         </li>
       {% endif %}
     </ul>
