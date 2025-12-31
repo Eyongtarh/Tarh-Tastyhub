@@ -12,7 +12,7 @@
     <!-- Shopping bag and Hamburger -->
     <div class="d-flex align-items-center gap-2">
       <!-- Shopping bag -->
-      <a href="{% url 'bag' %}" class="position-relative text-dark" aria-label="View shopping bag" title="Shopping Bag">
+      <a href="{% url 'bag' %}" class="mobile-bag position-relative text-dark" aria-label="View shopping bag" title="Shopping Bag">
         <i class="fa-solid fa-shopping-bag fs-5"></i>
         <span id="bag-count-mobile" class="bag-count" aria-label="Items in bag">{{ bag_count|default:'0' }}</span>
       </a>
