@@ -36,7 +36,6 @@
         </select>
         <p class="fw-bold text-warning dish-price">$ {{ dish.portions.first.price }}</p>
         {% with portion_id=dish.portions.first.id %}
-          {% comment %}Used in data-portion-id for JS{% endcomment %}
         {% endwith %}
       {% else %}
         <p class="fw-bold text-warning dish-price">$ {{ dish.price }}</p>
@@ -66,7 +65,7 @@
       <!-- Optional Dish Info -->
       {% if dish.ingredients %}
         <hr />
-        <h6>Ingredients:</h6>
+        <h6><strong>Ingredients:</strong></h6>
         <p>{{ dish.ingredients }}</p>
       {% endif %}
 
@@ -77,6 +76,9 @@
       {% if dish.prep_time %}
         <p><strong>Preparation Time:</strong> {{ dish.prep_time }} min</p>
       {% endif %}
+      <div class="text-center mt-3">
+        <a href="{% url 'dish_list' %}" class="btn btn-warning btn-sm ms-4 shop-now-button">Browse Dishes</a>
+      </div>
     </div>
   </div>
 </div>

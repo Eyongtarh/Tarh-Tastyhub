@@ -21,8 +21,10 @@
     <p class="lead">Order #{{ order.order_number }}</p>
 
     <!-- PROGRESS BAR -->
-    <div class="progress mb-3" style="height: 30px;">
-      <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+    <div class="mb-4">
+      <div class="progress" style="height: 30px;">
+        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+      </div>
     </div>
 
     <!-- STATUS MESSAGE -->
