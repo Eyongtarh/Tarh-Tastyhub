@@ -15,6 +15,7 @@
     <!-- HEADER -->
     <div class="text-center mb-5">
       <h2 class="fw-bold text-success mb-2 text-white"><i class="bi bi-check-lg text-warning"></i> Order Placed Successfully!</h2>
+
       <p class="text-muted">
         Thank you, <strong>{{ order.full_name }}</strong>.{% if order.delivery_type == 'pickup' %}
           Your order will be ready for pickup.
@@ -25,7 +26,8 @@
 
       {% if order.delivery_type == 'pickup' and order.pickup_time %}
         <p>
-          Pickup Time: <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
+          Pickup Time:
+          <strong>{{ order.pickup_time|date:'M d, Y H:i' }}</strong>
         </p>
       {% endif %}
     </div>
@@ -33,7 +35,7 @@
     <!-- ORDER STATUS -->
     <div class="mb-4">
       <div class="progress" style="height: 30px;">
-        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+        <div class="progress-bar progress-bar-striped bg-{{ order.status_color }}" role="progressbar" style="width: {{ order.progress_percent|default:20 }}%;" aria-valuenow="{{ order.progress_percent|default:20 }}" aria-valuemin="0" aria-valuemax="100">{{ order.status }}</div>
       </div>
     </div>
 
