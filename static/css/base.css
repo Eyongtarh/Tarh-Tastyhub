@@ -305,9 +305,9 @@ main {
     justify-content: center;
     border-radius: 12px;
     margin: auto;
-    margin-top: 5%;
+    margin-top: 3%;
     width: 80%;
-    height: auto;
+    min-height: 300px;
     aspect-ratio: 16/9;
     overflow: hidden;
 }
@@ -338,4 +338,12 @@ main {
     #notification-toast.hide { transform: translateX(-50%) translateY(-20px); }
     .brand-logo { font-size: 1.35rem; }
     .brand-icon { font-size: 1.1rem; }
+    .banner404 {
+        width: 95%; 
+        aspect-ratio: auto; 
+        height: auto;
+        overflow: visible; 
+        padding: 1.5rem;
+        flex-direction: column;
+    }
 }

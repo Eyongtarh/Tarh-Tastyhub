@@ -3,7 +3,7 @@
 Tarh TastyHub is a full-stack online food ordering platform designed to support customers, restaurant, and delivery personnel through a role-based system.
 
 Key features include:
-- User authentication and authorization
+- User authentication and authorisation
 - Category and dish browsing
 - Category/dish filtering and sorting
 - Dish availability tracking and notifications
@@ -19,7 +19,7 @@ Key features include:
 | --------- | ----------- | ---------- | ------- | ----- |
 | Home       | Yes         | Yes        | Yes     | Yes   |
 | Login      | Yes         | Yes        | Yes     | Yes   |
-| Register   | Yes         | Yes        | Yes     | Yes   |
+| Signup   | Yes         | Yes        | Yes     | Yes   |
 | Logout     | Yes         | Yes        | Yes     | Yes   |
 | Dish Category   | Yes         | Yes        | Yes     | Yes   |
 | Dish Details | Yes         | Yes        | Yes     | Yes   |
@@ -27,25 +27,26 @@ Key features include:
 | Bag       | No         | Yes        | Yes     | Yes   |
 | Profile   | No         | Yes        | Yes     | Yes   |
 | Edit profile   | No         | Yes        | Yes     | Yes   |
-| Add address   | No         | Yes        | Yes     | Yes   |
-| All addresses   | No         | Yes        | Yes     | Yes   |
-| Edit address   | No         | Yes        | Yes     | Yes   |
+| Update profile   | No         | Yes        | Yes     | Yes   |
+| Change password   | No         | Yes        | Yes     | Yes   |
+| Delete aacount   | No         | Yes        | Yes     | Yes   |
 | My Orders   | No         | Yes        | Yes     | Yes   |
 | My Order's Details   | No         | Yes        | Yes     | Yes   |
 | Checkout   | No         | Yes        | Yes     | Yes   |
-| Create newsletter-promo Email | No         | No         | Yes     | Yes   |
-| Categories | No         | Yes         | Yes     | Yes   |
+| Subscribe for Email | Yes         | Yes         | Yes     | Yes   |
+| Categories | Yes         | Yes         | Yes     | Yes   |
 | Add category | No         | No         | Yes     | Yes   |
 | Edit category | No         | No         | Yes     | Yes   |
 | Delete category | No         | No         | No     | Yes   |
 | Add Dish | No         | No         | Yes     | Yes   |
 | Edit Dish | No         | No         | Yes     | Yes   |
-| Delete Dish | No         | No         | No     | Yes   |
-
-| Update order status | No         | No         | No     | Yes + Staff  |
+| Delete Dish | No         | No         | Yes     | Yes   |
+| Contact   | Yes         | Yes        | Yes     | Yes   |
+| Update order status | No         | No         | Yes     | Yes |
 | Cnecel Order | No         | No         | No     | Yes   |
-| View order Detail| No         | No         | No     | Yes   |
-| Print order's Receipt | No         | No         | No     | Yes   |
+| View Detail admin| No         | No         | Yes     | Yes   |
+| Print order's Receipt | No         | No         | Yes    | Yes   |
+
 
 
 ## Main Features:
@@ -91,7 +92,7 @@ The header contains the navbar and free delivery information.
 
 The simplistic design of the header is based on the decision to make the use of the web app easy for all users.
 
-*Header above is for large devices with screen sized greater than 991px*
+*Header above is for large devices with screen sizes greater than 991px*
 
 ![Header. Tablets](documentation/features/header_tablets.png)
 
