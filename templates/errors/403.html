@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+  403 error | Tarh Tastyhub
+{% endblock %}
 {% block content %}
   <div class="container header-container banner404 h-100">
     <div class="row h-100 align-items-center">
@@ -12,7 +15,7 @@
         </p>
 
         <div class="my-5">
-          <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold">Continue Shopping</a>
+          <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button">Continue Shopping</a>
         </div>
       </div>
     </div>
