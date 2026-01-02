@@ -297,7 +297,7 @@ main {
 .banner404 {
     background-image: url("../images/banner_404.jpg");
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-color: #000;
     display: flex;
@@ -306,7 +306,8 @@ main {
     border-radius: 12px;
     margin: 2%;
     width: 80%;
-    height: 100vh;
+    height: auto;
+    aspect-ratio: 16/9;
     overflow: hidden;
 }
 /* Media Queries */
