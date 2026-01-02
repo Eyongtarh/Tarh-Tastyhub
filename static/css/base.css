@@ -295,7 +295,7 @@ main {
 #notification-toast.hide { opacity: 0; transform: translateY(-20px); }
 /* Errors Image */
 .banner404 {
-    background-image: url("../images/banner_404.jpg");
+    background-image: url("../images/banner_error.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -304,7 +304,7 @@ main {
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    margin: 2%;
+    margin: auto;
     width: 80%;
     height: auto;
     aspect-ratio: 16/9;
