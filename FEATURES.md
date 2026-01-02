@@ -427,7 +427,7 @@ View customer feedback submissions, filters feedback by: All , Unread, Handled: 
 
 ## Allauth and Access pages:
 
-### 404 and 500 pages:
+### 403, 404, and 500 pages:
 
 It handles two types of errors:
 
