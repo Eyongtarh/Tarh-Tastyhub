@@ -437,11 +437,7 @@ It handles two types of errors:
 
 Example of error:
 
-![403 error](documentation/features/allauth_access_403.png)
-
 ![404 error](documentation/features/allauth_access_404.png)
-
-![500 error](documentation/features/allauth_access_500.png)
 
 ### Logout Page:
 
