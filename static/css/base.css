@@ -305,9 +305,8 @@ main {
     justify-content: center;
     border-radius: 12px;
     margin: 2%;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16/9;
+    width: 80%;
+    height: 100vh;
     overflow: hidden;
 }
 /* Media Queries */
