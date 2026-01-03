@@ -248,7 +248,7 @@ It might be coming from stripe itself because and I'm not able to fix it. Here i
 
 - No errors or warnings were found when passing through the official [W3C](https://validator.w3.org/) validator. This checking was done manually by copying the view page source code (Ctrl+U) and pasting it into the validator.
 
-- [Home page link HTML validation report](documentation/validation/home_html_validation.png)
+- ![Home page link HTML validation report](documentation/validation/home_html_validation.png)
 
 - [Dishes/Browse dishe pages link HTML validation report](documentation/validation/dishes_browse_validation.png)
 
