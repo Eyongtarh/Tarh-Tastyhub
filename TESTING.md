@@ -268,7 +268,9 @@ It might be coming from stripe itself because and I'm not able to fix it. Here i
 
 - ![Contact page HTML validation report](documentation/validation/Contact_html_validation.png)
 
-- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Admin Dashboard page link HTML validation report
+
+- ![Admin Dashboard page link HTML validation report](documentation/validation/admin_html_validation.png)
 
 - ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
