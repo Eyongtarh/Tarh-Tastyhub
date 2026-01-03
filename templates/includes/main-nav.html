@@ -88,7 +88,7 @@
         <li class="nav-item ms-3 position-relative">
           <a class="nav-link position-relative" href="{% url 'bag' %}" aria-label="Shopping bag with {{ bag_count|default:'0' }} items" title="Shopping Bag">
             <i class="fa-solid fa-shopping-bag fs-4" aria-hidden="true"></i>
-            <span id="bag-count" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size: 0.75rem;" aria-label="Items in bag">{{ bag_count|default:'0' }}</span>
+            <span id="bag-count" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size: 0.75rem;" aria-hidden="true">{{ bag_count|default:'0' }}</span>
           </a>
         </li>
       </ul>

@@ -11,21 +11,13 @@
       <meta name="description"
         content="{% block meta_description %}
           
-          
-          
           Delicious meals delivered fast from Tarh Tastyhub restaurant.
-
-
 
         {% endblock %}" />
       <meta name="keywords"
         content="{% block meta_keywords %}
           
-          
-          
           Tarh Tastyhub, restaurant, food, delivery, meals, dishes, cuisine
-
-
 
         {% endblock %}" />
       <meta name="author" content="Tarh Tastyhub" />
@@ -33,21 +25,13 @@
       <meta property="og:title"
         content="{% block og_title %}
           
-          
-          
           Tarh Tastyhub
-
-
 
         {% endblock %}" />
       <meta property="og:description"
         content="{% block og_description %}
           
-          
-          
           Enjoy tasty meals from Tarh Tastyhub restaurant.
-
-
 
         {% endblock %}" />
       <meta property="og:type" content="website" />
@@ -149,18 +133,31 @@
     </script>
     <!-- Add aria-label and title to all links dynamically -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('a').forEach(function(link) {
-        // Only add if not already set
-        if (!link.hasAttribute('aria-label')) {
-          link.setAttribute('aria-label', link.textContent.trim() || 'Link');
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('a').forEach(function (link) {
+
+        const text = link.textContent.trim();
+        const hasIconOnly =
+          !text &&
+          link.querySelector('i, svg, img');
+        if (
+          hasIconOnly &&
+          !link.hasAttribute('aria-label') &&
+          !link.hasAttribute('aria-labelledby')
+        ) {
+          const fallbackLabel =
+            link.getAttribute('title') ||
+            link.getAttribute('data-label') ||
+            'Navigation link';
+
+          link.setAttribute('aria-label', fallbackLabel);
         }
-        if (!link.hasAttribute('title')) {
-          link.setAttribute('title', link.textContent.trim() || 'Link');
+        if (!link.hasAttribute('title') && text) {
+          link.setAttribute('title', text);
         }
       });
     });
-  </script>
+    </script>
     <!-- Mail chimp -->
     <script>
 function adjustMainPadding() {
