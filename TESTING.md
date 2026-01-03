@@ -216,29 +216,15 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 **Unsolved bugs:**
 
-1. When I was using attributes for the `id=""` and `for=""` attributes for the inputs, I was getting html errors regarding spaces between words. 
+1. This bug from django admin affects my admin dashboard main page
 
-*Temporary Solution:*
-
-I was temporary able to resolve this issue by adding `-` rather than ` ` in the DB manually. The decision to take use this shortcut was made because of the lack of time and the js logic and python logic were implemented earlier.
+- ![Django admin page HTML validation report](documentation/validation/admin_django_html_validation.png)
 
 
-*Future Solution:*
+2. Admin Dashboard page HTML validation report
 
-Replace the ` ` with `-` in ProductDetail View `.replace(" ", "-")`, then adjust javascript logic for the selected elements, then `.replace("-", " ")` in the AddToBagAJAXView, PromoCodeAJAXView, AddRemoveProductWishlistAJAXView, EmailStockNotificationFormAJAX and test the functionality.
+- ![Admin Dashboard page link HTML validation report](documentation/validation/admin_dashboard_html_validation.png)
 
-
-
-2. The error appeared in console when payment was processing once during the final testing. I've tried many times to reproduce it, but haven't been able to. Include any links you found that show it might be random from stripe, and that it's out of your control at this time, but will keep an eye on it for potential future issues
-
-
-![Stripe error](documentation/bugs/stripe_error.png)
-
-*Explanation:*
-
-It might be coming from stripe itself because and I'm not able to fix it. Here is the link to the issue from github and the information provided.
-
-[react-stripe-elements. Uncaught (in promise) undefined #408](https://github.com/stripe-archive/react-stripe-elements/issues/408)
 
 ---
 
@@ -268,51 +254,50 @@ It might be coming from stripe itself because and I'm not able to fix it. Here i
 
 - ![Contact page HTML validation report](documentation/validation/Contact_html_validation.png)
 
-#### Admin Dashboard page link HTML validation report
 
-- ![Admin Dashboard page link HTML validation report](documentation/validation/admin_html_validation.png)
+#### Admin Dashboard add dishes page link HTML validation report
 
-- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Admin Dashboard add dishes page link HTML validation report](documentation/validation/admin_add_dishes_html_validation.png)
 
-- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Admin Dashboard edit dishes page link HTML validation report
 
-- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Admin Dashboard edit dishes page link HTML validation report](documentation/validation/admin_edit_dishes_html_validation.png)
 
-- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Admin Dashboard delete dishes page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Admin Dashboard delete dishes page link HTML validation report](documentation/validation/admin_delete_dishes_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Admin Dashboard add category page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Admin Dashboard add category page link HTML validation report](documentation/validation/admin_add_category_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Admin Dashboard edit category page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Admin Dashboard edit category page link HTML validation report](documentation/validation/admin_edit_category_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Admin Dashboard delete category page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Admin Dashboard delete category page link HTML validation report](documentation/validation/admin_delete_category_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Profile page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Profile page link HTML validation report](documentation/validation/profile_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Profile order history page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Profile order history page link HTML validation report](documentation/validation/order_history_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Track order page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Track order page link HTML validation report](documentation/validation/order_track_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Logout page link HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Logout page link HTML validation report](documentation/validation/logout_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Login page link HTML validation report
 
-- ![login page HTML validation report](documentation/validation/login_html_validation.png)
+- ![login page link HTML validation report](documentation/validation/login_html_validation.png)
 
 
 
@@ -343,6 +328,23 @@ It might be coming from stripe itself because and I'm not able to fix it. Here i
 - [Full JS Validation Report](documentation/validation/js_validation.pdf)
 
 - No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js full `/* jshint esversion: 8, jquery: true, scripturl: true */` was added to the top of the file.
+
+- Base.js
+
+ ![Base.js Validation Report](documentation/validation/base_js_validation.png)
+
+  - Bag.js
+
+ ![Bag.js Validation Report](documentation/validation/bag_js_validation.png)
+
+   - Search.js
+
+ ![Search.js Validation Report](documentation/validation/search_js_validation.png)
+
+ - Checkout.js
+
+ ![Checkout.js Validation Report](documentation/validation/checkout_js_validation.png)
+
 
 ### Python Validation:
 
@@ -386,10 +388,16 @@ LightHouse is a web performance testing tool that can be used to evaluate the pe
 Testing was conducted on the following browsers;
 
 - Safari;
+
+![Compatibility Report](documentation/validation/compatibility.pdf)
+
 - Chrome;
+
+![Compatibility Report](documentation/validation/compatibility.pdf)
+
 - Firefox;
 
-[Compatibility Report](documentation/validation/compatibility.pdf)
+![Compatibility Report](documentation/validation/compatibility.pdf)
 
 ---
 ## Responsiveness
