@@ -248,37 +248,35 @@ It might be coming from stripe itself because and I'm not able to fix it. Here i
 
 - No errors or warnings were found when passing through the official [W3C](https://validator.w3.org/) validator. This checking was done manually by copying the view page source code (Ctrl+U) and pasting it into the validator.
 
-- ![Home page link HTML validation report](documentation/validation/home_html_validation.png)
+#### Home page HTML validation report
 
-- [Dishes/Browse dishe pages link HTML validation report](documentation/validation/dishes_browse_validation.png)
+- ![Home page HTML validation report](documentation/validation/home_html_validation.png)
 
-- [Checkout page link HTML validation report](documentation/validation/checkout_html_validation.png)
+#### Dishes/Browse dishe pages HTML validation report
 
-- [Contact page link HTML validation report](documentation/validation/Contact_html_validation.png)
+- ![Dishes/Browse dishe pages HTML validation report](documentation/validation/dishes_browse_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Your bag page HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Your bag page HTML validation report](documentation/validation/bag_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Checkout page HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Checkout page HTML validation report](documentation/validation/checkout_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+#### Contact page HTML validation report
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Contact page HTML validation report](documentation/validation/Contact_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
-
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- ![Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
 - [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
@@ -300,7 +298,21 @@ It might be coming from stripe itself because and I'm not able to fix it. Here i
 
 - [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 
-- [EmailNotification app HTML validation report](documentation/validation/email_notification_html_validation.pdf)
+- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+
+- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+
+- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+
+- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+
+- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+
+- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+
+- ![login page HTML validation report](documentation/validation/login_html_validation.png)
+
+
 
 ### CSS Validation:
 
