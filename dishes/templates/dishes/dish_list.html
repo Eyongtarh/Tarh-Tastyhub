@@ -85,16 +85,22 @@
     {% for dish in dishes %}
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="card h-100 shadow-sm border-0 dish-card">
-
-          {% if dish.image %}
-            <img src="{{ dish.image.url }}" class="card-img-top rounded-top-4" />
-          {% else %}
-            <img src="{% static 'images/no-image.png' %}" class="card-img-top rounded-top-4" />
-          {% endif %}
-
+                {% if dish.image %}
+          <img 
+            src="{{ dish.image.url }}" 
+            class="card-img-top rounded-top-4"
+            alt="{{ dish.name|default:'Dish image' }}"
+          />
+        {% else %}
+          <img 
+            src="{% static 'images/no-image.png' %}" 
+            class="card-img-top rounded-top-4"
+            alt="No image available"
+          />
+        {% endif %}
           <div class="card-body text-center">
 
-            <h6 class="fw-bold">{{ dish.name }}</h6>
+            <p class="fw-bold">{{ dish.name }}</p>
             <p class="text-muted small">{{ dish.description|truncatewords:12 }}</p>
 
             <!-- Portion / Price -->
