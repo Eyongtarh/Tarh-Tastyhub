@@ -229,7 +229,7 @@ Full feature breakdown and validation can be found in:
 
 Tarh TastyHub follows Material Design principles to ensure clarity, consistency, and accessibility across a complex multi-role system.
 
-The design emphasizes:
+The design emphasises:
 - Clear navigation
 - Visual hierarchy
 - Minimal cognitive load
@@ -239,49 +239,14 @@ White space is intentionally used to improve readability, highlight primary acti
 
 ---
 
-## Color Scheme
-
-The color palette combines bold accent colors with neutral tones to create a modern and approachable interface.
-
-| Usage Area              | Color     |
-|-------------------------|-----------|
-| Main Navbar & Footer    | #151422   |
-| Admin & Staff Navbar    | #4f378b   |
-| Primary Actions         | Accent Purple |
-| Backgrounds             | Neutral Light Shades |
-
----
-
-## Typography
-
-The primary font used across the application is **Lato**, chosen for its high readability and clean appearance.
-
-| Font Weight | Usage               |
-|-------------|---------------------|
-| 900         | Headings            |
-| 700         | Buttons & Highlights|
-| 400         | Body Text           |
-
----
-
-## Imagery
-
-| Type               | Source        |
-|--------------------|---------------|
-| Background Graphics| BGJar         |
-| Dish Images        | Unsplash     |
-| Icons              | Font Awesome |
-
-Icons are used extensively to support navigation, dashboards, order tracking, and management tools.
-
----
 
 ## Wireframes
 
 Wireframes were created to plan navigation flow, role separation, and the checkout process.
 
 Wireframes are located in:
-`/documentation/design/tastyhub_wireframes.pdf`
+
+![Flowchart](documentation/tarh_tastyhub_flowchart.png)
 
 ---
 
@@ -290,23 +255,18 @@ Wireframes are located in:
 ### GitHub Project Management
 
 Agile development was managed using GitHub Projects, enabling:
-- User story prioritization
+- User story prioritisation
 - Sprint-based development
 - Task tracking
-- Progress visualization
+- Progress visualisation
 
 ---
 
 ## Flowcharts
 
-| Process                       | Description |
-|--------------------------------|-------------|
-| Dish Availability Notification | Email alerts when dishes become available |
-| Promotion Calculation          | Loyalty and promo code discounts |
-| Payment Flow                   | Stripe checkout process |
+Flowchart can be seen here:
 
-Flowcharts are located in:
-`/documentation/flowcharts/`
+![Flowchart](documentation/tarh_tastyhub_flowchart.png)
 
 ---
 
@@ -323,10 +283,118 @@ Flowcharts are located in:
 
 ## Entity Relationship Diagram (ERD)
 
-The ERD visualizes all system relationships and data flow.
+The ERD visualises all system relationships and data flow.
 
-Location:
-`/documentation/my_project_visualized.png`
+### ERD Image
+
+![Flowchart](documentation/tarh_tastyhub_database_erd.png)
+
+### UserProfile
+
+* **id** (PK)
+* **user_id** (FK → User.id)
+* default_phone_number
+* default_local
+* default_postcode
+* default_town_or_city
+* default_street_address1
+* default_street_address2
+* default_county
+
+### User
+
+* **id** (PK)
+
+### Order
+
+* **id** (PK)
+* user_profile_id (FK → UserProfile.id)
+* order_number
+* full_name
+* email
+* phone_number
+* street_address1
+* street_address2
+* town_or_city
+* county
+* postcode
+* local
+* date
+* delivery_type
+* pickup_time
+* status
+* order_total
+* grand_total
+* delivery_fee
+* stripe_pid
+* original_bag
+* public_tracking
+* email_sent
+
+### OrderLineItem
+
+* **id** (PK)
+* order_id (FK → Order.id)
+* portion_id (FK → DishPortion.id)
+* quantity
+* price
+* **Unique Constraint**: (order_id, portion_id)
+
+### Category
+
+* **id** (PK)
+* name
+* slug
+* menu_type
+* description
+* icon
+
+### Dish
+
+* **id** (PK)
+* category_id (FK → Category.id)
+* name
+* slug
+* description
+* ingredients
+* dietary_info
+* prep_time
+* price
+* calories
+* image
+* available
+* is_special
+* available_from
+* available_until
+* created
+* updated
+
+### DishPortion
+
+* **id** (PK)
+* dish_id (FK → Dish.id)
+* size
+* weight
+* price
+* **Unique Constraint**: (dish_id, size)
+
+### DishImage
+
+* **id** (PK)
+* dish_id (FK → Dish.id)
+* image
+* alt_text
+
+### Feedback
+
+* **id** (PK)
+* user_id (FK → User.id, optional)
+* name
+* email
+* subject
+* message
+* created_at
+* handled
 
 ---
 
@@ -334,172 +402,225 @@ Location:
 
 ---
 
-### Role Model
+### Checkout Models
 
-| Field       | Type       | Validation |
-|-------------|------------|------------|
-| name        | CharField  | max_length=50, unique=True |
-| description | TextField  | max_length=500, null=True |
+This module defines the models for handling **customer orders** and **order line items** 
+It manages delivery/pickup details, payment information, order status, and pricing.
+
+#### Order
+
+Automatically created when a user places an order.
+
+| Field            | Type            | Validation / Notes |
+|------------------|-----------------|------------------|
+| user_profile      | ForeignKey      | UserProfile, null=True, blank=True, on_delete=SET_NULL, related_name="orders" |
+| order_number      | CharField       | max_length=32, unique, default=generate_order_number() |
+| full_name         | CharField       | max_length=50 |
+| email             | EmailField      | Required |
+| phone_number      | CharField       | max_length=20 |
+| street_address1   | CharField       | max_length=80 |
+| street_address2   | CharField       | max_length=80, blank=True |
+| town_or_city      | CharField       | max_length=40 |
+| county            | CharField       | max_length=80, blank=True |
+| postcode          | CharField       | max_length=20, blank=True |
+| local             | CharField       | max_length=80, blank=True |
+| date              | DateTimeField   | auto_now_add=True |
+| delivery_type     | CharField       | Choices: "delivery", "pickup", default="delivery" |
+| pickup_time       | DateTimeField   | null=True, blank=True |
+| status            | CharField       | Choices: "Pending", "Preparing", "Out for Delivery", "Completed", "Cancelled", default="Pending" |
+| order_total       | DecimalField    | max_digits=10, decimal_places=2, default=0.00 |
+| grand_total       | DecimalField    | max_digits=10, decimal_places=2, default=0.00 |
+| delivery_fee      | DecimalField    | max_digits=6, decimal_places=2, default=0.00 |
+| stripe_pid        | CharField       | max_length=254, null=True, blank=True |
+| original_bag      | TextField       | null=True, blank=True |
+| public_tracking   | BooleanField    | default=False |
+| email_sent        | BooleanField    | default=False |
+
+Orders are automatically deleted if their status is set to "Cancelled".
+progress_percent provides a numeric completion percentage based on the order status.
 
 ---
 
-### Profile Model
+#### OrderLineItem
+
+Automatically created for each dish portion within an order.
+
+| Field    | Type            | Validation / Notes |
+|----------|-----------------|------------------|
+| order    | ForeignKey      | Order, related_name="lineitems", on_delete=CASCADE |
+| portion  | ForeignKey      | DishPortion, on_delete=CASCADE |
+| quantity | PositiveIntegerField | default=1 |
+| price    | DecimalField    | max_digits=8, decimal_places=2, default=0.00 |
+
+Each combination of order and portion must be unique.
+lineitem_total calculates the total cost for this line item (quantity × price).
+
+---
+
+#### Generally
+
+- generate_order_number() creates a unique 12-character ID for tracking orders.
+- Orders support both delivery and pickup, including optional pickup times.
+- public_tracking allows optional visibility of order status to customers.
+- Signals automatically delete cancelled orders to keep the database clean.
+- Monetary values use DecimalField for precise calculations.
+
+---
+
+### Dishes Models
+
+This module defines the models for **Dish, DishPortion, DishImage, and Category**.  
+It handles categories, menu types, portions, pricing, and image compression.
+
+---
+
+#### Category
+
+Automatically created when a new category is added.
+
+| Field        | Type         | Validation / Notes |
+|--------------|--------------|------------------|
+| name         | CharField    | max_length=100, unique |
+| slug         | SlugField    | max_length=100, unique, db_index=True |
+| menu_type    | CharField    | Choices: Breakfast, Lunch, Dinner, Grill, Drinks; default=Breakfast |
+| description  | TextField    | blank=True, null=True |
+| icon         | ImageField   | upload_to='category_icons/', blank=True, null=True |
+
+Categories are grouped by menu type and can have an optional icon. get_absolute_url() returns the category-specific dish list page.
+
+---
+
+#### Dish
+
+Automatically created when a new dish is added.
+
+| Field            | Type            | Validation / Notes |
+|------------------|-----------------|------------------|
+| category         | ForeignKey      | Category, related_name='dishes', on_delete=CASCADE |
+| name             | CharField       | max_length=200 |
+| slug             | SlugField       | max_length=200, db_index=True, autogenerated from name |
+| description      | TextField       | Required |
+| ingredients      | TextField       | blank=True, null=True |
+| dietary_info     | CharField       | max_length=50, Choices: Vegetarian, Vegan, Gluten-Free, Spicy, None; blank=True, null=True |
+| prep_time        | PositiveIntegerField | blank=True, null=True; minutes |
+| price            | DecimalField    | max_digits=8, decimal_places=2, default=0.00, MinValueValidator(0.00) |
+| calories         | PositiveIntegerField | blank=True, null=True |
+| image            | ImageField      | upload_to='dishes/', blank=True, null=True; compressed automatically |
+| available        | BooleanField    | default=True |
+| is_special       | BooleanField    | default=False |
+| available_from   | TimeField       | blank=True, null=True |
+| available_until  | TimeField       | blank=True, null=True |
+| created          | DateTimeField   | auto_now_add=True |
+| updated          | DateTimeField   | auto_now=True |
+
+get_absolute_url() returns the detail page for the dish.
+display_price returns the price formatted as a string.
+Dish images are automatically compressed on save.
+A unique constraint ensures the (category, slug) combination is unique.
+
+---
+
+#### DishPortion
+
+Automatically created for each portion of a dish.
+
+| Field    | Type             | Validation / Notes |
+|----------|-----------------|------------------|
+| dish     | ForeignKey       | Dish, related_name='portions', on_delete=CASCADE |
+| size     | CharField        | max_length=50; e.g., Small, Medium, Large |
+| weight   | PositiveIntegerField | blank=True, null=True; weight in grams |
+| price    | DecimalField     | max_digits=8, decimal_places=2, MinValueValidator(0.00) |
+
+Each combination of dish and size must be unique.
+The unit_price property returns the portion price.
+
+---
+
+#### DishImage
+
+Automatically created for additional images of a dish.
+
+| Field    | Type            | Validation / Notes |
+|----------|-----------------|------------------|
+| dish     | ForeignKey      | Dish, related_name='images', on_delete=CASCADE |
+| image    | ImageField      | upload_to='dish_images/'; compressed automatically |
+| alt_text | CharField       | max_length=150, blank=True, null=True |
+
+Images are compressed automatically on save.
+str() returns "Image for <dish name>".
+
+---
+
+#### Generally
+
+- DishManager and DishQuerySet provide custom filtering for available dishes, prefetched portions and images, and filtering by menu type.
+- All dish images are compressed using Pillow to optimize storage.
+- Unique constraints and indexes improve query performance.
+- Dietary information, availability times, and special flags allow menu customization.
+
+
+### Feedback Models (Refered to as contact in templates)
+
+This module defines the model for **user feedback submissions**.  
+It supports an optional link to a user account, subject, message content, and handling status.
+
+---
+
+#### Feedback
+
+Automatically created when a user submits feedback.
+
+| Field       | Type          | Validation / Notes |
+|------------|---------------|------------------|
+| user       | ForeignKey    | User, null=True, blank=True, on_delete=SET_NULL |
+| name       | CharField     | max_length=100 |
+| email      | EmailField    | Required |
+| subject    | CharField     | max_length=150 |
+| message    | TextField     | Required |
+| created_at | DateTimeField | auto_now_add=True |
+| handled    | BooleanField  | default=False |
+
+Feedback submissions are ordered by most recent first (created_at descending).
+str() returns a combination of the sender's name and the subject for easy identification.
+
+---
+
+#### Generally
+
+- Linking to a User is optional, allowing guests to submit feedback.
+- Handled indicates whether the feedback has been addressed by staff.
+- All messages are stored with the created_at timestamp for chronological tracking.
+
+### Profiles Models
+
+This module defines the **UserProfile** model, which stores additional profile information for users.
+
+---
+
+#### UserProfile
 
 Automatically created when a user registers.
 
-| Field        | Type           | Validation |
-|--------------|----------------|------------|
-| user         | OneToOneField  | User |
-| first_name   | CharField      | max_length=50, null=True |
-| last_name    | CharField      | max_length=50, null=True |
-| avatar       | ImageField     | null=True |
-| subscription | BooleanField   | default=False |
-| role         | ForeignKey     | Role, default=Customer |
-| created_at   | DateTimeField  | auto_now_add |
-| updated_at   | DateTimeField  | auto_now |
+| Field                  | Type           | Validation / Notes |
+|------------------------|----------------|------------------|
+| user                   | OneToOneField  | User, on_delete=CASCADE |
+| default_phone_number    | CharField      | max_length=20, null=True, blank=True |
+| default_local           | CharField      | max_length=80, null=True, blank=True |
+| default_postcode        | CharField      | max_length=20, null=True, blank=True |
+| default_town_or_city    | CharField      | max_length=40, null=True, blank=True |
+| default_street_address1 | CharField      | max_length=80, null=True, blank=True |
+| default_street_address2 | CharField      | max_length=80, null=True, blank=True |
+| default_county          | CharField      | max_length=80, null=True, blank=True |
 
-Roles can only be modified by Admin users to ensure security.
-
----
-
-### Address Model
-
-Supports multiple delivery addresses.
-
-| Field        | Type |
-|--------------|------|
-| user         | ForeignKey |
-| city         | CharField |
-| address_line | CharField |
-| zip_code     | CharField |
-| phone_number | CharField |
-| is_primary   | BooleanField |
+'_ _str()_ _' returns "Profile of <username>".
 
 ---
 
-### Restaurant Model
+#### Generally
 
-| Field       | Type |
-|-------------|------|
-| name        | CharField |
-| description | TextField |
-| is_active   | BooleanField |
-| created_at  | DateTimeField |
-
----
-
-### Category Model
-
-| Field     | Type |
-|-----------|------|
-| name      | CharField |
-| slug      | SlugField |
-| is_active | BooleanField |
-
----
-
-### Tag Model
-
-| Field     | Type |
-|-----------|------|
-| name      | CharField |
-| slug      | SlugField |
-| is_active | BooleanField |
-
----
-
-### Dish Model
-
-| Field        | Type |
-|--------------|------|
-| name         | CharField |
-| description  | TextField |
-| price        | DecimalField |
-| restaurant   | ForeignKey |
-| category     | ForeignKey |
-| tags         | ManyToManyField |
-| is_available | BooleanField |
-
----
-
-### DishImage Model
-
-| Field      | Type |
-|------------|------|
-| dish       | ForeignKey |
-| image      | ImageField |
-| is_primary | BooleanField |
-
----
-
-### Cart Model
-
-| Field      | Type |
-|------------|------|
-| user       | ForeignKey |
-| created_at | DateTimeField |
-
----
-
-### Order Model
-
-Order status values:
-Pending, Processing, Out for Delivery, Completed, Cancelled
-
-| Field        | Type |
-|--------------|------|
-| user         | ForeignKey |
-| total_paid   | DecimalField |
-| order_number | CharField |
-| status       | CharField |
-| created_at   | DateTimeField |
-
----
-
-### OrderItem Model
-
-| Field            | Type |
-|------------------|------|
-| order            | ForeignKey |
-| dish             | ForeignKey |
-| quantity         | PositiveIntegerField |
-| selected_options | JSONField |
-
----
-
-### Promotion Model
-
-| Field                | Type |
-|----------------------|------|
-| name                 | CharField |
-| promotion_code       | CharField |
-| discount_percentage  | IntegerField |
-| start_date           | DateTimeField |
-| end_date             | DateTimeField |
-| is_active            | BooleanField |
-
----
-
-### Review Model
-
-Reviews can only be submitted after an order is completed.
-
-| Field   | Type |
-|---------|------|
-| user    | ForeignKey |
-| dish    | ForeignKey |
-| order   | ForeignKey |
-| rating  | IntegerField |
-| comment | TextField |
-
----
-
-### Notification Models
-
-| Type                     | Purpose |
-|--------------------------|---------|
-| Email Notifications      | Orders and promotions |
-| Dish Availability Alerts | Back-in-stock requests |
+- Each user has exactly one profile linked via a OneToOne relationship.
+- Stores default address and contact information for order autofill and convenience.
+- All fields are optional except the linked User.
 
 ---
 
@@ -532,25 +653,53 @@ Deployment instructions are available in:
 
 ---
 
+
 ## Credits
 
-| Resource      | Purpose |
-|---------------|---------|
-| Django        | Web framework |
-| Stripe        | Payments |
-| Render        | Hosting |
-| Font Awesome  | Icons |
-| Unsplash      | Food imagery |
-| BGJar         | Backgrounds |
-| Coolors       | Color palette |
-| Very Academy  | Learning reference |
+- [GitHub](https://github.com/) for giving the idea of the project's design.
+- [Django](https://www.djangoproject.com/) for the framework.
+- [Font awesome](https://fontawesome.com/): for the free access to icons.
+- [Render](https://render.com/): for providing a free hosting.
+- [jQuery](https://jquery.com/): for providing varieties of tools to make standard HTML code look appealing.
+- [jQuery UI](https://jqueryui.com/): for providing varieties of tools to make standard HTML code look appealing.
+- [Postgresql](https://www.postgresql.org/): for providing a free database.
+- [geonames](https://www.geonames.org/): for providing a free database on countries, regions, cities.
+- [Multiple Video & Image Upload Plugin - jQuery Miv.js](https://www.jqueryscript.net/form/multi-video-image-upload.html): for providing a free plugin to upload multiple videos and images.
+- [Stripe](https://stripe.com/): for providing a free payment gateway.
+- [htmlcolorcodes.com](https://htmlcolorcodes.com/): for providing a free database on colors.
+- [Very Academy Youtube Channel](https://www.youtube.com/c/veryacademy): for brilliant tutorials, which shed the light on the implementation of database with multi-values products, precise explanations of the stripe API, and many other things!
+- [birme](https://www.birme.net/): for providing free service to center and crop images.
+- [fontawesome](https://fontawesome.com/): for providing free icons.
+- [googlefonts](https://fonts.google.com/): for providing free fonts.
+- [BGJar](https://www.bgjar.com/): for the free access to the background images build tool.
+- [Responsive Viewer](https://chrome.google.com/webstore/detail/responsive-viewer/inmopeiepgfljkpkidclfgbgbmfcennb/related?hl=en): for providing a free platform to test website responsiveness
+- [GoFullPage](https://gofullpage.com/): for allowing to create free full web page screenshots;
+- [Favicon Generator. For real.](https://realfavicongenerator.net/): for providing a free platform to generate favicons.
+- [Sitemap Generator](https://www.xml-sitemaps.com/): for providing a free platform to generate sitemaps.
+- [Coolors](https://coolors.co/): for providing a free platform to generate your own palette.
+- [Elon Musk](https://twitter.com/elonmusk?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor): for providing a template for the twitter mock-up page;
 
+### Content and Images
+
+- [unsplash](https://unsplash.com/): for providing a free products' images.
+- [Icons8](https://icons8.com/): for providing free access to amazing icons and illustrations to fill out the store.
+- [unsplash](https://unsplash.com/): for providing free products' images to fill out the store.
+- [chrome developer tools](https://developer.chrome.com/extensions/devtools_inspector): for providing a free platform to test website.
+- [adidas](https://www.adidas.com/): for providing free products' data and images to fill out the store on clothes and shoes.
+- [fashionunited](https://www.fashionunited.com/): for providing content for the newsletter;
+- [dell](https://www.dell.com/): for providing free products' data and images to fill out the store on computers and laptops.
+- [nike](https://www.nike.com/): for providing free products' data and images to fill out the store on clothes and shoes.
+- [artsaber](https://www.artsabers.com/): for providing free products' images to fill out the store on lightsabers data and images.
+- [backwaterreptiles](https://www.backwaterreptiles.com/): for providing free products' images to fill out the store on tarantulas' data and images.
+- [Yum Of China](https://www.yumofchina.com/chinese-beer/): for providing free data on Chinese beer.
+- [lego](https://www.lego.com/): for providing free products' data and images to fill out the store with toys.
+- [maggie](https://www.maggie.com/): for providing free products' data and images to fill out the store with maggie products.
+- [barilla](https://www.barilla.com/): for providing free products' data and images to fill out the store with pasta.
+- [LG electronics](https://www.lg.com/): for providing free products' data and images to fill out the store with electronics.
 ---
 
 ## Acknowledgments
 
-| Contributor       | Contribution |
-|-------------------|-------------|
-| Project Mentors   | Technical guidance |
-| Peer Reviewers    | UX feedback |
-| Very Academy      | Django & Stripe insights |
+- [Tim Nelson](https://github.com/TravelTimN) was a great supporter of another bold idea of mine for this project. Tim guided me through the development of the project and helped me to learn a lot of new things by challenging me to do something new.
+- [Aleksei Konovalov](https://github.com/lexach91), my husband and coding partner, assisted me greatly in product values js selection control implementation and helped me to stay sane.
+- [Very Academy Youtube Channel](https://www.youtube.com/c/veryacademy) provided great insight on the implementation of the database 

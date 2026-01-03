@@ -59,7 +59,7 @@ The header contains the navbar and free delivery information.
 
 #### The Navbar has five subsections:
 
-1. Logo section, which is the first by the left. I contains the logo if Tarh Tarstyhub.
+1. Logo section, which is the first by the left. I contains the logo 'Tarh Tarstyhub'. If clicked, it redirects you to home page.
 
 2. The second section contains links to Home page, dish category, browse dishes, checkout, and contact. This section is at the middle.
 
