@@ -250,11 +250,11 @@ It might be coming from stripe itself because and I'm not able to fix it. Here i
 
 - [Home page link HTML validation report](documentation/validation/home_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- [Dishes/Browse dishe pages link HTML validation report](documentation/validation/dishes_browse_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- [Checkout page link HTML validation report](documentation/validation/checkout_html_validation.png)
 
-- [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
+- [Contact page link HTML validation report](documentation/validation/Contact_html_validation.png)
 
 - [Home page link HTML validation report](documentation/validation/bag_html_validation.png)
 

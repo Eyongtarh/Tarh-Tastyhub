@@ -14,14 +14,14 @@
       <!-- Shopping bag -->
       <a href="{% url 'bag' %}" class="mobile-bag position-relative text-dark" aria-label="View shopping bag" title="Shopping Bag">
         <i class="fa-solid fa-shopping-bag fs-5"></i>
-        <span id="bag-count-mobile" class="bag-count" aria-label="Items in bag">{{ bag_count|default:'0' }}</span>
+        <span id="bag-count-mobile" class="bag-count" aria-hidden="true">{{ bag_count|default:'0' }}</span>
       </a>
       <!-- Hamburger button to open offcanvas menu -->
       <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" title="Open menu"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
   <!-- Delivery banner -->
-  <div id="delivery-banner-mobile" class="text-center bg-warning text-black py-1" aria-label="Free delivery info">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</div>
+  <div id="delivery-banner-mobile" class="text-center bg-warning text-black py-1">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</div>
 </div>
 <!-- OFFCANVAS MENU -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
