@@ -1,3 +1,5 @@
+/* jshint esversion: 11 */
+/* global bootstrap */
 /*
    CSRF cookie getter
 */

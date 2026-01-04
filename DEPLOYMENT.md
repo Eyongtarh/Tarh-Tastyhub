@@ -1,9 +1,15 @@
 # Deployment and Payment setup
 
-- The app was deployed to [Render](https://render.com/).
-- The database was deployed to [ElephantSQL](https://www.elephantsql.com/).
+- The app was deployed to [Render](https://Heroku.com/).
 
-- The app can be reached by the [link](https://wowder.onrender.com).
+- SQLite is used as the database during development for simplicity [SQLite](https://www.sqlite.org).
+
+- PostgreSQL is used in production for reliability and scalability [PostgreSQL](https://www.postgresql.org).
+
+- Stripe is used to handle payment processing [Stripe](https://stripe.com/).
+
+- The app can be reached by the [Tarh Tastyhub](https://tarh-tastyhub-4071346c00af.herokuapp.com/).
+
 
 ---
 

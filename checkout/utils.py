@@ -16,7 +16,6 @@ def validate_bag(bag):
     """
     if not isinstance(bag, dict):
         raise ValidationError("Bag must be a dictionary.")
-
     for portion_id, quantity in bag.items():
         if not isinstance(quantity, int) or quantity < 1:
             raise ValidationError(
@@ -34,7 +33,6 @@ def create_order_from_bag(user, bag, form_data):
     Create an Order and related OrderLineItems from a validated bag.
     """
     validate_bag(bag)
-
     order = Order()
     order.user_profile = getattr(user, 'userprofile', None)
     order.full_name = form_data.get('full_name')
@@ -47,7 +45,6 @@ def create_order_from_bag(user, bag, form_data):
     order.postcode = form_data.get('postcode')
     order.local = form_data.get('local')
     order.save()
-
     for portion_id, quantity in bag.items():
         portion = get_object_or_404(
             DishPortion,
@@ -61,7 +58,6 @@ def create_order_from_bag(user, bag, form_data):
             lineitem_total=portion.price * quantity,
         )
         line_item.save()
-
     logger.info(
         f"Order {order.order_number} created for user {user}"
     )
@@ -73,14 +69,12 @@ def calculate_bag_total(bag):
     Calculate and return the total price of all items in the bag.
     """
     total = Decimal("0.00")
-
     for portion_id, quantity in bag.items():
         portion = get_object_or_404(
             DishPortion,
             pk=portion_id,
         )
         total += portion.price * quantity
-
     return total
 
 
@@ -94,7 +88,6 @@ def prevent_order_spam(
     """
     now = timezone.now()
     last_time = request.session.get(key)
-
     if last_time:
         elapsed = (now - last_time).total_seconds()
         if elapsed < cooldown_seconds:
@@ -103,6 +96,5 @@ def prevent_order_spam(
                 f"{int(cooldown_seconds - elapsed)} seconds "
                 f"before placing another order."
             )
-
     request.session[key] = now
     request.session.modified = True

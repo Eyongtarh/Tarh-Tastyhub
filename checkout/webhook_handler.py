@@ -1,3 +1,9 @@
+"""
+Stripe webhook handler services.
+This rocesses Stripe webhook events to create orders after successful payments,
+parse metadata (bag, delivery type, pickup time), calculate totals and delivery
+fees, persist order and line items atomically, and send confirmation emails.
+"""
 import json
 import logging
 import uuid
@@ -17,7 +23,6 @@ logger = logging.getLogger(__name__)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# Delivery fee settings
 MIN_FREE_DELIVERY = getattr(
     settings,
     "FREE_DELIVERY_THRESHOLD",

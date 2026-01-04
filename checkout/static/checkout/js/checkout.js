@@ -1,5 +1,6 @@
+/* jshint esversion: 11 */
+/* global Stripe */
 document.addEventListener("DOMContentLoaded", () => {
-
   /* 
      STRIPE SETUP
  */

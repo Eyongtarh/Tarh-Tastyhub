@@ -15,15 +15,21 @@ from PIL import Image, UnidentifiedImageError
 
 class DishQuerySet(models.QuerySet):
     def available(self):
-        """Only dishes marked available."""
+        """
+        Only dishes marked available.
+        """
         return self.filter(available=True)
 
     def with_portions(self):
-        """Prefetch portions to avoid N+1 when rendering menus."""
+        """
+        Prefetch portions to avoid N+1 when rendering menus.
+        """
         return self.prefetch_related('portions')
 
     def with_images(self):
-        """Prefetch additional images."""
+        """
+        Prefetch additional images.
+        """
         return self.prefetch_related('images')
 
     def by_menu_type(self, menu_type):

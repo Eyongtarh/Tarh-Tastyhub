@@ -1,3 +1,9 @@
+"""
+Checkout and order processing views.
+Takes care of Stripe checkout data caching, order creation
+from the shopping bag, payment intent creation, checkout success
+flow, order status updates, and staff utilities such as printing orders.
+"""
 from decimal import Decimal, ROUND_HALF_UP
 import logging
 import json
