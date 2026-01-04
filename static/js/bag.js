@@ -1,3 +1,4 @@
+/* jshint esversion: 11 */
 if (window.dishBagJSLoaded) {
     console.log("dish_bag.js already loaded — skipping.");
 } else {
@@ -16,9 +17,7 @@ if (window.dishBagJSLoaded) {
         const postData = async (url, data) => {
             const headers = { 'X-Requested-With': 'XMLHttpRequest' };
             if (csrftoken) headers['X-CSRFToken'] = csrftoken;
-            const body = data instanceof URLSearchParams
-                ? data
-                : new URLSearchParams(data || {});
+            const body = data instanceof URLSearchParams ? data : new URLSearchParams(data || {});
             const response = await fetch(url, {
                 method: 'POST',
                 headers,
@@ -86,9 +85,7 @@ if (window.dishBagJSLoaded) {
                 input.value = previousQty;
                 return;
             }
-            const url = qty === 0
-                ? `/bag/remove/${portionId}/`
-                : `/bag/adjust/${portionId}/`;
+            const url = qty === 0 ? `/bag/remove/${portionId}/` : `/bag/adjust/${portionId}/`;
             const data = await postData(url, { quantity: qty });
             if (!data) {
                 input.value = previousQty;
@@ -141,9 +138,7 @@ if (window.dishBagJSLoaded) {
                         return;
                     }
                     const portionSelect = card?.querySelector('.portion-select');
-                    const portionId = portionSelect
-                        ? portionSelect.value
-                        : (btn.dataset.portionId || btn.dataset.id);
+                    const portionId = portionSelect ? portionSelect.value : (btn.dataset.portionId || btn.dataset.id);
                     if (!portionId) return;
                     const data = await postData(
                         `/bag/add/${portionId}/`,

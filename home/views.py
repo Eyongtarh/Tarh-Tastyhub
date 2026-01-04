@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.core.cache import cache
-
 from dishes.models import Dish, Category
 
 
@@ -20,13 +19,10 @@ def index(request):
             .order_by("name")[:4]
         )
         cache.set("home_categories", categories, 3600)
-
     featured_qs = Dish.objects.available().order_by("-id")
-
     paginator = Paginator(featured_qs, 4)
     page_number = request.GET.get("page")
     featured_dishes = paginator.get_page(page_number)
-
     context = {
         "categories": categories,
         "featured_dishes": featured_dishes,

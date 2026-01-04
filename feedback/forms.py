@@ -2,7 +2,6 @@
 Form for user Feedback submission.
 (anti-spam honeypot, field validation, and pre-filling for authenticated users)
 """
-
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Feedback

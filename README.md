@@ -246,7 +246,7 @@ Wireframes were created to plan navigation flow, role separation, and the checko
 
 Wireframes are located in:
 
-![Flowchart](documentation/tarh_tastyhub_flowchart.png)
+![Wireframes](documentation/tarh_tastyhub_Wireframes.png)
 
 ---
 
@@ -284,8 +284,6 @@ Flowchart can be seen here:
 ## Entity Relationship Diagram (ERD)
 
 The ERD visualises all system relationships and data flow.
-
-### ERD Image
 
 ![Flowchart](documentation/tarh_tastyhub_database_erd.png)
 
@@ -601,9 +599,9 @@ This module defines the **UserProfile** model, which stores additional profile i
 
 Automatically created when a user registers.
 
-| Field                  | Type           | Validation / Notes |
-|------------------------|----------------|------------------|
-| user                   | OneToOneField  | User, on_delete=CASCADE |
+| Field                   | Type           | Validation / Notes                   |
+|-------------------------|----------------|--------------------------------------|
+| user                    | OneToOneField  | User, on_delete=CASCADE              |
 | default_phone_number    | CharField      | max_length=20, null=True, blank=True |
 | default_local           | CharField      | max_length=80, null=True, blank=True |
 | default_postcode        | CharField      | max_length=20, null=True, blank=True |
@@ -641,7 +639,7 @@ Includes:
 
 | Component | Service |
 |----------|---------|
-| Hosting  | Render |
+| Hosting  | Heroku |
 | Database | PostgreSQL |
 | Payments | Stripe |
 

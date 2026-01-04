@@ -325,9 +325,7 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ### JS Validation:
 
-- [Full JS Validation Report](documentation/validation/js_validation.pdf)
-
-- No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js full `/* jshint esversion: 8, jquery: true, scripturl: true */` was added to the top of the file.
+No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js full '/* jshint esversion: 11 */ and or /* global bootstrap */ and or /* global Stripe */' was added to the top of the file.
 
 - Base.js
 
@@ -348,38 +346,232 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ### Python Validation:
 
-- No errors were found when the code was passed through Valentin Bryukhanov's [online validation tool](http://pep8online.com/). According to the reports, the code is [Pep 8-compliant](https://legacy.python.org/dev/peps/pep-0008/). This checking was done manually by copying python code and pasting it into the validator.
+No errors were found when the code was passed through [CI Python Linter](https://pep8ci.herokuapp.com/). This checking was done manually by copying python code and pasting it into the validator.
 
-- [Bag. Validation Report](documentation/validation/pep8_validation_bag.pdf)
+#### Home app Python Validation:
 
-- [Email_notifications. Validation Report](documentation/validation/pep8_validation_email_notifications.pdf)
+- Home app urls.py
 
-- [Home. Validation Report](documentation/validation/pep8_validation_home.pdf)
+![Home  Validation Report](documentation/validation/pep8_validation_home_urls.png)
 
-- [Inventory. Validation Report](documentation/validation/pep8_validation_inventory.pdf)
+- Home app views.py
 
-- [Orders. Validation Report](documentation/validation/pep8_validation_orders.pdf)
+![Home  Validation Report](documentation/validation/pep8_validation_home_views.png)
 
-- [Payment. Validation Report](documentation/validation/pep8_validation_payment.pdf)
+#### Bag app Python Validation:
 
-- [Personnel. Validation Report](documentation/validation/pep8_validation_personnel.pdf)
+- Bag app context_processors.py
 
-- [Profiles. Validation Report](documentation/validation/pep8_validation_profiles.pdf)
+![Bag  Validation Report](documentation/validation/pep8_validation_bag_cp_urls.png)
 
-- [Promotions. Validation Report](documentation/validation/pep8_validation_promotions.pdf)
+- Bag app urlspy
 
-- [Reviews. Validation Report](documentation/validation/pep8_validation_reviews.pdf)
+![Home  Validation Report](documentation/validation/pep8_validation_bag_urls.png)
 
-- [Wishlist. Validation report](documentation/validation/pep8_validation_wishlist.pdf)
+- Bag app views.py
+
+![Bag  Validation Report](documentation/validation/pep8_validation_bag_views.png)
 
 
+#### Checkout app Python Validation:
+
+- Checkout app admin_dashboard_view.py
+
+![Checkout app admin_dashboard_view Validation Report](documentation/validation/pep8_validation_checkout_adv_urls.png)
+
+- Checkout app admin.py
+
+![Checkout admin Validation Report](documentation/validation/pep8_validation_checkout_admin.png)
+
+- Checkout app forms.py
+
+![Checkout forms Validation Report](documentation/validation/pep8_validation_checkout_forms.png)
+
+- Checkout app modelss.py
+
+![Checkout models Validation Report](documentation/validation/pep8_validation_checkout_models.png)
+
+- Checkout app order_tracking_view.py
+
+![Checkout  order tracking view Validation Report](documentation/validation/pep8_validation_checkout_otv.png)
+
+- Checkout app routing.py
+
+![Checkout routing Validation Report](documentation/validation/pep8_validation_checkout_routin.png)
+
+- Checkout app services.py
+
+![Checkout services Validation Report](documentation/validation/pep8_validation_checkout_services.png)
+
+- Checkout app urls.py
+
+![Checkout urls Validation Report](documentation/validation/pep8_validation_checkout_urls.png)
+
+- Checkout app utils.py
+
+![Checkout utils Validation Report](documentation/validation/pep8_validation_checkout_utils.png)
+
+- Checkout app views_webhook.py
+
+![Checkout views_webhook Validation Report](documentation/validation/pep8_validation_checkout_views_webhook.png)
+
+- Checkout app views.py
+
+![Checkout views Validation Report](documentation/validation/pep8_validation_checkout_views.png)
+
+- Checkout app webhook_handler.py
+
+![Checkout webhook_handler Validation Report](documentation/validation/pep8_validation_checkout_webhook_handler.png)
+
+
+#### Dishes app Python Validation:
+
+- Dishes app admin.py
+
+![Dishes admin Validation Report](documentation/validation/pep8_validation_dishes_admin.png)
+
+- Dishes app context_processors.py
+
+![ Dishes context_processors Validation Report](documentation/validation/pep8_validation_dishes_cp_png)
+
+- Dishes app forms.py
+
+![Dishes forms Validation Report](documentation/validation/pep8_validation_dishes_forms.png)
+
+- Dishes app modelss.py
+
+![Dishes models Validation Report](documentation/validation/pep8_validation_dishes_models.png)
+
+- Dishes app urls.py
+
+![Dishes urls Validation Report](documentation/validation/pep8_validation_dishes_urls.png)
+
+- Dishes app utils.py
+
+![Dishes utils Validation Report](documentation/validation/pep8_validation_dishes_utils.png)
+
+- Dishes app views.py
+
+![Dishes views Validation Report](documentation/validation/pep8_validation_dishes_views.png)
+
+#### Profiles app Python Validation:
+
+- Profiles app admin.py
+
+![Profiles admin Validation Report](documentation/validation/pep8_validation_profiles_admin.png)
+
+- Profiles app forms.py
+
+![Profiles forms Validation Report](documentation/validation/pep8_validation_profiles_forms.png)
+
+- Profiles app modelss.py
+
+![ Profiles models Validation Report](documentation/validation/pep8_validation_profiles_models.png)
+
+- Profiles app signals.py
+
+![ Profiles signals Validation Report](documentation/validation/pep8_validation_profiles_signals.png)
+
+- Profiles app urls.py
+
+![Profiles urls Validation Report](documentation/validation/pep8_validation_profiles_urls.png)
+
+- Profiles app utils.py
+
+![ Profiles utils Validation Report](documentation/validation/pep8_validation_profiles_utils.png)
+
+- Profiles app views.py
+
+![ Profiles views Validation Report](documentation/validation/pep8_validation_profiles_views.png)
+
+#### Feedback app Python Validation:
+
+- Feedback app admin.py
+
+![Feedback admin Validation Report](documentation/validation/pep8_validation_feedback_admin.png)
+
+- Feedback app forms.py
+
+![Feedback forms Validation Report](documentation/validation/pep8_validation_feedback_forms.png)
+
+- Feedback app models.py
+
+![ Feedback models Validation Report](documentation/validation/pep8_validation_feedback_models.png)
+
+- Feedback app urls.py
+
+![Feedback urls Validation Report](documentation/validation/pep8_validation_feedback_urls.png)
+
+- Feedback app views.py
+
+![ Feedback views Validation Report](documentation/validation/pep8_validation_feedback_views.png)
 
 ---
+
 ## Lighthouse Report
 
 LightHouse is a web performance testing tool that can be used to evaluate the performance of a website. The report is generated by Google Chrome.
 
-[Lighthouse Report](documentation/testing/lighthouse_report.pdf)
+### Home page Lighthouse report
+
+- ![Home page Lighthouse report](documentation/validation/home_lighthouse_report.png)
+
+### Dishes/Browse dishe pages Lighthousereport
+
+- ![Dishes/Browse dishe pages Lighthouse report](documentation/validation/dishes_browse_lighthouse_report.png)
+
+### Your bag page Lighthouse report
+
+- ![Your bag page Lighthouse report](documentation/validation/bag_lighthouse_report.png)
+
+### Checkout page Lighthouse report
+
+- ![Checkout page Lighthouse report](documentation/validation/checkout_lighthouse_report.png)
+
+### Contact(feedback) page Lighthouse report
+
+- ![Contact page Lighthouse report](documentation/validation/contact_lighthouse_report.png)
+
+### Admin Dashboard page Lighthouse report
+
+- ![Admin Dashboard page Lighthouse report](documentation/validation/admin_dashboard_lighthouse_report.png)
+
+### Admin Dashboard add dishes page Lighthouse report
+
+- ![Admin Dashboard add dishes page Lighthouse report](documentation/validation/admin_add_dishes_lighthouse_report.png)
+
+### Admin Dashboard edit dishes page Lighthouse report
+
+- ![Admin Dashboard edit dishes page Lighthouse report](documentation/validation/admin_edit_dishes_lighthouse_report.png)
+
+### Admin Dashboard delete dishes page Lighthouse report
+
+- ![Admin Dashboard delete dishes page Lighthouse report](documentation/validation/admin_delete_dishes_lighthouse_report.png)
+
+### Admin Dashboard add category page Lighthouse report
+
+- ![Admin Dashboard add category page Lighthouse report](documentation/validation/admin_add_category_lighthouse_report.png)
+
+### Admin Dashboard edit category page Lighthouse report
+
+- ![Admin Dashboard edit category page Lighthouse report](documentation/validation/admin_edit_category_lighthouse_report.png)
+
+### Admin Dashboard delete category page Lighthouse report
+
+- ![Admin Dashboard delete category page Lighthouse report](documentation/validation/admin_delete_category_lighthouse_report.png)
+
+### Profile page Lighthouse report
+
+- ![Profile page Lighthouse report](documentation/validation/profile_lighthouse_report.png)
+
+### Profile order history(checkout_success) page Lighthouse report
+
+- ![Profile order history page Lighthouse report](documentation/validation/order_history_lighthouse_report.png)
+
+### Track order page Lighthouse report
+
+- ![Track order page Lighthouse report](documentation/validation/order_track_lighthouse_report.png)
+
 
 ---
 
@@ -389,21 +581,75 @@ Testing was conducted on the following browsers;
 
 - Safari;
 
-![Compatibility Report](documentation/validation/compatibility.pdf)
+![Compatibility Report](documentation/validation/compatibility_safari.png)
 
 - Chrome;
 
-![Compatibility Report](documentation/validation/compatibility.pdf)
+![Compatibility Report](documentation/validation/compatibility_chrome.png)
 
 - Firefox;
 
-![Compatibility Report](documentation/validation/compatibility.pdf)
+![Compatibility Report](documentation/validation/compatibility_firefox.png)
 
 ---
 ## Responsiveness
 
 The responsiveness was checked manually by using devtools (Chrome) throughout the whole development. It was also checked with [Responsive Viewer](https://chrome.google.com/webstore/detail/responsive-viewer/inmopeiepgfljkpkidclfgbgbmfcennb/related?hl=en) Chrome extension.
 
-[Responsiveness Report](documentation/testing/responsiveness.pdf)
+### Home page Responsiveness report
+
+<a>
+<img src="documentation/responsiveness/home_mobile.png" alt="Responsive Design mobile" height="400">
+<img src="documentation/responsiveness/home_tablet.png" alt="Responsive Design tablet" height="400">
+<img src="documentation/responsiveness/home_desktop_.png" alt="Responsive Design desktop" height="400">
+</a>
+
+### Dishes/Browse dishes pages Responsiveness report
+
+<a>
+<img src="documentation/responsiveness/browse_dishes_mobile.png" alt="Responsive Design mobile" height="400">
+<img src="documentation/responsiveness/browse_dishes_tablet.png" alt="Responsive Design tablet" height="400">
+<img src="documentation/responsiveness/browse_dishes_desktop_.png" alt="Responsive Design desktop" height="400">
+</a>
+
+### Your bag page Responsiveness report
+
+<a>
+<img src="documentation/responsiveness/your_bag_mobile.png" alt="Responsive Design mobile" height="400">
+<img src="documentation/responsiveness/your_bag_tablet.png" alt="Responsive Design tablet" height="400">
+<img src="documentation/responsiveness/your_bag_desktop_.png" alt="Responsive Design desktop" height="400">
+</a>
+
+### Checkout page Responsiveness report
+
+<a>
+<img src="documentation/responsiveness/checkout_mobile.png" alt="Responsive Design mobile" height="400">
+<img src="documentation/responsiveness/checkout_tablet.png" alt="Responsive Design tablet" height="400">
+<img src="documentation/responsiveness/checkout_desktop_.png" alt="Responsive Design desktop" height="400">
+</a>
+
+### Contact(feedback) page Responsiveness report
+
+<a>
+<img src="documentation/responsiveness/contact_mobile.png" alt="Responsive Design mobile" height="400">
+<img src="documentation/responsiveness/contact_tablet.png" alt="Responsive Design tablet" height="400">
+<img src="documentation/responsiveness/contact_desktop_.png" alt="Responsive Design desktop" height="400">
+</a>
+
+### Admin Dashboard page Responsiveness report
+
+<a>
+<img src="documentation/responsiveness/admin_mobile.png" alt="Responsive Design mobile" height="400">
+<img src="documentation/responsiveness/admin_tablet.png" alt="Responsive Design tablet" height="400">
+<img src="documentation/responsiveness/admin_desktop_.png" alt="Responsive Design desktop" height="400">
+</a>
+
+### Profile page Responsiveness report
+
+<a>
+<img src="documentation/responsiveness/profile_mobile.png" alt="Responsive Design mobile" height="400">
+<img src="documentation/responsiveness/profile_tablet.png" alt="Responsive Design tablet" height="400">
+<img src="documentation/responsiveness/profile_desktop_.png" alt="Responsive Design desktop" height="400">
+</a>
 
 ---

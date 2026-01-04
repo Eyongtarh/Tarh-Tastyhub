@@ -210,7 +210,6 @@ def delete_dish(request, slug):
         dish.delete()
         cache.delete(f"dish_detail_{slug}")
         return redirect("dish_list")
-
     return render(request, "dishes/delete_dish.html", {"dish": dish})
 
 
@@ -225,7 +224,6 @@ def add_category(request):
         form.save()
         cache.delete("cached_category_menu")
         return redirect("dish_list")
-
     return render(
         request,
         "dishes/add_edit_category.html",
@@ -267,7 +265,6 @@ def delete_category(request, slug):
         cache.delete("cached_category_menu")
         cache.delete(f"category_dishes_{slug}")
         return redirect("dish_list")
-
     return render(
         request,
         "dishes/delete_category.html",

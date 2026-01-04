@@ -31,16 +31,12 @@ class OrderAdmin(admin.ModelAdmin):
         'order_number', 'full_name', 'local', 'delivery_type',
         'pickup_time', 'status', 'grand_total', 'date',
     )
-
     list_filter = ('delivery_type', 'status', 'date')
-
     search_fields = (
         'order_number', 'full_name', 'email',
         'phone_number', 'local',
     )
-
     ordering = ('-date',)
-
     inlines = [OrderLineItemInline]
 
     def get_queryset(self, request):
