@@ -6,7 +6,7 @@ Key features include:
 - User authentication and authorisation
 - Category and dish browsing
 - Category/dish filtering and sorting
-- Dish availability tracking and notifications
+- Featured dishes availability
 - Shopping bag and checkout
 - Secure Stripe payments
 - Order tracking and confirmations
@@ -29,21 +29,21 @@ Key features include:
 | Edit profile   | No         | Yes        | Yes     | Yes   |
 | Update profile   | No         | Yes        | Yes     | Yes   |
 | Change password   | No         | Yes        | Yes     | Yes   |
-| Delete aacount   | No         | Yes        | Yes     | Yes   |
-| My Orders   | No         | Yes        | Yes     | Yes   |
-| My Order's Details   | No         | Yes        | Yes     | Yes   |
+| Delete account   | No         | Yes        | Yes     | Yes   |
+| Orders history  | No         | Yes        | Yes     | Yes   |
+| Order history Details   | No         | Yes        | Yes     | Yes   |
 | Checkout   | No         | Yes        | Yes     | Yes   |
 | Subscribe for Email | Yes         | Yes         | Yes     | Yes   |
 | Categories | Yes         | Yes         | Yes     | Yes   |
 | Add category | No         | No         | Yes     | Yes   |
 | Edit category | No         | No         | Yes     | Yes   |
-| Delete category | No         | No         | No     | Yes   |
+| Delete category | No         | No         | Yes     | Yes   |
 | Add Dish | No         | No         | Yes     | Yes   |
 | Edit Dish | No         | No         | Yes     | Yes   |
 | Delete Dish | No         | No         | Yes     | Yes   |
 | Contact   | Yes         | Yes        | Yes     | Yes   |
 | Update order status | No         | No         | Yes     | Yes |
-| Cnecel Order | No         | No         | No     | Yes   |
+| Cancel Order | No         | No         | Yes    | Yes   |
 | View Detail admin| No         | No         | Yes     | Yes   |
 | Print order's Receipt | No         | No         | Yes    | Yes   |
 
@@ -63,32 +63,34 @@ The header contains the navbar and free delivery information.
 
 2. The second section contains links to Home page, dish category, browse dishes, checkout, and contact. This section is at the middle.
 
-3. Customer's section, which is visible for all users is by the right with admin dashboard and bag icon/count :
+3. Customer's section, which is visible for all users is by the right with admin dashboard and bag icon:
 
-    - if the user is logged in, the Navbar has the following features:
-      
-        - logo, which redirects to the home page
+    - if the user is logged in, the customer's section has the following features:
 
-        - Profile button, which redirects the user to the profile page
+        + Profile button, which redirects the user to the profile page
 
-        - Logout button, which redirects the user to the login page
+        + Logout button, which redirects the user to the login page
 
+    - if the user is logged out, customer's section has the following features:
 
-    - if the user is logged out, the Navbar has the following features:
-    
-        - logo, which redirects to the home page
+        + Login button, which redirects the user to the login page
 
-        - Login button, which redirects the user to the login page
+        + SignUp button, which redirects the user to the signup page
 
-        - SignUp button, which redirects the user to the signup page
+    - if the user is logged in as admin, the customer's section has the following features which is visible only for Staff:
 
-4. Admin Dashboard section, which is visible only for Staff:
+        + Admin Dashboard button, which redirects staff to Admin Dashboard page
 
-    It has Admin Dashboard button, which is visible only for staff. When this button is clicked, it redirects the staff to thee Adnin Dashboard page .
+        + Profile button, which redirects the user to the profile page
+
+        + Logout button, which redirects the user to the login page
+
 
 #### Fee Delivery Information
 
-   Free delivery discount limit is placed under the navbar which is visible to all.
+Free delivery discount limit is placed under the navbar which is visible to all.
+
+#### Header Images for large screens and mobile devices
 
 The simplistic design of the header is based on the decision to make the use of the web app easy for all users.
 
@@ -152,7 +154,7 @@ This section presents the testimonials of the store customers and aims to give t
 
 ###  Dishes Category page and Browse Dishes page:
 
-- These pages display on one page showing search bar and search links to search dishes.Dishes can be search by category, price,dietary type or ingredients.
+- The dishes category page displays the category clicked, Browse dishes displays all the dishes. This pages display on same page with same layout showing search bar and search links to search dishes. Dishes can be search by All, category, price, dietary type or ingredients.
 
 - Below the search bar and search buttons, dishes are displayed in card format. Each card includes dish image, name, description, size ,price, quantity buttons to add to or reduce from bag, add to bag button, and a link to view details.
 
@@ -168,11 +170,12 @@ This section presents the testimonials of the store customers and aims to give t
 ![View Detail page](documentation/features/view_detail_page.png)
 
 ### Checkout:
-A click on link checkout or bag icon at the top right corner on the navbar redirects you to your bag page, there after to the checkout page.
+
+A click on link checkout redirects you to checkout page if there are items int bag. If there are no items in the bag, message displays, your bag is empty and redirects you to your bag page.
 
 #### Your bag page
 
-- When clicked on navbar checkout button or bag icon at the top right corner, it redirects you to your bag page.
+- When clicked on navbar checkout button when ther are no items in the bag or bag icon at the top right corner, it redirects you to your bag page.
 - When there are no items in the bag, the page displays "your bag is empty" and a link to browse dishes"
 
 ![Your bag is empty page](documentation/features/empty_bag_page.png)
@@ -187,7 +190,7 @@ A click on link checkout or bag icon at the top right corner on the navbar redir
 
 #### Checkout page:
 
-- This page displays two cards, your order card and enter your details card.
+- When there is an item in the bag, a click on checkout on navbar links redirects you to checkout page. This page displays two cards, your order card and enter your details card.
 
 - Your order card displays, dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, total cost, and a link to contintinue shopping.
 
@@ -218,13 +221,20 @@ A click on link checkout or bag icon at the top right corner on the navbar redir
 These are emails received at different point in the customers proceedings:
 
 - When a delivery order is succesfull:
+
 ![Delivery order email](documentation/features/delivery_email.png)
 
 - When a pickup order is succesfull:
 
 ![Pickup order email](documentation/features/pickup_email.png)
 
+- When an order status is updated by admin, for example, order status updated to ready for pickup:
+
+ ![Order Status](documentation/features/order_status_ready_pickup.png)
+
+
 ### Feedback page
+
 A click on link contact on the navbar redirects you to feedback page. The page contains two main sections: Contact and company information, and customer feedback form.
 
 ![Feedback page](documentation/features/feedback_page.png)

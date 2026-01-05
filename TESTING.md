@@ -209,22 +209,31 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ## Bugs
 
+During the development process, several issues were encountered that required a complete database reset. While many minor bugs were resolved along the way, the following major issue is worth noting:
+
 **Solved bugs:**
-1. I was getting an error message when I tried to test the JsonResponse response on Password change.
 
+1. Django Version Compatibility Issues:
 
+- Problem:
+The project was initially developed using Django 5, which caused compatibility issues with AWS S3 code used. Downgrading to Django 4.2.11 resolved the S3 issue, but introduced new compatibility problems with the installed recent version of django-allauth.
 
+- Solution:
+The issue was resolved by upgrading Django to 4.2.16, which is compatible with django-allauth==65.13.1. After updating Django, a command was used to upgrade and reinstall all other project dependencies to ensure they were compatible with Django 4.2.16.
+    ```bash
+    pip install django==4.2.16
+    pip install --upgrade -r requirements.txt
+    ```
 **Unsolved bugs:**
 
 1. This bug from django admin affects my admin dashboard main page
 
-- ![Django admin page HTML validation report](documentation/validation/admin_django_html_validation.png)
+   ![Django admin page HTML validation report](documentation/validation/admin_django_html_validation.png)
 
 
-2. Admin Dashboard page HTML validation report
+   Admin Dashboard page HTML validation report inherited the bug
 
-- ![Admin Dashboard page link HTML validation report](documentation/validation/admin_dashboard_html_validation.png)
-
+   ![Admin Dashboard page link HTML validation report](documentation/validation/admin_dashboard_html_validation.png)
 
 ---
 
@@ -232,7 +241,7 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ### HTML Validation:
 
-- No errors or warnings were found when passing through the official [W3C](https://validator.w3.org/) validator. This checking was done manually by copying the view page source code (Ctrl+U) and pasting it into the validator.
+No errors or warnings were found when passing through the official [W3C](https://validator.w3.org/) validator. This checking was done manually by copying the view page source code  and pasting it into the validator.
 
 #### Home page HTML validation report
 
@@ -303,7 +312,7 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ### CSS Validation:
 
- No errors or warnings were found when passing through the official [W3C (Jigsaw)](https://jigsaw.w3.org/css-validator/#validate_by_uri) validator except for the warnings about the use of css root variables and webkits for the box-shadow. However, css code works perfectly on various devices.
+ No errors or warnings were found when passing through the official [W3C (Jigsaw)](https://jigsaw.w3.org/css-validator/#validate_by_uri) validator. The css code works perfectly on various devices.
 
  - Base.css
 
@@ -325,7 +334,7 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ### JS Validation:
 
-No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js full '/* jshint esversion: 11 */ and or /* global bootstrap */ and or /* global Stripe */' was added to the top of the file.
+No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js fulll, `/* jshint esversion: 11 */ and or /* global bootstrap */ and or /* global Stripe */` was added to the top of the file.
 
 - Base.js
 
