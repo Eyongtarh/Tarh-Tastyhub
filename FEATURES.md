@@ -15,37 +15,37 @@ Key features include:
 
 ## Access to pages according to the user role:
 
-| Page Name | Logged out  | Customers  | Manager | Admin |
-| --------- | ----------- | ---------- | ------- | ----- |
-| Home       | Yes         | Yes        | Yes     | Yes   |
-| Login      | Yes         | Yes        | Yes     | Yes   |
-| Signup   | Yes         | Yes        | Yes     | Yes   |
-| Logout     | Yes         | Yes        | Yes     | Yes   |
-| Dish Category   | Yes         | Yes        | Yes     | Yes   |
-| Dish Details | Yes         | Yes        | Yes     | Yes   |
-| All Dishes   | Yes         | Yes        | Yes     | Yes   |
-| Bag       | No         | Yes        | Yes     | Yes   |
-| Profile   | No         | Yes        | Yes     | Yes   |
-| Edit profile   | No         | Yes        | Yes     | Yes   |
-| Update profile   | No         | Yes        | Yes     | Yes   |
-| Change password   | No         | Yes        | Yes     | Yes   |
-| Delete account   | No         | Yes        | Yes     | Yes   |
-| Orders history  | No         | Yes        | Yes     | Yes   |
-| Order history Details   | No         | Yes        | Yes     | Yes   |
-| Checkout   | No         | Yes        | Yes     | Yes   |
-| Subscribe for Email | Yes         | Yes         | Yes     | Yes   |
-| Categories | Yes         | Yes         | Yes     | Yes   |
-| Add category | No         | No         | Yes     | Yes   |
-| Edit category | No         | No         | Yes     | Yes   |
-| Delete category | No         | No         | Yes     | Yes   |
-| Add Dish | No         | No         | Yes     | Yes   |
-| Edit Dish | No         | No         | Yes     | Yes   |
-| Delete Dish | No         | No         | Yes     | Yes   |
-| Contact   | Yes         | Yes        | Yes     | Yes   |
-| Update order status | No         | No         | Yes     | Yes |
-| Cancel Order | No         | No         | Yes    | Yes   |
-| View Detail admin| No         | No         | Yes     | Yes   |
-| Print order's Receipt | No         | No         | Yes    | Yes   |
+| Page Name               | Logged out  | Customers(Shoppers)  | Staff   | Admin |
+| ----------------------- | ----------- | ---------- | ------- | ----- |
+| Home                    | Yes         | Yes        | Yes     | Yes   |
+| Login                   | Yes         | Yes        | Yes     | Yes   |
+| Signup                  | Yes         | Yes        | Yes     | Yes   |
+| Logout                  | Yes         | Yes        | Yes     | Yes   |
+| Dish Category           | Yes         | Yes        | Yes     | Yes   |
+| Dish Details            | Yes         | Yes        | Yes     | Yes   |
+| All Dishes              | Yes         | Yes        | Yes     | Yes   |
+| Bag                     | No          | Yes        | Yes     | Yes   |
+| Profile                 | No          | Yes        | Yes     | Yes   |
+| Edit profile            | No          | Yes        | Yes     | Yes   |
+| Update profile          | No          | Yes        | Yes     | Yes   |
+| Change password         | No          | Yes        | Yes     | Yes   |
+| Delete account          | No          | Yes        | Yes     | Yes   |
+| Orders history          | No          | Yes        | Yes     | Yes   |
+| Order history Details   | No          | Yes        | Yes     | Yes   |
+| Checkout                | No          | Yes        | Yes     | Yes   |
+| Subscribe for Email     | Yes         | Yes        | Yes     | Yes   |
+| Categories              | Yes         | Yes        | Yes     | Yes   |
+| Add category            | No          | No         | Yes     | Yes   |
+| Edit category           | No          | No         | Yes     | Yes   |
+| Delete category         | No          | No         | Yes     | Yes   |
+| Add Dish                | No          | No         | Yes     | Yes   |
+| Edit Dish               | No          | No         | Yes     | Yes   |
+| Delete Dish             | No          | No         | Yes     | Yes   |
+| Contact                 | Yes         | Yes        | Yes     | Yes   |
+| Update order status     | No          | No         | Yes     | Yes   |
+| Cancel Order            | No          | No         | Yes     | Yes   |
+| View Detail admin       | No          | No         | Yes     | Yes   |
+| Print order's Receipt   | No          | No         | Yes     | Yes   |
 
 
 
@@ -171,11 +171,20 @@ This section presents the testimonials of the store customers and aims to give t
 
 ### Checkout:
 
-A click on link checkout redirects you to checkout page if there are items int bag. If there are no items in the bag, message displays, your bag is empty and redirects you to your bag page.
+- If logged out, click on link checkout redirects you to signin or signup page.
+
+- If logged in, click on link checkout redirects you to checkout page if there are items int bag. If there are no items in the bag, message displays, your bag is empty and redirects you to your bag page.
 
 #### Your bag page
 
-- When clicked on navbar checkout button when ther are no items in the bag or bag icon at the top right corner, it redirects you to your bag page.
+##### Logged out
+
+- If logged out, click on link checkout bag icon redirects you to signin or signup page.
+
+##### Logged in
+
+- if logged in , a clicked on navbar checkout button when there are no items in the bag or bag icon at the top right corner, it redirects you to your bag page.
+
 - When there are no items in the bag, the page displays "your bag is empty" and a link to browse dishes"
 
 ![Your bag is empty page](documentation/features/empty_bag_page.png)
@@ -188,7 +197,7 @@ A click on link checkout redirects you to checkout page if there are items int b
 
 ![Your bag with dish page](documentation/features/dish_in_bag.png)
 
-#### Checkout page:
+#### Checkout page, Logged in:
 
 - When there is an item in the bag, a click on checkout on navbar links redirects you to checkout page. This page displays two cards, your order card and enter your details card.
 
@@ -204,7 +213,7 @@ A click on link checkout redirects you to checkout page if there are items int b
 
 ![Pickup Order](documentation/features/pickup_order.png)
 
-#### Success page:
+#### Success page, Logged in:
 
 - The success page displays successfull payment from checkout, displays customer's details, delivery order number, confirmation email sent message, a link to go to profile page, dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, grand total cost, and a link to contintinue shopping.
 
@@ -216,7 +225,7 @@ A click on link checkout redirects you to checkout page if there are items int b
 
 ![Pickup Success](documentation/features/pickup_success.png)
 
-#### Email page:
+#### Email page, Logged in:
 
 These are emails received at different point in the customers proceedings:
 
@@ -267,7 +276,7 @@ Anonymous users must manually enter required information; name, email, subject a
 
 ![Feedback Anonymous page](documentation/features/feedback_page2.png)
 
-### My profile page:
+### My profile page, Logged in:
 
 A click at the top right corner on the navbar on user name reveals the profile link on large screen, on mobile screens, click hamburger icon. Click profiles and it redirects you to profiles page containing primary data on the customer for the logged-in user.
 
@@ -285,20 +294,22 @@ A click at the top right corner on the navbar on user name reveals the profile l
 
 ![My profile with order](documentation/features/my_profile_with_order.png)
 
-#### Update Profile page: 
+#### Update Profile page, Logged in: 
 
 In the default delivery information card, form is filled and update profile link is cliked, a message is displaced at the top right corner confirming profile update was successful.
 
 ![Update Profile page](documentation/features/update_profile_page.png)
 
-#### Delete Account page:
+#### Delete Account page, Logged in:
 
 In the default delivery information card, at the bottom, right, you have delete account link.
+
 - If delete account link is cliked, it redirects you to delete account page , to firm or cancel profile deletion. I cancelled is click, it redirects you to my profile page.
 
 ![Delete Account confirmation](documentation/features/confirm_delete_account.png)
 
-##### Delete Account Confirmation page:
+##### Delete Account Confirmation page, Logged in:
+
 - If delete account is clicked, it redirects you to confirm permanent deletion of account page or cancel. If cancel if clicked, it redirects you to my profile page.
 
 ![Delete Account permanently](documentation/features/permanent_delete_account.png)
@@ -307,14 +318,15 @@ In the default delivery information card, at the bottom, right, you have delete 
 
 ![Delete Account Success](documentation/features/delete_account_success.png)
 
-#### Change password page in my profile:
+#### Change password page in my profile, Logged in:
 
 In the default delivery information card, at the bottom, left, you have change password link.
 - If change password link is cliked, it redirects you to change password page to change password.
 
 ![Password Change](documentation/features/change_password.png)
 
-#### Checkout Success page:
+#### Checkout Success page, Logged in:
+
 In the my order card, which displays information on order history and each order is a link to checkout success page where customer can see order details and order status on a progress bar.
 
 - A click on an order number redirects you to checkout success page. This page displays a status progress bar , dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, grand total cost, a link to contintinue shopping and a link to only track order.
@@ -323,13 +335,13 @@ In the my order card, which displays information on order history and each order
 
 - Checkout success progress bar update
 
-##### Track order page:
+##### Track order page, Logged in:
 
 A click on the link track order in checkout success page redirects you to track order page. It displays only the progress bar of the order(s) in checkout success page. It also includes a link to contintinue shopping and a link go to my profile page.
 
 ![Track order](documentation/features/track_order_page.png)
 
-### Admin Dashboard page:
+### Admin Dashboard page, Logged in:
 
 - A click at the top right corner on the navbar on user name reveals the admin dashboard only for staff and on large screens, on mobile screens, click hamburger icon. Click admin dashboard and it redirects you to admin dashboard page.
 

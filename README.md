@@ -10,7 +10,7 @@ Online Food Ordering & Restaurant Marketplace Platform
 
 ## About
 
-Tarh TastyHub is an online food ordering and restaurant marketplace platform that allows customers to browse restaurant, explore menu, create account , place food orders, and pay securely online for delivery or pickup.
+Tarh TastyHub is an online food ordering and restaurant marketplace platform that allows customers to browse restaurant menu, explore the menu, create an account , place food orders, and pay securely online for delivery or pickup.
 
 ### Platform Features
 - User authentication and account management.
@@ -19,7 +19,7 @@ Tarh TastyHub is an online food ordering and restaurant marketplace platform tha
 - Secure online payment.
 - Discounts, and featured dishes.  
 - Email notifications and order confirmations.
-- News letter subcribsion for customer updates.
+- Newsletter subcription for customer updates.
 - Delivery riders, deliver food when its ready for delivery.
 
 ### Customer Capabilities
@@ -32,7 +32,7 @@ Tarh TastyHub is an online food ordering and restaurant marketplace platform tha
 ### Admin Dashboard
 Tarh TastyHub supports multi-role admin dashboard management:  
 - Add/edit/delete dish Category and dish.  
-- Update order status and cencel oreder if not completed.
+- Update order status and cancel order if not completed.
 - View order details and print receipt. 
 - Cancel orders when not completed.
 - Manage customer feedback. 
@@ -52,7 +52,7 @@ Tarh TastyHub was designed to be modern, intuitive, and user-focused, prioritisi
 
 ### Encouraging Repeat Usage
 - Delivery discount
-- Promotional campaigns by mailchimp subscripsion
+- Promotional campaigns by mailchimp subscription
 - Email notifications  
 - Dish availability
 
@@ -89,29 +89,29 @@ Tarh TastyHub was designed to be modern, intuitive, and user-focused, prioritisi
 | US03 | As a User, I want to view details of a dish, so that I can see description, ingredients, image, portion size, and price. | Must-Have | Clicking a dish shows detailed information. | 1 |
 | US04 | As a User, I want to identify featured dishes, so that I can take advantage of offers. | Should-Have | Featured dishes are visually highlighted on the home page. |  |
 | US05 | As a User, I want to view my total order cost at any time, so that I can manage my budget. | Must-Have| Total cost updates automatically when items are added/removed. | 1 |
-| US06 | As a Site User, I want to register an account, so that I can save my details and order history. | Must-Have | Registration form validates email, password, and required fields. | 1 |
-| US07 | As a Site User, I want to log in and log out, so that my account is secure. | Must-Have | User can log in/out; protected pages require login. | 2 |
-| US08 | As a Site User, I want to recover my password, so that I can regain access if I forget it. | Must-Have| Password reset emails are sent, and new password can be set. | 1 |
-| US09 | As a Site User, I want to receive email confirmation after registering, so that I know my account is created. | Should-Have | Confirmation email is sent with a verification link. | 1 |
-| US10 | As a Site User, I want a personalised profile, so that I can view order history, saved addresses, and preferences. | Should-Have | Profile shows previous orders, saved addresses, and editable personal info. | 1 |
+| US06 | As a User, I want to register an account, so that I can save my details and order history. | Must-Have | Registration form validates email, password, and required fields. | 1 |
+| US07 | As a User, I want to log in and log out, so that my account is secure. | Must-Have | User can log in/out; protected pages require login. | 1 |
+| US08 | As a User, I want to recover my password, so that I can regain access if I forget it. | Must-Have| Password reset emails are sent, and new password can be set. | 1 |
+| US09 | As a User, I want to receive email confirmation after registering, so that I know my account is created. | Should-Have | Confirmation email is sent with a verification link. | 1 |
+| US10 | As a User, I want a personalised profile, so that I can view order history, saved addresses, and preferences. | Should-Have | Profile shows previous orders, saved addresses, and editable personal info. | 1 |
 | US11 | As a User, I want to sort dishes by price, so that I can find the best options. | Should-Have | Sorting updates the list correctly and instantly. | 1 |
 | US12 | As a User, I want to sort dishes within a category, so that I can find the top-rated or best-priced dishes in that category. | Should-Have | Category filter + sort works correctly. | 1 |
 | US13 | As a User, I want to search for dishes by name or ingredients, so that I can quickly find what I want. | Should-Have | Search returns relevant dishes, displays number of results. | 1 |
 | US14 | As a User, I want to view search results clearly, so that I can decide whether the dish I want is available. | Should-Have| Search results show dish name, image, price, and category. | 1 |
 | US15 | As a User, I want to select portion size and quantity for each dish, so that I order exactly what I want. | Must-Have | Size/portion options and quantity selector update the cart correctly. | 1 |
 | US16 | As a User, I want to view all dishes in my bag, so that I can confirm my selections. | Must-Have | bag page lists all dishes with quantity, size, and subtotal. | 1 |
-| US17 | As a SUser, I want to adjust quantities or remove dishes in my bag, so that I can change my order easily. | Must-Have | Quantity adjustments and deletions update total instantly. | 1 |
+| US17 | As a User, I want to adjust quantities or remove dishes in my bag, so that I can change my order easily. | Must-Have | Quantity adjustments and deletions update total instantly. | 1 |
 | US18 | As a User, I want to enter payment information securely, so that I can complete my order safely. | Must-Have | Payment form validates inputs; supports secure payment gateways. | 1 |
 | US19 | As a User, I want to see order confirmation after checkout, so that I know my order was successful. | Must-Have | Confirmation page displays order number, summary, and estimated delivery. | 1 |
 | US20 | As a User, I want to receive an email confirmation after checkout, so that I can keep a record of my order. | Must-Have | Confirmation email sent with order details. | 1 |
-| US21 | As a Store Owner, I want to add new dishes, so that I can expand my menu. | Must-Have| Admin can create dishes with name, description, category, price, image, and availability. | 1 |
-| US22 | As a Store Owner, I want to edit dish details, so that I can update pricing, images, descriptions, or availability. | Must-Have | Admin can update dishes and order delivery status; changes reflected on the front-end immediately. | 1 |
-| US23 | As a Store Owner, I want to delete dishes, so that I can remove items no longer offered. | Must-Have | Deletion removes dish from menu and prevents future orders. | 1 |
+| US21 | As an admin, I want to add new dishes, so that I can expand my menu. | Must-Have| Admin can create dishes with name, description, category, price, image, and availability. | 1 |
+| US22 | As an admin, I want to edit dish details, so that I can update pricing, images, descriptions, or availability. | Must-Have | Admin can update dishes and order delivery status; changes reflected on the front-end immediately. | 1 |
+| US23 | As an admin, I want to delete dishes, so that I can remove items no longer offered. | Must-Have | Deletion removes dish from menu and prevents future orders. | 1 |
 | US24 | As a User, I want to submit feedback, so that I can share my opinion or report issues. | Should-Have | Feedback form stores comments associated with user. | 1 |
-| US25 | As a Site User, I want to update my profile, so that my personal information and delivery preferences are current. | Should-Have | Users can edit name, email, phone, address, and password. | 1 |
-| US26 | As a Site User, I want to view past orders, so that I can reference previous dishes I liked. | Should-Have | Past orders show dish names, quantities, prices, and order date. | 1 |
-| US27 | As a Site User, I want to delete my account, so that my personal data and order history are removed. | Could-Have| Account deletion requires confirmation; data removed from system. | 1 |
-| US28 | As a Site User, I want to change my password, so that I can maintain account security. | Should-Have| Users can set a new password; validation applied. | 1 |
+| US25 | As a User, I want to update my profile, so that my personal information and delivery preferences are current. | Should-Have | Users can edit name, email, phone, address, and password. | 1 |
+| US26 | As a User, I want to view past orders, so that I can reference previous dishes I liked. | Should-Have | Past orders show dish names, quantities, prices, and order date. | 1 |
+| US27 | As a User, I want to delete my account, so that my personal data and order history are removed. | Could-Have| Account deletion requires confirmation; data removed from system. | 1 |
+| US28 | As a User, I want to change my password, so that I can maintain account security. | Should-Have| Users can set a new password; validation applied. | 1 |
 
 
 ## Business Model
@@ -147,12 +147,13 @@ Tarh TastyHub follows a **B2C (Business-to-Customer)** business model:
 - Loyalty discount emails  
 *Implemented using mailchimp.com.*
 
-![NewsLetter](documentation/web_marketing/mailchimp_page.png)
+![Newsletter](documentation/web_marketing/mailchimp_page.png)
 
 ### Social Media
+
 Facebook is a crucial platform for Tarh Tastyhub to connect with customers. According to statistics, the store enjoys strong reach among users who prefer Facebook, making it an effective channel for promoting products and engaging with potential buyers. Facebook’s extensive global coverage ensures access to a wide audience capable of purchasing food online.
 
-The “Tarh Tastyhub” Facebook page serves as the restaurants’s marketing hub. It is used to post advertisements, share exciting content, and actively engage with users, helping to build brand awareness and foster customer interaction.
+The “Tarh Tastyhub” Facebook page serves as the restaurant’s marketing hub. It is used to post advertisements, share exciting content, and actively engage with users, helping to build brand awareness and foster customer interaction.
 
 ![Tarh Tastyhub Facebook Page](documentation/web_marketing/tarh_tastyhub_facebook_page.png)
 
@@ -200,7 +201,7 @@ The project primarily uses Django as the web framework, with django-allauth for 
 ## Features
 
 Full feature breakdown and validation can be found in:
-[See FEATURES](FEATURES.md)
+[See FEATURES.md](FEATURES.md)
 
 ---
 
@@ -675,7 +676,7 @@ Automatically created when a user registers.
 
 All testing documentation is available in:
 
-[TESTING.md](TESTING.md)
+[See TESTING.md](TESTING.md)
 
 Includes:
 - User story validation
@@ -698,7 +699,7 @@ Stripe test card:
 
 Deployment instructions are available in:
 
-[DEPLOYMENT.md](DEPLOYMENT.md)
+[See DEPLOYMENT.md](DEPLOYMENT.md)
 
 ## Credits
 
@@ -745,7 +746,7 @@ Deployment instructions are available in:
 - [Juliia Konovalova](https://github.com/IuliiaKonovalova/e-commerce/blob/main/README.md) was used in the writing of the readme.md.
 - [Compress JPEG](https://compressjpeg.com/) was used to compress JPEG images.
 - [IMGonline.com.ua](https://www.imgonline.com.ua/eng/resize-image.php) was used to resize images.
-- [You Tube Video](https://www.google.com/search?sca_esv=65998f3cafbd16fe&udm=7&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ1Y6MJ25_tmWITc7uy4KIeoJTKjrFjVxydQWqI2NcOhYPURIv2wPgv_w_sE_0Sc6QqqU7k8cSQndc5mTXCIWHa5VI1yMxIvn_0W11438Uhn0KUB0OyyqdxtMTNJnktIk9lQeAou6u0TG1ZnPmcPkpqk3LcE4bSX7s88nmTrtoPEA9SVU_&q=building+e+commerce+restaurant+website&sa=X&ved=2ahUKEwjLle__7vGRAxW1MRAIHaeDFxMQtKgLegQIFxAB&biw=1440&bih=812&dpr=2#fpstate=ive&ip=1&vld=cid:6eabdc37,vid:oAuMO8cWY4o,st:0) was used for additional inside into e commerce food website.
+- [You Tube Video](https://www.google.com/search?sca_esv=65998f3cafbd16fe&udm=7&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ1Y6MJ25_tmWITc7uy4KIeoJTKjrFjVxydQWqI2NcOhYPURIv2wPgv_w_sE_0Sc6QqqU7k8cSQndc5mTXCIWHa5VI1yMxIvn_0W11438Uhn0KUB0OyyqdxtMTNJnktIk9lQeAou6u0TG1ZnPmcPkpqk3LcE4bSX7s88nmTrtoPEA9SVU_&q=building+e+commerce+restaurant+website&sa=X&ved=2ahUKEwjLle__7vGRAxW1MRAIHaeDFxMQtKgLegQIFxAB&biw=1440&bih=812&dpr=2#fpstate=ive&ip=1&vld=cid:6eabdc37,vid:oAuMO8cWY4o,st:0) was used for additional insight to e commerce food website.
 - [Code Institute](https://codeinstitute.net/) boutique-ado walkthrough project was used
    in building my project.
 
@@ -753,4 +754,4 @@ Deployment instructions are available in:
 
 ## Acknowledgments
 
-- [Code Institute](https://codeinstitute.net/) Tutors and my Mentor, Juliia Konovalova for their continues support.
+- [Code Institute](https://codeinstitute.net/) Tutors and my Mentor, Juliia Konovalova for their continuous support.
