@@ -15,13 +15,13 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | Navbar              | Click Dish Category link        | Redirects to Dishes Category page | Y   |                       |
 | Navbar              | Click Browse Dishes link        | Redirects to Browse Dishes page   | Y   |                       |
 | Navbar              | Click Checkout link             | Redirects to Checkout page        | Y   |                       |
-| Navbar              | Click Contact link              | Redirects to Custome Feedback page| Y   |                       |
+| Navbar              | Click Contact link              | Redirects to Customer Feedback page| Y   |                       |
 | Navbar (Logged In)  | Click Profile button            | Redirects to Profile page         | Y   |                       |
 | Navbar (Logged In)  | Click Logout button             | Redirects to Signout page         | Y   |                       |
 | Navbar (Logged Out) | Click Login button              | Redirects to Signin page          | Y   |                       |
 | Navbar (Logged Out) | Click SignUp button             | Redirects to SignUp page          | Y   |                       |
 | Navbar (Staff)      | Click Admin Dashboard button    | Redirects to Admin Dashboard page | Y   | Visible only to staff |
-| Navbar              | Delivery Information            | Discount message displayes        | Y   | Visible to all users  |
+| Navbar              | Delivery Information            | Discount message displays        | Y   | Visible to all users  |
 
 ---
 
@@ -46,15 +46,15 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | ---- | ---------------------------------- | ------------------------------------- | --- | -------- |
 | Home | Click Order button in Hero section | Redirects to Dishes page              | Y   |          |
 | Home | Scroll to Featured Dishes          | Featured dishes displayed in cards    | Y   |          |
-| Home | Click on dish View detail.         | Redirects to Dish Detail page         | Y   |          |
+| Home | Click View dish                    | Redirects to Dish Detail page         | Y   |          |
 | Home | Scroll to Testimonials             | Testimonials displayed                | Y   |          |
 
 ---
 
 ## Dishes Category and Browse Dishes Pages
 
-| Page            | User Actions            | Expected Results                                   | Y/N  | Comments   |
-| --------------- | ----------------------- | -------------------------------------------------- | -----| ------------
+| Page            | User Actions            | Expected Results                                   | Y/N | Comments   |
+| --------------- | ----------------------- | -------------------------------------------------- | ----| ------------
 | Category/Browse | Type in search bar      | Search results displayed                           | Y   |             |
 | Category/Browse | Filter by category      | Relevant dishes displayed                          | Y   |             |
 | Category/Browse | Filter by price         | Relevant dishes displayed                          | Y   |             |
@@ -64,9 +64,7 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | Category/Browse | Click All.              | All dishes displayed                               | Y   |             |
 | Category/Browse | Click Add to Bag button | Dish added to bag, notification displayed          | Y   | If logged out, prompt to login |
 | Category/Browse | Click quantity + / -    | Quantity updated                                   | Y   | If logged out, prompt to login |
-| Category/Browse | Click bag icon          | Redirecstnto your bag page                         | Y   |If logged out, prompt to login |
-| Category/Browse | Click bag icon          | Redirecstnto your bag page                         | Y   |If logged out, prompt to login |
-
+| Category/Browse | Click bag icon          | Redirects to your bag page                         | Y   | If logged out, prompt to login |
 | Category/Browse | Click Remove from Bag   | Dish removed from bag, notification displayed      | Y   |             |
 
 ---
@@ -153,20 +151,20 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ### Categories 
 
-| Page              | User Actions       | Expected Results                                        | Y/N | Comments                  |
-| ----------------- | ------------------ | -------------------------------------------------------- | --- | -------------|
+| Page              | User Actions       | Expected Results                                         | Y/N | Comments                  |
+| ----------------- | ------------------ | -------------------------------------------------------- | --- | --------------------------|
 | Admin Categories  | Add Categories     | add Categories page opens, add Categories , successful   | Y   | Success message displayed |
 | Admin Categories  | Edit Categories    | edit Categories page opens, edit Categories , successful | Y   | Success message displayed |
 | Admin Categories  | Delete Categories  | delete Categories page opens, delete confirmation        | Y   | Success message displayed |
 
 ### Feedback
 
-| Page     | User Actions                        | Expected Results                   | Y/N | Comments        |
-| -------- | ----------------------------------- | ---------------------------------- | --- | --------------- |
-| Feedback | Select unread, Apply                | All unread messages display        | Y   |                 |
-| Feedback | Select handled , Apply              | All handles messages display       | Y   |                 |
-| Feedback | Click mark as handled               | Message displayed as handled       | Y   |               |
-| Feedback | Click handled                       | Message displayed as display mark as handled | Y   |           |
+| Page     | User Actions                        | Expected Results                    | Y/N | Comments        |
+| -------- | ----------------------------------- | ----------------------------------- | --- | --------------- |
+| Feedback | Select unread, Apply                | All unread messages display         | Y   |                 |
+| Feedback | Select handled , Apply              | All handled messages display        | Y   |                 |
+| Feedback | Click mark as handled               | Message displays as handled         | Y   |                 |
+| Feedback | Click handled                       | Message displays as mark as handled | Y   |                 |
 
 
 ---
@@ -176,7 +174,7 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | User Story ID | User Story | Requirement Met |
 | ------------- | ---------- | --------------- |
 | US01 | As a Customer, I want to view a list of dishes, so that I can select some to order. | Y |
-| US02 | As a Customer, I want to view dishes by category (e.g., Breakfast, Dinner, dLunch), so that I can quickly find what I want. | Y |
+| US02 | As a Customer, I want to view dishes by category (e.g., Breakfast, Dinner, Lunch), so that I can quickly find what I want. | Y |
 | US03 | As a Customer, I want to view details of a dish, so that I can see description, ingredients, image, portion size, and price. | Y |
 | US04 | As a Customer, I want to identify featured dishes, so that I can take advantage of offers. | Y |
 | US05 | As a Customer, I want to view my total order cost at any time, so that I can manage my budget. | Y |
@@ -201,7 +199,7 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | US24 | As a Customer, I want to submit feedback on dishes, so that I can share my opinion or report issues. | Y |
 | US25 | As a Site User, I want to update my profile, so that my personal information and delivery preferences are current. | Y |
 | US26 | As a Site User, I want to view past orders, so that I can reference previous dishes I liked. | Y |
-| US27 | As a Site User, I want to delete my account, so that my personal data and order history are removed. | Y |
+| US27 | As a User(customer), I want to delete my account, so that my personal data and order history are removed. | Y |
 | US28 | As a Site User, I want to change my password, so that I can maintain account security. | Y |
 
 
@@ -247,9 +245,9 @@ No errors or warnings were found when passing through the official [W3C](https:/
 
 - ![Home page HTML validation report](documentation/validation/home_html_validation.png)
 
-#### Dishes/Browse dishe pages HTML validation report
+#### Dishes/Browse dishes pages HTML validation report
 
-- ![Dishes/Browse dishe pages HTML validation report](documentation/validation/dishes_browse_validation.png)
+- ![Dishes/Browse dishes pages HTML validation report](documentation/validation/dishes_browse_validation.png)
 
 #### Your bag page HTML validation report
 
@@ -334,7 +332,7 @@ No errors or warnings were found when passing through the official [W3C](https:/
 
 ### JS Validation:
 
-No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js fulll, `/* jshint esversion: 11 */ and or /* global bootstrap */ and or /* global Stripe */` was added to the top of the file.
+No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js full, `/* jshint esversion: 11 */ and or /* global bootstrap */ and or /* global Stripe */` was added to the top of the file.
 
 - Base.js
 
@@ -373,7 +371,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 ![Bag  Validation Report](documentation/validation/pep8_validation_bag_cp_urls.png)
 
-- Bag app urlspy
+- Bag app urls.py
 
 ![Home  Validation Report](documentation/validation/pep8_validation_bag_urls.png)
 
@@ -396,7 +394,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 ![Checkout forms Validation Report](documentation/validation/pep8_validation_checkout_forms.png)
 
-- Checkout app modelss.py
+- Checkout app models.py
 
 ![Checkout models Validation Report](documentation/validation/pep8_validation_checkout_models.png)
 
@@ -447,7 +445,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 ![Dishes forms Validation Report](documentation/validation/pep8_validation_dishes_forms.png)
 
-- Dishes app modelss.py
+- Dishes app models.py
 
 ![Dishes models Validation Report](documentation/validation/pep8_validation_dishes_models.png)
 
@@ -473,7 +471,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 ![Profiles forms Validation Report](documentation/validation/pep8_validation_profiles_forms.png)
 
-- Profiles app modelss.py
+- Profiles app models.py
 
 ![ Profiles models Validation Report](documentation/validation/pep8_validation_profiles_models.png)
 
@@ -525,9 +523,9 @@ LightHouse is a web performance testing tool that can be used to evaluate the pe
 
 - ![Home page Lighthouse report](documentation/validation/home_lighthouse_report.png)
 
-### Dishes/Browse dishe pages Lighthousereport
+### Dishes/Browse dishes pages Lighthousereport
 
-- ![Dishes/Browse dishe pages Lighthouse report](documentation/validation/dishes_browse_lighthouse_report.png)
+- ![Dishes/Browse dishes pages Lighthouse report](documentation/validation/dishes_browse_lighthouse_report.png)
 
 ### Your bag page Lighthouse report
 
