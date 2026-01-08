@@ -1,6 +1,6 @@
 # Features
 
-Tarh TastyHub is a full-stack online food ordering platform designed to support customers, restaurant, and delivery personnel through a role-based system.
+Tarh Tastyhub is a full-stack online food ordering platform designed to support customers, restaurant, and delivery personnel through a role-based system.
 
 Key features include:
 - User authentication and authorisation
@@ -16,36 +16,36 @@ Key features include:
 ## Access to pages according to the user role:
 
 | Page Name               | Logged out  | Customers(Shoppers)  | Staff   | Admin |
-| ----------------------- | ----------- | ---------- | ------- | ----- |
-| Home                    | Yes         | Yes        | Yes     | Yes   |
-| Login                   | Yes         | Yes        | Yes     | Yes   |
-| Signup                  | Yes         | Yes        | Yes     | Yes   |
-| Logout                  | Yes         | Yes        | Yes     | Yes   |
-| Dish Category           | Yes         | Yes        | Yes     | Yes   |
-| Dish Details            | Yes         | Yes        | Yes     | Yes   |
-| All Dishes              | Yes         | Yes        | Yes     | Yes   |
-| Bag                     | No          | Yes        | Yes     | Yes   |
-| Profile                 | No          | Yes        | Yes     | Yes   |
-| Edit profile            | No          | Yes        | Yes     | Yes   |
-| Update profile          | No          | Yes        | Yes     | Yes   |
-| Change password         | No          | Yes        | Yes     | Yes   |
-| Delete account          | No          | Yes        | Yes     | Yes   |
-| Orders history          | No          | Yes        | Yes     | Yes   |
-| Order history Details   | No          | Yes        | Yes     | Yes   |
-| Checkout                | No          | Yes        | Yes     | Yes   |
-| Subscribe for Email     | Yes         | Yes        | Yes     | Yes   |
-| Categories              | Yes         | Yes        | Yes     | Yes   |
-| Add category            | No          | No         | Yes     | Yes   |
-| Edit category           | No          | No         | Yes     | Yes   |
-| Delete category         | No          | No         | Yes     | Yes   |
-| Add Dish                | No          | No         | Yes     | Yes   |
-| Edit Dish               | No          | No         | Yes     | Yes   |
-| Delete Dish             | No          | No         | Yes     | Yes   |
-| Contact                 | Yes         | Yes        | Yes     | Yes   |
-| Update order status     | No          | No         | Yes     | Yes   |
-| Cancel Order            | No          | No         | Yes     | Yes   |
-| View Detail admin       | No          | No         | Yes     | Yes   |
-| Print order's Receipt   | No          | No         | Yes     | Yes   |
+| ----------------------- | ----------- | -------------------- | ------- | ----- |
+| Home                    | Yes         | Yes                  | Yes     | Yes   |
+| Login                   | Yes         | Yes                  | Yes     | Yes   |
+| Signup                  | Yes         | Yes                  | Yes     | Yes   |
+| Logout                  | Yes         | Yes                  | Yes     | Yes   |
+| Dish Category           | Yes         | Yes                  | Yes     | Yes   |
+| Dish Details            | Yes         | Yes                  | Yes     | Yes   |
+| All Dishes              | Yes         | Yes                  | Yes     | Yes   |
+| Bag                     | No          | Yes                  | Yes     | Yes   |
+| Profile                 | No          | Yes                  | Yes     | Yes   |
+| Edit profile            | No          | Yes                  | Yes     | Yes   |
+| Update profile          | No          | Yes                  | Yes     | Yes   |
+| Change password         | No          | Yes                  | Yes     | Yes   |
+| Delete account          | No          | Yes                  | Yes     | Yes   |
+| Orders history          | No          | Yes                  | Yes     | Yes   |
+| Order history Details   | No          | Yes                  | Yes     | Yes   |
+| Checkout                | No          | Yes                  | Yes     | Yes   |
+| Subscribe for Email     | Yes         | Yes                  | Yes     | Yes   |
+| Categories              | Yes         | Yes                  | Yes     | Yes   |
+| Add category            | No          | No                   | Yes     | Yes   |
+| Edit category           | No          | No                   | Yes     | Yes   |
+| Delete category         | No          | No                   | Yes     | Yes   |
+| Add Dish                | No          | No                   | Yes     | Yes   |
+| Edit Dish               | No          | No                   | Yes     | Yes   |
+| Delete Dish             | No          | No                   | Yes     | Yes   |
+| Contact                 | Yes         | Yes                  | Yes     | Yes   |
+| Update order status     | No          | No                   | Yes     | Yes   |
+| Cancel Order            | No          | No                   | Yes     | Yes   |
+| View Detail admin       | No          | No                   | Yes     | Yes   |
+| Print order's Receipt   | No          | No                   | Yes     | Yes   |
 
 
 
@@ -59,7 +59,7 @@ The header contains the navbar and free delivery information.
 
 #### The Navbar has five subsections:
 
-1. Logo section, which is the first by the left. I contains the logo 'Tarh Tarstyhub'. If clicked, it redirects you to home page.
+1. Logo section, which is the first by the left. It contains the logo 'Tarh Tarstyhub'. If clicked, it redirects you to home page.
 
 2. The second section contains links to Home page, dish category, browse dishes, checkout, and contact. This section is at the middle.
 
@@ -86,7 +86,7 @@ The header contains the navbar and free delivery information.
         + Logout button, which redirects the user to the login page
 
 
-#### Fee Delivery Information
+#### Free Delivery Information
 
 Free delivery discount limit is placed under the navbar which is visible to all.
 
@@ -110,7 +110,7 @@ Footer has the following features:
 
 - logo name and link to home page
 
-- Dishe category and browse dishes links.
+- Dish category and browse dishes links.
 
 - Contact button, which allows the user to send an email as feedback to admin;
 
@@ -132,7 +132,7 @@ The home page has three sections as follows:
 
 - Hero section:
 
-This section has an order yellow at the center which redirects to dishes page. There is also an eye-catching image at the background of the hero section.
+This section has a yellow "Order" buuton at the center which redirects to dishes page. There is also an eye-catching image at the background of the hero section.
 
 ![Hero section. Hero Section](documentation/features/home_hero.png)
 
@@ -154,12 +154,12 @@ This section presents the testimonials of the store customers and aims to give t
 
 ###  Dishes Category page and Browse Dishes page:
 
-- The dishes category page displays the category clicked, Browse dishes displays all the dishes. This pages display on same page with same layout showing search bar and search links to search dishes. Dishes can be search by All, category, price, dietary type or ingredients.
+- The dishes category page displays the category clicked, Browse dishes displays all the dishes. This pages display on same page with same layout showing search bar and search links to search dishes. Dishes can be searched by All, category, price, dietary type or ingredients.
 
 - Below the search bar and search buttons, dishes are displayed in card format. Each card includes dish image, name, description, size ,price, quantity buttons to add to or reduce from bag, add to bag button, and a link to view details.
 
 
-![Dishes Categor/Browse Dishes page](documentation/features/category_browse.png)
+![Dishes Category/Browse Dishes page](documentation/features/category_browse.png)
 
 ###  Dish Detail page:
 
@@ -173,7 +173,7 @@ This section presents the testimonials of the store customers and aims to give t
 
 - If logged out, click on link checkout redirects you to signin or signup page.
 
-- If logged in, click on link checkout redirects you to checkout page if there are items int bag. If there are no items in the bag, message displays, your bag is empty and redirects you to your bag page.
+- If logged in, click on link checkout redirects you to checkout page if there are items in the bag. If there are no items in the bag, message displays, your bag is empty and redirects you to your bag page.
 
 #### Your bag page
 
@@ -191,7 +191,7 @@ This section presents the testimonials of the store customers and aims to give t
 
 - When there is an item in the bag, your bag page displays a dish card of each item in bag and a proceed to checkout card. 
 
-- The dish card displays dish image, name, description, size ,price, quantity buttons to add to or reduce from bag, linke to remove item from bag. If one item in bag and linke to remove item from bag is clicked, item is removed and page shows your bag is empty.
+- The dish card displays dish image, name, description, size ,price, quantity buttons to add to or reduce from bag, linke to remove item from bag. If one item is in bag and the link to remove item from bag is clicked, item is removed and page shows your bag is empty, success message for item removed displays.
 
 - The proceed to checkout card displays order summary of: subtotal cost, delivery cost, total cost, and a link to proceed to checkout. If, proceed to checkout link is clicked, it redirects you to checkout page.
 
@@ -201,9 +201,9 @@ This section presents the testimonials of the store customers and aims to give t
 
 - When there is an item in the bag, a click on checkout on navbar links redirects you to checkout page. This page displays two cards, your order card and enter your details card.
 
-- Your order card displays, dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, total cost, and a link to contintinue shopping.
+- Your order card displays, dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, total cost, and a link to continue shopping.
 
-- Enter your details card displays form to enter details for card payment. Customer can select deivery or pick up. Pickup displays pickup time. When form is fully filed, the pay now link can be clicked, and payment for dish/dishes will proceed to success page.
+- Enter your details card displays form to enter details for card payment. Customer can select deivery or pick up. Pickup displays pickup time. When form is correctly filled, the pay now link can be clicked, and payment for dish/dishes will proceed to success page.
 
 - When a delivery order is made:
 
@@ -215,13 +215,13 @@ This section presents the testimonials of the store customers and aims to give t
 
 #### Success page, Logged in:
 
-- The success page displays successfull payment from checkout, displays customer's details, delivery order number, confirmation email sent message, a link to go to profile page, dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, grand total cost, and a link to contintinue shopping.
+- The success page displays successfull payment from checkout, displays customer's details, delivery order number, confirmation email sent message, a link to go to profile page, dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, grand total cost, and a link to continue shopping.
 
-- When a delivery order is succesfull:
+- When a delivery order is succesful:
 
 ![Delivery Success](documentation/features/delivery_success.png)
 
-- When a pickup order is succesfull, delivery is always free:
+- When a pickup order is succesful, delivery is always free:
 
 ![Pickup Success](documentation/features/pickup_success.png)
 
@@ -229,11 +229,11 @@ This section presents the testimonials of the store customers and aims to give t
 
 These are emails received at different point in the customers proceedings:
 
-- When a delivery order is succesfull:
+- When a delivery order is succesful:
 
 ![Delivery order email](documentation/features/delivery_email.png)
 
-- When a pickup order is succesfull:
+- When a pickup order is succesful:
 
 ![Pickup order email](documentation/features/pickup_email.png)
 
@@ -252,9 +252,9 @@ A click on link contact on the navbar redirects you to feedback page. The page c
 
 This displays business details in three cards as follows:
 
-- Address: Ekpaw 12 ,othenburg
+- Address: Ekpaw 12 , Gothenburg
 
--  Phone +46 073 344 99 11 Email , tarhtastyhuh@gmail.com
+-  Phone +46 073 344 99 11 Email , tarhtastyhub@gmail.com
 
 - Opening Hours
 Mon–Fri: 07:00 – 22:00
@@ -266,7 +266,7 @@ Customer feedback form displays a form and a link to submit feedback. This is po
 
 - Authenticated Users
 
-For authenticated users, username is displayed, name and email fields are automatically filled and hidden. This improves user experience and reduced input effort.When subject and message is fill and a click on submit feedback, the form submits to admin and displays a successful submission message.
+For authenticated users, username is displayed, name and email fields are automatically filled and hidden. This improves user experience and reduced input effort.When subject and message are filled and a click on submit feedback, the form submits to admin and displays a successful submission message.
 
 ![Feedback authenticated page](documentation/features/feedback_page1.png)
 
@@ -296,7 +296,7 @@ A click at the top right corner on the navbar on user name reveals the profile l
 
 #### Update Profile page, Logged in: 
 
-In the default delivery information card, form is filled and update profile link is cliked, a message is displaced at the top right corner confirming profile update was successful.
+In the default delivery information card, form is filled and update profile link is clicked, a message is displayed at the top right corner confirming profile update was successful.
 
 ![Update Profile page](documentation/features/update_profile_page.png)
 
@@ -304,24 +304,25 @@ In the default delivery information card, form is filled and update profile link
 
 In the default delivery information card, at the bottom, right, you have delete account link.
 
-- If delete account link is cliked, it redirects you to delete account page , to firm or cancel profile deletion. I cancelled is click, it redirects you to my profile page.
+- If delete account link is clicked, it redirects you to delete account page , to confirm or to cancel profile deletion. I cancelled is click, it redirects you to my profile page.
 
 ![Delete Account confirmation](documentation/features/confirm_delete_account.png)
 
 ##### Delete Account Confirmation page, Logged in:
 
-- If delete account is clicked, it redirects you to confirm permanent deletion of account page or cancel. If cancel if clicked, it redirects you to my profile page.
+- If delete account is clicked, it redirects you to confirm permanent deletion of account page or cancel. If cancel is clicked, it redirects you to my profile page.
 
 ![Delete Account permanently](documentation/features/permanent_delete_account.png)
 
-- If delete permanently is clicked, it redirects you to home page, a message is displaced at the top right corner confirming account was deleted successfully.
+- If delete permanently is clicked, it redirects you to home page, a message is displayed at the top right corner confirming account was deleted successfully.
 
 ![Delete Account Success](documentation/features/delete_account_success.png)
 
 #### Change password page in my profile, Logged in:
 
 In the default delivery information card, at the bottom, left, you have change password link.
-- If change password link is cliked, it redirects you to change password page to change password.
+
+- If change password link is clicked, it redirects you to change password page to change password.
 
 ![Password Change](documentation/features/change_password.png)
 
@@ -329,7 +330,7 @@ In the default delivery information card, at the bottom, left, you have change p
 
 In the my order card, which displays information on order history and each order is a link to checkout success page where customer can see order details and order status on a progress bar.
 
-- A click on an order number redirects you to checkout success page. This page displays a status progress bar , dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, grand total cost, a link to contintinue shopping and a link to only track order.
+- A click on an order number redirects you to checkout success page. This page displays a status progress bar , dish or dishes name(s), portion size(s), quantity, subtotal cost, delivery cost, grand total cost, a link to continue shopping and a link to only track order.
 
 ![Checkout success](documentation/features/checkout_success_page.png)
 
@@ -337,7 +338,7 @@ In the my order card, which displays information on order history and each order
 
 ##### Track order page, Logged in:
 
-A click on the link track order in checkout success page redirects you to track order page. It displays only the progress bar of the order(s) in checkout success page. It also includes a link to contintinue shopping and a link go to my profile page.
+A click on the link track order in checkout success page redirects you to track order page. It displays only the progress bar of the order(s) in checkout success page. It also includes a link to continue shopping and a link go to my profile page.
 
 ![Track order](documentation/features/track_order_page.png)
 
@@ -359,7 +360,7 @@ A click on the link track order in checkout success page redirects you to track 
 
 ##### View full order details
 
-View full order details in a modal (customer info, delivery, line items, totals) when view details is clickes.
+View full order details in a modal (customer info, delivery, line items, totals) when view details is clicked.
 
  ![Admin Dashboard page view details](documentation/features/admin_view_details.png)
  ![Admin Dashboard page view details](documentation/features/admin_view_details2.png)
@@ -367,7 +368,7 @@ View full order details in a modal (customer info, delivery, line items, totals)
 ##### Update order status 
 
 Update order status (Pending, Preparing, Out for Delivery / Ready for Pickup, Completed)
-When the appropriate status is selected, and update button clicked, it update the customer by sending an email with the current status of order depending if the order is marked for pickup or delivery.
+When the appropriate status is selected, and update button clicked, it updates the customer by sending an email with the current status of order depending if the order is marked for pickup or delivery.
 
 - Updating a delivery order pending to preparing
 
@@ -384,7 +385,7 @@ When the appropriate status is selected, and update button clicked, it update th
 ##### Cancel active orders
 When the cancel button is clicked, the order is cancel if order status is not completed. But completed order staus is completed, it can not be cancelled here.
 
-- If order status is not completed, a click on cancel redirects you to order cancel page to confirm cancellation or go back to dashboard. If confirm cancellation button is clicked, order is cancelled and confirmation messgae displays at the top right corner.
+- If order status is not completed, a click on cancel redirects you to order cancel page to confirm cancellation or go back to dashboard. If confirm cancellation button is clicked, order is cancelled and confirmation message displays at the top right corner.
 
 ![Admin Dashboard page cancel order](documentation/features/cancel_order.png)
 ![Admin Dashboard page cancel order](documentation/features/cancel_order2.png)
@@ -409,13 +410,13 @@ The first button at the top left of the admin dashboard is add dish link. If cli
 ![Admin Dashboard add dish page](documentation/features/add_dish.png)
 
 ##### Edit dishes
-The second card section of the admin dashboard accomodates dishes. Edit and delete are side by side for each dish. If edit is clicked, it redirects you to the edit dish page with a form to fill and edit through a click at the bottom, edit dish, or click cancel to redirect you to the admin dashboard.
+The second card section of the admin dashboard accommodates dishes. Edit and delete are side by side for each dish. If edit is clicked, it redirects you to the edit dish page with a form to fill and edit through a click at the bottom, edit dish, or click cancel to redirect you to the admin dashboard.
 
 ![Admin Dashboard edit dish page ](documentation/features/edit_dish.png)
 
 ##### Delete existing dishes
 
-The second card section of the admin dashboard accomodates dishes. Edit and delete are side by side for each dish. If delete is clicked, it redirects you to the delete dish page with a form to confirm delete or cancel. If confirm delete is clicked, it deletes the dish , message displayed as dish successfully deleted and redirects you to admin dashboard. If clicked on cancel, it  redirects you to the admin dashboard.
+The second card section of the admin dashboard accommodates dishes. Edit and delete are side by side for each dish. If delete is clicked, it redirects you to the delete dish page with a form to confirm delete or cancel. If confirm delete is clicked, it deletes the dish , message displayed as dish successfully deleted and redirects you to admin dashboard. If clicked on cancel, it  redirects you to the admin dashboard.
 
 ![Admin Dashboard delete dish page](documentation/features/delete_dish.png)
 
@@ -431,13 +432,13 @@ The second button at the top right of the admin dashboard is add category link. 
 
 ##### Edit category
 
-The third card section of the admin dashboard accomodates ctegories. Edit and delete are side by side for each category. If edit is clicked, it redirects you to the edit category page with a form to fill and edit through a click at the bottom, edit category, or click cancel to redirect you to the admin dashboard.
+The third card section of the admin dashboard accommodates categories. Edit and delete are side by side for each category. If edit is clicked, it redirects you to the edit category page with a form to fill and edit through a click at the bottom, edit category, or click cancel to redirect you to the admin dashboard.
 
 ![Admin Dashboard edit category page ](documentation/features/edit_category.png)
 
 ##### Delete category
 
-The third card section of the admin dashboard accomodates categories. Edit and delete are side by side for each category. If delete is clicked, it redirects you to the delete category page to confirm delete or cancel. If confirm delete is clicked, it deletes the category, message displayed as category successfully deleted and redirects you to admin dashboard. If clicked on cancel, it  redirects you to the admin dashboard.
+The third card section of the admin dashboard accommodates categories. Edit and delete are side by side for each category. If delete is clicked, it redirects you to the delete category page to confirm delete or cancel. If confirm delete is clicked, it deletes the category, message displayed as category successfully deleted and redirects you to admin dashboard. If clicked on cancel, it  redirects you to the admin dashboard.
 
 ![Admin Dashboard delete category page](documentation/features/delete_category.png)
 

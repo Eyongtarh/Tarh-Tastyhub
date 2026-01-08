@@ -112,7 +112,7 @@ Tarh TastyHub was designed to be modern, intuitive, and user-focused, prioritisi
 | US26 | As a User, I want to view past orders, so that I can reference previous dishes I liked. | Should-Have | Past orders show dish names, quantities, prices, and order date. | 1 |
 | US27 | As a User, I want to delete my account, so that my personal data and order history are removed. | Could-Have| Account deletion requires confirmation; data removed from system. | 1 |
 | US28 | As a User, I want to change my password, so that I can maintain account security. | Should-Have| Users can set a new password; validation applied. | 1 |
-
+| US29 | As a User, I want to register an account using my phone number | Won't-Have| Registration form validates phone number. | 1 |
 
 ## Business Model
 
@@ -222,11 +222,27 @@ White space is intentionally used to improve readability, highlight primary acti
 
 ## Wireframes
 
-Wireframes were created to plan navigation flow, role separation, and the checkout process.
+Wireframes were created to plan navigation flow.
 
-Wireframes are located in:
+- Wireframes for Home page:
 
-![Wireframes](documentation/tarh_tastyhub_Wireframes.png)
+![Wireframes for Browse Disehs](documentation/tarh_tastyhub_wireframes_home.png)
+
+- Wireframes for Browse Dishws page:
+
+![Wireframes for Browse Disehs](documentation/tarh_tastyhub_wireframes_browse.png)
+
+- Wireframes for Contact page:
+
+![Wireframes for Browse Disehs](documentation/tarh_tastyhub_wireframes_contact.png)
+
+- Wireframes for Signin page:
+
+![Wireframes for Signin](documentation/tarh_tastyhub_wireframes_signin.png)
+
+- Wireframes for Signup page:
+
+![Wireframes for Signup](documentation/tarh_tastyhub_wireframes_signup.png)
 
 ---
 

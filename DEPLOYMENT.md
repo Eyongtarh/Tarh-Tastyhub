@@ -14,7 +14,6 @@
 
 ---
 
-
 ## Local deployment
 
 - Clone the repository.
@@ -25,7 +24,7 @@
 
 - Create and activate a virtual environment.
     ```bash
-    python3 -m .venv .venv
+    python3 -m venv .venv
     source venv/bin/activate
     ```
 
@@ -173,12 +172,12 @@
 
 - Create Webhook in Stripe Dashboard
     Endpoint URL:
-    [Endpoint URL](https://tarh-tastyhub-4071346c00af.herokuapp.com/checkout/webhook/)
+    + [Endpoint URL](https://tarh-tastyhub-4071346c00af.herokuapp.com/checkout/webhook/)
     Events:
-        + payment_intent.succeeded
-        + payment_intent.payment_failed
+    + payment_intent.succeeded
+    + payment_intent.payment_failed
     Copy the webhook signing secret and store as:
-        STRIPE_WH_SECRET
+    + STRIPE_WH_SECRET
 
 - Use webhooks as the authoritative payment confirmation
 
@@ -217,7 +216,7 @@
     + Click New → Create new app
     + Choose a unique app name and region
 
-- . Connect Heroku to GitHub
+- Connect Heroku to GitHub
     + Go to Deploy tab
     + Select GitHub
     + Search for and connect your repository
@@ -248,7 +247,7 @@
 - Stripe Elements handles card input
 - Payment confirmed via Stripe
 - Order created atomically
-- Webhook confirms payment (authoritative)
+- Webhook confirms payment; authoritative
 - Duplicate orders prevented
 - Confirmation email sent
 - User redirected to success page
