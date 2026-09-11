@@ -50,8 +50,10 @@
       <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon_io/apple-touch-icon.png' %}" />
       <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon_io/favicon-32x32.png' %}" />
       <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon_io/favicon-16x16.png' %}" />
-      <!-- Stylesheets -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+      <!-- Stylesheets (Bootstrap self-hosted: saves a third-party
+           DNS/TLS round-trip on every page and picks up our own
+           long-lived cache headers) -->
+      <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}" />
       <link rel="stylesheet" href="{% static 'css/base.css' %}?v=2" />
       <!-- Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -71,7 +73,7 @@
     {% endblock %}
     {% block corejs %}
       <!-- Bootstrap Bundle (no jQuery dependency in Bootstrap 5) -->
-      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+      <script defer src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
     {% endblock %}
     {% block extra_js %}
 
