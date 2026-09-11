@@ -263,7 +263,10 @@ main {
 }
 /* Footer */
 .tarh-footer {
-    background-color: transparent;
+    /* Solid, opaque and dark enough for white text to meet WCAG AA
+       (4.5:1) - the semi-transparent body background it used to inherit
+       blends lighter than it looks and fails contrast. */
+    background-color: #144a35;
     color: #fff;
     font-size: 0.9rem;
     margin: 0 3%;
