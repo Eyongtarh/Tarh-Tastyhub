@@ -10,3 +10,4 @@ data.json
 data_clean.json
 media/
 staticfiles/
+node_modules/

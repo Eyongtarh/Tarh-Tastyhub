@@ -1,0 +1,13 @@
+{
+  "name": "tarh-tastyhub",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Jest tests for Tarh Tastyhub's static JavaScript (no build step - these files are loaded directly via <script> tags, see DEPLOYMENT.md).",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}

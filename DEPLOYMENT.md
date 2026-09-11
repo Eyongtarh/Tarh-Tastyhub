@@ -154,7 +154,7 @@
         event = stripe.Webhook.construct_event(
             payload,
             sig_header,
-            settings.STRIPE_WH_SECRET
+            settings.STRIPE_WEBHOOK_SECRET
         )
 
         if event["type"] == "payment_intent.succeeded":
