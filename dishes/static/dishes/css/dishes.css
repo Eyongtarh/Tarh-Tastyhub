@@ -154,7 +154,9 @@ p.text-normal {
 
 .category-filter a.category {
     background-color: #f8f9fa;
-    color: #6c757d;
+    /* #6c757d here was ~4.45:1 on this background - just under WCAG AA's
+       4.5:1. Darkened to comfortably clear it. */
+    color: #495057;
     border: 1px solid transparent;
 }
 

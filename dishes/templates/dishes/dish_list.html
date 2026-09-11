@@ -111,9 +111,9 @@
                   </option>
                 {% endfor %}
               </select>
-              <p class="fw-bold text-warning dish-price">${{ dish.portions.first.price }}</p>
+              <p class="fw-bold price-accent dish-price">${{ dish.portions.first.price }}</p>
             {% else %}
-              <p class="fw-bold text-warning dish-price">${{ dish.price }}</p>
+              <p class="fw-bold price-accent dish-price">${{ dish.price }}</p>
             {% endif %}
 
             <!-- Quantity Controls -->

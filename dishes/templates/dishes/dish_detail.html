@@ -25,6 +25,7 @@
 
     <!-- Dish Info -->
     <div class="col-md-6">
+      <div class="card shadow-sm border-0 p-4">
       <h1 class="fw-bold">{{ dish.name }}</h1>
       <p class="text-muted">{{ dish.description }}</p>
 
@@ -37,11 +38,11 @@
             </option>
           {% endfor %}
         </select>
-        <p class="fw-bold text-warning dish-price">$ {{ dish.portions.first.price }}</p>
+        <p class="fw-bold price-accent dish-price">$ {{ dish.portions.first.price }}</p>
         {% with portion_id=dish.portions.first.id %}
         {% endwith %}
       {% else %}
-        <p class="fw-bold text-warning dish-price">$ {{ dish.price }}</p>
+        <p class="fw-bold price-accent dish-price">$ {{ dish.price }}</p>
         {% with portion_id=dish.id %}
         {% endwith %}
       {% endif %}
@@ -70,7 +71,7 @@
       <!-- Optional Dish Info -->
       {% if dish.ingredients %}
         <hr />
-        <h6><strong>Ingredients:</strong></h6>
+        <h2 class="fs-6 fw-bold">Ingredients</h2>
         <p>{{ dish.ingredients }}</p>
       {% endif %}
 
@@ -83,6 +84,7 @@
       {% endif %}
       <div class="text-center mt-3">
         <a href="{% url 'dish_list' %}" class="btn btn-warning btn-sm ms-4 shop-now-button">Browse Dishes</a>
+      </div>
       </div>
     </div>
   </div>
