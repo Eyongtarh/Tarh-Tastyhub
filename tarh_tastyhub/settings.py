@@ -187,7 +187,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-gb"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -206,9 +206,10 @@ USE_AWS = os.environ.get("USE_AWS") == "True"
 
 if USE_AWS:
     AWS_QUERYSTRING_AUTH = False
-    AWS_HEADERS = {
-        "Cache-Control": "max-age=31536000",
-    }
+    # Cache-Control is set per-file via object_parameters on the storage
+    # classes in custom_storages.py - the S3Boto3Storage backend used here
+    # doesn't read AWS_HEADERS at all, so that legacy (boto2-era) setting
+    # was a no-op.
 
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
@@ -268,7 +269,7 @@ else:
         "EMAIL_HOST_PASS"
     )
     DEFAULT_FROM_EMAIL = os.environ.get(
-        "DEFAULT_FROM_EMAIL"
+        "DEFAULT_FROM_EMAIL", DEFAULT_FROM_EMAIL
     )
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
