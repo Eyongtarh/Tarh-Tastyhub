@@ -2,12 +2,15 @@
 {% load static %}
 
 {% block title %}
-  Terms & Conditions | Tarh Tastyhub
+  Terms &amp; Conditions | Tarh Tastyhub
+{% endblock %}
+{% block meta_description %}
+  Read the terms and conditions for using Tarh Tastyhub's website and ordering service.
 {% endblock %}
 {% block content %}
   <div class="container py-5">
     <header class="mb-5 text-center">
-      <h1 class="display-4">Terms & Conditions</h1>
+      <h1 class="display-4">Terms &amp; Conditions</h1>
       <p class="lead">Welcome to Tarh Tastyhub! By using our services, you agree to these terms. Please read carefully.</p>
     </header>
 
@@ -22,7 +25,7 @@
     </section>
 
     <section class="mb-4">
-      <h2 class="h3 mb-3">3. Orders & Payments</h2>
+      <h2 class="h3 mb-3">3. Orders &amp; Payments</h2>
       <p>All orders are subject to acceptance and availability. Payment terms are specified at checkout. Tarh Tastyhub reserves the right to refuse or cancel any order.</p>
     </section>
 
@@ -38,13 +41,13 @@
 
     <section class="mb-4">
       <h2 class="h3 mb-3">6. Changes to Terms</h2>
-      <p>We may update these Terms & Conditions at any time. Updates will be posted here, and continued use of our services constitutes acceptance of the new terms.</p>
+      <p>We may update these Terms &amp; Conditions at any time. Updates will be posted here, and continued use of our services constitutes acceptance of the new terms.</p>
     </section>
 
     <section>
       <h2 class="h3 mb-3">7. Contact Us</h2>
       <p>
-        If you have questions about these Terms & Conditions, please <a class="btn btn-password btn-sm ms-4" href="{% url 'feedback' %}">contact us</a>.
+        If you have questions about these Terms &amp; Conditions, please <a class="btn btn-contact btn-sm ms-4" href="{% url 'feedback' %}">contact us</a>.
       </p>
     </section>
   </div>

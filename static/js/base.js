@@ -39,11 +39,21 @@ window.showToast = function(message, variant = 'info', timeout = 5000) {
             el.style.backgroundColor = v.bg;
             el.style.color = v.color;
 
-            el.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body">${message}</div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>`;
+            const flexWrap = document.createElement('div');
+            flexWrap.className = 'd-flex';
+
+            const body = document.createElement('div');
+            body.className = 'toast-body';
+            body.textContent = message;
+
+            const closeButton = document.createElement('button');
+            closeButton.type = 'button';
+            closeButton.className = 'btn-close me-2 m-auto';
+            closeButton.setAttribute('data-bs-dismiss', 'toast');
+            closeButton.setAttribute('aria-label', 'Close');
+
+            flexWrap.append(body, closeButton);
+            el.appendChild(flexWrap);
             container.appendChild(el);
 
             const bsToast = new bootstrap.Toast(el);

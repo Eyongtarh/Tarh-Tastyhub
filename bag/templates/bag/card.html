@@ -3,14 +3,17 @@
 {% load dishes_extras %}
 
 {% block title %}
-  Your bag | Tarh Tastyhub
+  Your Bag | Tarh Tastyhub
+{% endblock %}
+{% block meta_description %}
+  Review the dishes in your Tarh Tastyhub bag before checking out.
 {% endblock %}
 {% block content %}
   <div class="container py-5">
-    <h2 class="mb-4 text-center text-white">
-      <i class="bi bi-bag text-warning"></i>
+    <h1 class="mb-4 text-center text-white">
+      <i class="bi bi-bag text-warning" aria-hidden="true"></i>
       Your Bag
-    </h2>
+    </h1>
 
     {% if items %}
       <div class="row g-4">
@@ -37,9 +40,10 @@
 
                     <!-- Quantity Controls -->
                     <div class="d-flex align-items-center gap-2">
-                      <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-decrement" data-portion-id="{{ item.portion.id }}">-</button>
-                      <input type="number" class="form-control form-control-sm dish-qty" value="{{ item.quantity }}" min="0" style="width:60px;" data-portion-id="{{ item.portion.id }}" />
-                      <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-increment" data-portion-id="{{ item.portion.id }}">+</button>
+                      <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-decrement" data-portion-id="{{ item.portion.id }}" aria-label="Decrease quantity of {{ item.portion.dish.name }}">-</button>
+                      <label for="bag-qty-{{ item.portion.id }}" class="visually-hidden">Quantity of {{ item.portion.dish.name }}</label>
+                      <input type="number" id="bag-qty-{{ item.portion.id }}" class="form-control form-control-sm dish-qty" value="{{ item.quantity }}" min="0" style="width:60px;" data-portion-id="{{ item.portion.id }}" />
+                      <button type="button" class="btn btn-outline-secondary btn-sm bag-qty-increment" data-portion-id="{{ item.portion.id }}" aria-label="Increase quantity of {{ item.portion.dish.name }}">+</button>
                     </div>
 
                     <!-- Line Total -->
@@ -50,7 +54,7 @@
 
                   <!-- Remove Button -->
                   <div class="card-footer bg-white border-0">
-                    <button class="btn btn-danger w-100 remove-from-bag" data-portion-id="{{ item.portion.id }}">Remove</button>
+                    <button class="btn btn-danger w-100 remove-from-bag" data-portion-id="{{ item.portion.id }}" aria-label="Remove {{ item.portion.dish.name }} from bag">Remove</button>
                   </div>
                 </div>
               </div>
@@ -78,7 +82,7 @@
       </div>
     {% else %}
       <p class="text-center text-muted mt-5">
-        <span class="fa-icon"><i class="fa-solid fa-plate-wheat"></i></span>Your bag is empty
+        <span class="fa-icon"><i class="fa-solid fa-plate-wheat" aria-hidden="true"></i></span>Your bag is empty
       </p>
       <div class="text-center mt-3">
         <a href="{% url 'dish_list' %}" class="btn btn-warning btn-sm ms-4 shop-now-button">Browse Dishes</a>

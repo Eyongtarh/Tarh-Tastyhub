@@ -77,6 +77,10 @@ class OrderForm(forms.ModelForm):
                     'placeholder',
                     name.replace('_', ' ').title()
                 )
+                field.widget.attrs.setdefault(
+                    'aria-label',
+                    name.replace('_', ' ').title()
+                )
         for field in self.fields.values():
             field.label = ''
 

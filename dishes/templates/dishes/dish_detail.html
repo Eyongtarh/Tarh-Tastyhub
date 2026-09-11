@@ -6,7 +6,10 @@
   <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
 {% endblock %}
 {% block title %}
-  Dish Detail | Tarh Tastyhub
+  {{ dish.name }} | Tarh Tastyhub
+{% endblock %}
+{% block meta_description %}
+  {{ dish.description|default:"View details, price and portions for this dish at Tarh Tastyhub."|truncatewords:25 }}
 {% endblock %}
 {% block content %}
 <div class="container py-5">
@@ -22,7 +25,7 @@
 
     <!-- Dish Info -->
     <div class="col-md-6">
-      <h2 class="fw-bold">{{ dish.name }}</h2>
+      <h1 class="fw-bold">{{ dish.name }}</h1>
       <p class="text-muted">{{ dish.description }}</p>
 
       <!-- Portion Select -->
@@ -45,14 +48,16 @@
 
       <!-- Quantity Controls -->
       <div class="d-flex align-items-center gap-2 mb-3">
-        <button type="button" class="btn btn-outline-secondary dish-qty-decrement">-</button>
+        <button type="button" class="btn btn-outline-secondary dish-qty-decrement" aria-label="Decrease quantity">-</button>
+        <label for="dish-detail-qty" class="visually-hidden">Quantity</label>
         <input type="number"
+               id="dish-detail-qty"
                class="form-control dish-qty"
                value="{{ quantity }}"
                min="1"
                style="width:70px;"
                data-portion-id="{% if dish.portions.exists %}{{ dish.portions.first.id }}{% else %}{{ dish.id }}{% endif %}" />
-        <button type="button" class="btn btn-outline-secondary dish-qty-increment">+</button>
+        <button type="button" class="btn btn-outline-secondary dish-qty-increment" aria-label="Increase quantity">+</button>
       </div>
 
       <!-- Add to Bag Button -->

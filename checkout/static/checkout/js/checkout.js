@@ -1,15 +1,24 @@
 /* jshint esversion: 11 */
 /* global Stripe */
 document.addEventListener("DOMContentLoaded", () => {
-  /* 
+  /*
      STRIPE SETUP
  */
-  const stripePublicKey = JSON.parse(
-    document.getElementById("id_stripe_public_key").textContent
-  );
-  const clientSecret = JSON.parse(
-    document.getElementById("id_client_secret").textContent
-  );
+  const stripeKeyEl = document.getElementById("id_stripe_public_key");
+  const clientSecretEl = document.getElementById("id_client_secret");
+  if (!stripeKeyEl || !clientSecretEl) {
+    console.error("Stripe configuration elements are missing from the page.");
+    return;
+  }
+  let stripePublicKey;
+  let clientSecret;
+  try {
+    stripePublicKey = JSON.parse(stripeKeyEl.textContent);
+    clientSecret = JSON.parse(clientSecretEl.textContent);
+  } catch (err) {
+    console.error("Failed to parse Stripe configuration:", err);
+    return;
+  }
   const stripe = Stripe(stripePublicKey);
   const elements = stripe.elements();
   const card = elements.create("card");
@@ -104,26 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-  /* 
-     ADMIN ORDER STATUS COLORS
-  */
-  const statusColors = {
-    Pending: "#ffc107",
-    Preparing: "#0d6efd",
-    "Out for Delivery": "#0dcaf0",
-    Completed: "#198754",
-    Cancelled: "#dc3545",
-  };
-
-  document.querySelectorAll(".status-dropdown").forEach((dropdown) => {
-    const applyColor = () => {
-      dropdown.style.backgroundColor = statusColors[dropdown.value] || "#6c757d";
-      dropdown.style.color = "#fff";
-    };
-    applyColor();
-    dropdown.addEventListener("change", applyColor);
-  });
-  /* 
+  /*
      PICKUP TIME TOGGLE
  */
   const deliveryRadios = document.querySelectorAll("input[name='delivery_type']");
@@ -131,7 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const togglePickup = () => {
     const selected =
       document.querySelector("input[name='delivery_type']:checked")?.value;
-    pickupContainer.style.display = selected === "pickup" ? "block" : "none";
+    const isPickup = selected === "pickup";
+    pickupContainer.style.display = isPickup ? "block" : "none";
+    pickupContainer.setAttribute("aria-hidden", isPickup ? "false" : "true");
   };
   deliveryRadios.forEach((radio) => {
     radio.addEventListener("change", togglePickup);

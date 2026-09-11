@@ -9,16 +9,19 @@
 {% block title %}
 Admin Dashboard | Tarh Tastyhub
 {% endblock %}
+{% block meta_description %}
+Manage dishes, categories, orders and feedback for Tarh Tastyhub.
+{% endblock %}
 
 {% block content %}
 <div class="container my-5">
 
     <!-- HEADER -->
     <div class="text-center mb-4">
-        <h2 class="fw-bold text-white" aria-label="Admin Dashboard Header">
+        <h1 class="fw-bold text-white" aria-label="Admin Dashboard Header">
             <i class="fa-solid fa-screwdriver-wrench me-2" aria-hidden="true"></i>
             Admin Dashboard
-        </h2>
+        </h1>
     </div>
 
     <!-- ACTION BUTTONS -->
@@ -33,7 +36,7 @@ Admin Dashboard | Tarh Tastyhub
 
     <!-- ORDERS -->
     <div class="table-responsive shadow-sm rounded mb-5" aria-label="Orders Table">
-        <h4 class="fw-bold mb-3" aria-label="Orders Section Title">Orders</h4>
+        <h2 class="fw-bold mb-3" aria-label="Orders Section Title">Orders</h2>
 
         <table class="table table-hover align-middle">
             <thead class="table-dark text-center">
@@ -169,7 +172,7 @@ Admin Dashboard | Tarh Tastyhub
 
     <!-- DISHES -->
     <div class="table-responsive shadow-sm rounded mb-5" aria-label="Dishes Table">
-        <h4 class="fw-bold mb-3" aria-label="Dishes Section Title">Dishes</h4>
+        <h2 class="fw-bold mb-3" aria-label="Dishes Section Title">Dishes</h2>
         <table class="table table-hover align-middle">
             <thead class="table-secondary text-center">
                 <tr>
@@ -201,7 +204,7 @@ Admin Dashboard | Tarh Tastyhub
 
     <!-- CATEGORIES -->
     <div class="table-responsive shadow-sm rounded mb-5" aria-label="Categories Table">
-        <h4 class="fw-bold mb-3" aria-label="Categories Section Title">Categories</h4>
+        <h2 class="fw-bold mb-3" aria-label="Categories Section Title">Categories</h2>
         <table class="table table-hover align-middle">
             <thead class="table-secondary text-center">
                 <tr>
@@ -229,7 +232,7 @@ Admin Dashboard | Tarh Tastyhub
 
     <!-- FEEDBACK -->
     <div class="table-responsive shadow-sm rounded" aria-label="Feedback Table">
-        <h4 class="fw-bold mb-3" aria-label="Feedback Section Title">Feedback</h4>
+        <h2 class="fw-bold mb-3" aria-label="Feedback Section Title">Feedback</h2>
 
         <form method="GET" class="d-flex gap-3 mb-3" aria-label="Filter feedback form">
             <select name="filter" class="form-select w-auto" aria-label="Filter feedback">
@@ -293,7 +296,7 @@ Admin Dashboard | Tarh Tastyhub
 
                 {% for num in feedback_list.paginator.page_range %}
                     <li class="page-item {% if feedback_list.number == num %}active{% endif %}">
-                        <a class="page-link" href="?page={{ num }}&filter={{ filter_status }}" aria-label="Page {{ num }}">{{ num }}</a>
+                        <a class="page-link" href="?page={{ num }}&filter={{ filter_status }}" aria-label="Page {{ num }}" {% if feedback_list.number == num %}aria-current="page"{% endif %}>{{ num }}</a>
                     </li>
                 {% endfor %}
 

@@ -5,6 +5,8 @@ if (window.dishBagJSLoaded) {
     window.dishBagJSLoaded = true;
     document.addEventListener('DOMContentLoaded', () => {
         const MAX_PER_DISH = 20;
+        const DISH_CARD_SELECTOR = '.dish-card, .card, .col-md-6';
+        const BAG_ITEM_SELECTOR = '.card-body, .bag-item, .col-md-6';
         const csrftoken = window.getCSRFToken ? window.getCSRFToken() : null;
         const toast = (msg, type = 'info') => {
             if (window.showToast) window.showToast(msg, type);
@@ -18,11 +20,18 @@ if (window.dishBagJSLoaded) {
             const headers = { 'X-Requested-With': 'XMLHttpRequest' };
             if (csrftoken) headers['X-CSRFToken'] = csrftoken;
             const body = data instanceof URLSearchParams ? data : new URLSearchParams(data || {});
-            const response = await fetch(url, {
-                method: 'POST',
-                headers,
-                body,
-            });
+            let response;
+            try {
+                response = await fetch(url, {
+                    method: 'POST',
+                    headers,
+                    body,
+                });
+            } catch (err) {
+                console.error('Bag request failed:', err);
+                toast('Network error. Please check your connection and try again.', 'danger');
+                return null;
+            }
             let json = {};
             try {
                 json = await response.json();
@@ -55,11 +64,13 @@ if (window.dishBagJSLoaded) {
                 grandTotalEl.textContent = `$${parseFloat(data.grand_total).toFixed(2)}`;
             }
             if (input && data.line_total !== undefined) {
-                const card = input.closest('.card-body, .bag-item, .col-md-6');
+                const card = input.closest(BAG_ITEM_SELECTOR);
                 const lineTotalEl = card?.querySelector('.line-total');
                 if (lineTotalEl) {
-                    lineTotalEl.innerHTML =
-                        `Total: <strong>$${parseFloat(data.line_total).toFixed(2)}</strong>`;
+                    lineTotalEl.textContent = 'Total: ';
+                    const strong = document.createElement('strong');
+                    strong.textContent = `$${parseFloat(data.line_total).toFixed(2)}`;
+                    lineTotalEl.appendChild(strong);
                 }
             }
         };
@@ -78,7 +89,7 @@ if (window.dishBagJSLoaded) {
                 return;
             }
             input.value = qty;
-            const card = input.closest('.dish-card, .card, .col-md-6');
+            const card = input.closest(DISH_CARD_SELECTOR);
             const portionSelect = card?.querySelector('.portion-select');
             const portionId = portionSelect ? portionSelect.value : input.dataset.portionId;
             if (!portionId) {
@@ -108,7 +119,7 @@ if (window.dishBagJSLoaded) {
         document.querySelectorAll('.dish-qty-increment, .bag-qty-increment')
             .forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const input = btn.closest('.card-body, .bag-item, .col-md-6')
+                    const input = btn.closest(BAG_ITEM_SELECTOR)
                         ?.querySelector('.dish-qty');
                     if (input) handleQuantityChange(input, 1);
                 });
@@ -116,7 +127,7 @@ if (window.dishBagJSLoaded) {
         document.querySelectorAll('.dish-qty-decrement, .bag-qty-decrement')
             .forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const input = btn.closest('.card-body, .bag-item, .col-md-6')
+                    const input = btn.closest(BAG_ITEM_SELECTOR)
                         ?.querySelector('.dish-qty');
                     if (input) handleQuantityChange(input, -1);
                 });
@@ -127,7 +138,7 @@ if (window.dishBagJSLoaded) {
         document.querySelectorAll('.add-to-bag, #add-dish-to-bag')
             .forEach(btn => {
                 btn.addEventListener('click', async () => {
-                    const card = btn.closest('.dish-card, .card, .col-md-6');
+                    const card = btn.closest(DISH_CARD_SELECTOR);
                     const input = card?.querySelector('.dish-qty') || { value: 1 };
                     const quantity = validateQuantity(input.value);
                     if (quantity > MAX_PER_DISH) {

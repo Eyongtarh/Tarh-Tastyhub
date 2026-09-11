@@ -150,7 +150,11 @@ def order_history(request, order_number):
     """
     Display a specific order for the logged-in user.
     """
-    order = get_object_or_404(Order, order_number=order_number)
+    order = get_object_or_404(
+        Order,
+        order_number=order_number,
+        user_profile__user=request.user,
+    )
     messages.info(
         request,
         f'This is a past confirmation for order number {order_number}. '

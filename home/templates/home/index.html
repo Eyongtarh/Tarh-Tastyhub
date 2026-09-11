@@ -4,7 +4,10 @@
   <link rel="stylesheet" href="{% static 'css/index.css' %}" />
 {% endblock %}
 {% block title %}
-  Home | Tarh Tastyhub
+  Tarh Tastyhub | Delicious Meals Delivered Fast
+{% endblock %}
+{% block meta_description %}
+  Order fresh, home style meals from Tarh Tastyhub for fast delivery or pickup. Browse our full menu of dishes today.
 {% endblock %}
 {% block content %}
   <!-- HERO SECTION -->
@@ -60,7 +63,7 @@
             {% for num in featured_dishes.paginator.page_range %}
               {% if num == featured_dishes.number %}
                 <li class="page-item active">
-                  <span class="page-link">{{ num }}</span>
+                  <span class="page-link" aria-current="page">{{ num }}</span>
                 </li>
               {% else %}
                 <li class="page-item">
@@ -106,7 +109,7 @@
 
         <div class="col-12 col-md-4">
           <div class="p-4 rounded shadow-sm text-center bg-white">
-            <p>"Great service and amazing flavors. My go-to for busy weeknights."</p>
+            <p>"Great service and amazing flavours. The one I choose for busy weeknights."</p>
             <p class="mt-3 fw-bold">Mawan B.</p>
           </div>
         </div>

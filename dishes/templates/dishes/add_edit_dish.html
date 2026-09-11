@@ -6,12 +6,12 @@
   <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
 {% endblock %}
 {% block title %}
-  Edit Dish | Tarh Tastyhub
+  {{ action }} Dish | Tarh Tastyhub
 {% endblock %}
 {% block content %}
   <div class="container my-5">
     <div class="text-center mb-4">
-      <h2 class="section-title"><i class="fa-solid fa-screwdriver-wrench me-2"></i> {{ action }} Dish</h2>
+      <h1 class="section-title"><i class="fa-solid fa-screwdriver-wrench me-2" aria-hidden="true"></i> {{ action }} Dish</h1>
     </div>
 
     <div class="form-container mx-auto" style="max-width: 900px;">
@@ -30,10 +30,10 @@
               {% if field.name == 'available' or field.name == 'is_special' %}
                 <div class="flex items-center mt-2">
                   {{ field }}
-                  <label class="ml-2">{{ field.label }}</label>
+                  <label for="{{ field.id_for_label }}" class="ml-2">{{ field.label }}</label>
                 </div>
               {% else %}
-                <label class="block text-sm font-medium">{{ field.label }}</label>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium">{{ field.label }}</label>
                 {{ field }}
                 {% if field.help_text %}
                   <p class="text-xs">{{ field.help_text }}</p>
@@ -51,7 +51,7 @@
         {% if form.instance.pk and form.instance.image %}
           <div class="mb-4 current-image">
             <label class="block text-sm font-medium">Current Main Image:</label>
-            <img src="{{ form.instance.image.url }}" />
+            <img src="{{ form.instance.image.url }}" alt="Current main image for {{ form.instance.name }}" />
           </div>
         {% endif %}
 
@@ -71,7 +71,7 @@
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {% for field in formset_form.visible_fields %}
                   <div>
-                    <label class="block text-sm font-medium">{{ field.label }}</label>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium">{{ field.label }}</label>
                     {{ field }}
                     {% for error in field.errors %}
                       <p class="text-red-600 text-sm">{{ error }}</p>
@@ -83,7 +83,7 @@
               {% if formset_form.instance.pk %}
                 <div class="flex items-center mt-2">
                   {{ formset_form.DELETE }}
-                  <label class="ml-2 text-red-600">Delete this Portion</label>
+                  <label for="{{ formset_form.DELETE.id_for_label }}" class="ml-2 text-red-600">Delete this Portion</label>
                 </div>
               {% endif %}
             </div>
@@ -100,7 +100,11 @@
             <div class="flex flex-wrap gap-3 mb-3">
               {% for image in form.instance.images.all %}
                 <div class="text-center">
-                  <img src="{{ image.image.url }}" class="current-image" />
+                  {% if image.alt_text %}
+                    <img src="{{ image.image.url }}" class="current-image" alt="{{ image.alt_text }}" />
+                  {% else %}
+                    <img src="{{ image.image.url }}" class="current-image" alt="Additional image for {{ form.instance.name }}" />
+                  {% endif %}
                   <div class="text-xs text-gray-300 mt-1">{{ image.alt_text }}</div>
                 </div>
               {% endfor %}
@@ -117,7 +121,7 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {% for field in img_form.visible_fields %}
                   <div>
-                    <label class="block text-sm font-medium">{{ field.label }}</label>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium">{{ field.label }}</label>
                     {{ field }}
                     {% for error in field.errors %}
                       <p class="text-red-600 text-sm">{{ error }}</p>
@@ -129,7 +133,7 @@
               {% if img_form.instance.pk %}
                 <div class="flex items-center mt-2">
                   {{ img_form.DELETE }}
-                  <label class="ml-2 text-red-600">Delete this Image</label>
+                  <label for="{{ img_form.DELETE.id_for_label }}" class="ml-2 text-red-600">Delete this Image</label>
                 </div>
               {% endif %}
             </div>

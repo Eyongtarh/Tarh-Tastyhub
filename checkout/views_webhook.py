@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 def webhook(request):
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE", "")
-    webhook_secret = getattr(settings, "STRIPE_WH_SECRET", None)
+    webhook_secret = getattr(settings, "STRIPE_WEBHOOK_SECRET", None)
     if not webhook_secret:
         logger.error("Stripe webhook secret missing in settings.")
         return HttpResponse(status=500)

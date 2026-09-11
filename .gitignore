@@ -2,5 +2,11 @@
 mythings.sh
 env.py
 db.sqlite3
+*.sqlite3
+db_backup.sqlite3
 __pycache__/
 *.pyc
+data.json
+data_clean.json
+media/
+staticfiles/

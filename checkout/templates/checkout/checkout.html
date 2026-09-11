@@ -9,10 +9,13 @@
 {% block title %}
   Checkout | Tarh Tastyhub
 {% endblock %}
+{% block meta_description %}
+  Complete your order from Tarh Tastyhub — enter your delivery or pickup details and pay securely.
+{% endblock %}
 
 {% block content %}
   <div class="container my-5">
-    <h2 class="text-center mb-4">Checkout</h2>
+    <h1 class="text-center mb-4">Checkout</h1>
 
     {% if bag_items %}
       <div class="row g-4">
@@ -79,14 +82,14 @@
                       {% for choice in form.delivery_type %}
                         <div class="form-check">
                           {{ choice.tag }}
-                          <label class="form-check-label">{{ choice.choice_label }}</label>
+                          <label class="form-check-label" for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
                         </div>
                       {% endfor %}
                     </div>
                   </div>
 
                   <!-- PICKUP TIME -->
-                  <div class="col-12 mt-3" id="pickup-time-container" style="display: none;">
+                  <div class="col-12 mt-3" id="pickup-time-container" style="display: none;" aria-hidden="true">
                     {{ form.pickup_time }}
                     <div class="text-danger">{{ form.pickup_time.errors }}</div>
                   </div>
@@ -94,9 +97,9 @@
 
                 <!-- CARD DETAILS -->
                 <div class="mb-3">
-                  <label class="form-label">Card Details</label>
-                  <div id="card-element" class="form-control"></div>
-                  <div id="card-errors" class="text-danger mt-2"></div>
+                  <label class="form-label" id="card-element-label">Card Details</label>
+                  <div id="card-element" class="form-control" role="group" aria-labelledby="card-element-label" aria-describedby="card-errors"></div>
+                  <div id="card-errors" class="text-danger mt-2" role="alert"></div>
                 </div>
 
                 <!-- SAVE INFO -->

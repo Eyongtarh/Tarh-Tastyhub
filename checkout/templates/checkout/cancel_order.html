@@ -14,17 +14,17 @@
   <div class="container my-5">
     <!-- HEADER -->
     <div class="text-center mb-4">
-      <h2 class="fw-bold text-danger">
-        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+      <h1 class="fw-bold text-danger">
+        <i class="fa-solid fa-triangle-exclamation me-2" aria-hidden="true"></i>
         Cancel Order
-      </h2>
+      </h1>
     </div>
 
     <div class="mx-auto" style="max-width: 700px;">
       {% if order and order.pk %}
         <!-- WARNING -->
         <div class="alert alert-danger text-center">
-          <i class="fa-solid fa-trash me-2"></i>
+          <i class="fa-solid fa-trash me-2" aria-hidden="true"></i>
           You are about to cancel
           <strong>Order #{{ order.order_number }}</strong>
           placed by

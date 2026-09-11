@@ -1,7 +1,7 @@
 /* index.css */
 
-.hero-section {
-  background-image: url("../images/food-hero.png");
+.hero-section,
+.testimonials-section {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -11,18 +11,16 @@
   margin: 2%;
 }
 
-.testimonials-section{
-  background-image: url("../images/testimonials_pic.jpg");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  border-radius: 12px;
-  margin: 2%;
+.hero-section {
+  background-image: url("../images/food-hero.png");
 }
+
+.testimonials-section {
+  background-image: url("../images/testimonials_pic.jpg");
+}
+
 .hero-overlay {
-  background-color: rgba(39, 143, 106, 0.843);
+  background-color: var(--colour-body-overlay);
   padding: 2rem;
   border-radius: 12px;
   max-width: 600px;

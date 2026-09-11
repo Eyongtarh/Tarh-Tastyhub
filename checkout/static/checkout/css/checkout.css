@@ -62,11 +62,6 @@
     color: #fff;
 }
 
-.status-text.Pending { color: #ffc107; font-weight: bold; }
-.status-text.Preparing { color: #17a2b8; font-weight: bold; }
-.status-text.Out { color: #ef7614ff; font-weight: bold; }
-.status-text.Completed { color: #28a745; font-weight: bold; }
-
 .table-hover tbody tr:hover { background-color: #f1f3f5; }
 h4.fw-bold { color: white; }
 

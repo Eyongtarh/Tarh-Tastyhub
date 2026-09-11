@@ -6,7 +6,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.btn-danger {
+.form-container .btn-danger {
   background-color: #dc2626;
   border-color: #dc2626;
   color: #fff;
@@ -14,11 +14,11 @@
   border-radius: 0.375rem;
   transition: background-color 0.3s;
 }
-.btn-danger:hover {
+.form-container .btn-danger:hover {
   background-color: #b91c1c;
 }
 
-.btn-secondary {
+.form-container .btn-secondary {
   background-color: #6b7280;
   color: #fff;
   padding: 0.5rem 1.5rem;
@@ -26,11 +26,11 @@
   text-decoration: none;
   transition: background-color 0.3s;
 }
-.btn-secondary:hover {
+.form-container .btn-secondary:hover {
   background-color: #4b5563;
 }
 
-h2.section-title {
+.section-title {
   color: #f9fafb;
   margin-bottom: 1rem;
 }
@@ -51,7 +51,7 @@ h2.section-title {
 }
 
 /* Delete category */
-.btn-primary {
+.form-container .btn-primary {
   background-color: #3b82f6;
   border-color: #3b82f6;
   color: #fff;
@@ -60,11 +60,11 @@ h2.section-title {
   transition: background-color 0.3s;
   text-decoration: none;
 }
-.btn-primary:hover {
+.form-container .btn-primary:hover {
   background-color: #2563eb;
 }
 
-.btn-cancel {
+.form-container .btn-cancel {
   background-color: #6b7280;
   color: #fff;
   padding: 0.5rem 1.5rem;
@@ -73,7 +73,7 @@ h2.section-title {
   margin-left: 1rem;
   transition: background-color 0.3s;
 }
-.btn-cancel:hover {
+.form-container .btn-cancel:hover {
   background-color: #4b5563;
 }
 
@@ -115,7 +115,7 @@ p.text-normal {
 }
 
 .form-container .text-xs {
-  color: #9ca3af;
+  color: #374151;
 }
 
 .form-container .text-red-600 {

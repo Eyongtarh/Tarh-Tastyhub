@@ -6,12 +6,12 @@
   <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
 {% endblock %}
 {% block title %}
-  Edit Category | Tarh Tastyhub
+  {{ action }} Category | Tarh Tastyhub
 {% endblock %}
 {% block content %}
   <div class="container my-5">
     <div class="text-center mb-4">
-      <h2 class="section-title"><i class="fa-solid fa-screwdriver-wrench me-2"></i> {{ action }} Category</h2>
+      <h1 class="section-title"><i class="fa-solid fa-screwdriver-wrench me-2" aria-hidden="true"></i> {{ action }} Category</h1>
     </div>
     <div class="form-container mx-auto" style="max-width: 700px;">
       <form method="post" enctype="multipart/form-data" class="space-y-4">
@@ -21,7 +21,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           {% for field in form %}
             <div class="mb-4">
-              <label class="block text-sm font-medium">{{ field.label }}</label>
+              {{ field.label_tag }}
               {{ field }}
               {% if field.help_text %}
                 <p class="text-xs">{{ field.help_text }}</p>
@@ -36,7 +36,7 @@
         {% if form.instance.pk and form.instance.icon %}
           <div class="mb-4 current-icon">
             <label class="block text-sm font-medium">Current Icon:</label>
-            <img src="{{ form.instance.icon.url }}" />
+            <img src="{{ form.instance.icon.url }}" alt="Current icon for {{ form.instance.name }}" />
           </div>
         {% endif %}
 

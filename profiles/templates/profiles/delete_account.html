@@ -6,7 +6,7 @@
 {% endblock %}
 {% block content %}
   <div class="container py-5">
-    <h2 class="fw-bold text-center mb-4 text-danger">Delete Account</h2>
+    <h1 class="fw-bold text-center mb-4 text-danger">Delete Account</h1>
 
     <div class="row justify-content-center">
       <div class="col-md-6 text-center bg-white p-4 rounded shadow-sm">
@@ -16,7 +16,7 @@
         </p>
 
         <!-- Delete Button triggers modal -->
-        <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="fa-solid fa-trash me-1"></i> Yes, delete my account</button>
+        <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="fa-solid fa-trash me-1" aria-hidden="true"></i> Yes, delete my account</button>
 
         <a href="{% url 'profile' %}" class="btn btn-secondary ms-2">Cancel</a>
       </div>
@@ -39,7 +39,7 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <form method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger fw-bold"><i class="fa-solid fa-trash me-1"></i> Delete Permanently</button>
+            <button type="submit" class="btn btn-danger fw-bold"><i class="fa-solid fa-trash me-1" aria-hidden="true"></i> Delete Permanently</button>
           </form>
         </div>
       </div>

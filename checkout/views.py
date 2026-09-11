@@ -31,6 +31,11 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 def cache_checkout_data(request):
     try:
         pid = request.POST.get("stripe_pid")
+        if not pid or pid != request.session.get("stripe_pid"):
+            return JsonResponse(
+                {"error": "Payment intent does not match this session."},
+                status=403,
+            )
         delivery_type = request.POST.get("delivery_type", "delivery")
         pickup_time = request.POST.get("pickup_time", "")
         stripe.PaymentIntent.modify(
@@ -121,6 +126,7 @@ def checkout(request):
         currency=settings.STRIPE_CURRENCY,
         automatic_payment_methods={"enabled": True},
     )
+    request.session["stripe_pid"] = intent.id
     return render(
         request,
         "checkout/checkout.html",
@@ -160,19 +166,6 @@ def checkout_success(request, order_number):
         "checkout/success.html",
         {"order": order, "delivery_display": delivery_display},
     )
-
-
-@require_POST
-def update_order_status(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    new_status = request.POST.get("status")
-    if new_status not in dict(Order.STATUS_CHOICES):
-        messages.error(request, "Invalid status.")
-        return redirect(request.META.get("HTTP_REFERER", "/"))
-    order.status = new_status
-    order.save()
-    messages.success(request, "Order status updated.")
-    return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
 @staff_member_required

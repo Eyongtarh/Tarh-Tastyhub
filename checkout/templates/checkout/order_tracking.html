@@ -9,21 +9,24 @@
 {% block title %}
   Order Tracking | Tarh Tastyhub
 {% endblock %}
+{% block meta_description %}
+  Track the status of your Tarh Tastyhub order in real time.
+{% endblock %}
 
 {% block content %}
   <div class="container text-center py-5">
     <!-- HEADER -->
-    <h2 class="fw-bold mb-4">
-      <span class="fa-icon"><i class="fa-solid fa-box"></i></span>
+    <h1 class="fw-bold mb-4">
+      <span class="fa-icon"><i class="fa-solid fa-box" aria-hidden="true"></i></span>
       Order Tracking
-    </h2>
+    </h1>
 
     <p class="lead">Order #{{ order.order_number }}</p>
 
     <!-- PROGRESS BAR -->
     <div class="mb-4">
       <div class="progress" style="height: 30px;">
-        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;" aria-valuenow="{{ order.progress_percent|default:0 }}" aria-valuemin="0" aria-valuemax="100">{{ order.status }}</div>
       </div>
     </div>
 

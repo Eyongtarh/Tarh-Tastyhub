@@ -4,20 +4,23 @@
 {% block title %}
   Customer Feedback | Tarh Tastyhub
 {% endblock %}
+{% block meta_description %}
+  Contact Tarh Tastyhub — find our address, phone, email and opening hours, or send us feedback directly.
+{% endblock %}
 
 {% block content %}
   <!-- Company Info Section -->
   <div class="container py-5">
     <div class="row justify-content-center mb-5">
       <div class="col-lg-10">
-        <h4 class="fw-bold text-center mb-4">Contact & Company Information</h4>
+        <h1 class="fw-bold text-center mb-4">Contact &amp; Company Information</h1>
         <div class="p-4 p-md-5 bg-light border rounded shadow-sm feedback_back">
           <div class="row g-4">
             <!-- Address -->
             <div class="col-md-4 text-center">
               <div class="p-3 h-100 rounded bg-white shadow-sm">
-                <i class="bi bi-geo-alt fs-1 text-warning"></i>
-                <h5 class="fw-bold mt-3">Address</h5>
+                <i class="bi bi-geo-alt fs-1 text-warning" aria-hidden="true"></i>
+                <h2 class="fw-bold mt-3 fs-5">Address</h2>
                 <p class="mb-0">
                   Ekpaw 12<br />
                   Gothenburg
@@ -28,24 +31,26 @@
             <!-- Contact -->
             <div class="col-md-4 text-center">
               <div class="p-3 h-100 rounded bg-white shadow-sm">
-                <i class="bi bi-telephone fs-1 text-warning"></i>
-                <h5 class="fw-bold mt-3">Phone</h5>
+                <i class="bi bi-telephone fs-1 text-warning" aria-hidden="true"></i>
+                <h2 class="fw-bold mt-3 fs-5">Phone</h2>
                 <p class="mb-1">+0046073-344 99 11</p>
 
-                <i class="bi bi-envelope fs-1 text-warning"></i>
-                <h5 class="fw-bold mt-3">Email</h5>
-                <p class="mb-0 text-break">tarhtastyhub@gmail.com</p>
+                <i class="bi bi-envelope fs-1 text-warning" aria-hidden="true"></i>
+                <h2 class="fw-bold mt-3 fs-5">Email</h2>
+                <p class="mb-0 text-break">
+                  <a href="mailto:tarhtastyhub@gmail.com" class="text-decoration-none">tarhtastyhub@gmail.com</a>
+                </p>
               </div>
             </div>
 
             <!-- Opening Hours -->
             <div class="col-md-4 text-center">
               <div class="p-3 h-100 rounded bg-white shadow-sm">
-                <i class="bi bi-clock fs-1 text-warning"></i>
-                <h5 class="fw-bold mt-3">Opening Hours</h5>
+                <i class="bi bi-clock fs-1 text-warning" aria-hidden="true"></i>
+                <h2 class="fw-bold mt-3 fs-5">Opening Hours</h2>
                 <p class="mb-0">
-                  Mon-Fri: 07:00 - 22:00<br />
-                  Sat-Sun: 07:00 - 21:00
+                  Monday to Friday: 07:00 - 22:00<br />
+                  Saturday and Sunday: 07:00 - 21:00
                 </p>
               </div>
             </div>
@@ -66,7 +71,7 @@
           {% if request.user.is_authenticated %}
             <p class="text-muted small mb-3">
               Logged in as <strong>{{ request.user.username }}</strong><br />
-              Name & email auto-filled from your profile.
+              Name and email are filled in automatically from your profile.
             </p>
           {% endif %}
 

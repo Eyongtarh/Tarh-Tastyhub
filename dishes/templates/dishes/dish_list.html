@@ -6,37 +6,37 @@
   <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
 {% endblock %}
 {% block title %}
-  Dish List | Tarh Tastyhub
+  Browse Our Dishes | Tarh Tastyhub
+{% endblock %}
+{% block meta_description %}
+  Browse the full Tarh Tastyhub menu — starters, mains, drinks and more, filterable by category, price and dietary needs.
 {% endblock %}
 {% block content %}
 <div class="container py-5">
 
   <!-- TITLE -->
-  <h2 class="fw-bold text-center mb-4 text-white">
-    <i class="fa-solid fa-plate-wheat"></i> Our Dishes
-  </h2>
+  <h1 class="fw-bold text-center mb-4 text-white">
+    <i class="fa-solid fa-plate-wheat" aria-hidden="true"></i> Our Dishes
+  </h1>
 
   <!-- SEARCH -->
   <form method="get" action="{% url 'dish_list' %}" class="d-flex justify-content-center mb-4 gap-2 flex-wrap">
+    <label for="search-input" class="visually-hidden">Search dishes</label>
     <input type="text" id="search-input" name="q" value="{{ search_term }}" placeholder="Search dishes..." class="form-control w-50" />
-    <button class="btn btn-warning fw-bold shop-now-button"><i class="fas fa-search fa-icon"></i></button>
+    <button class="btn btn-warning fw-bold shop-now-button" aria-label="Search"><i class="fas fa-search fa-icon" aria-hidden="true"></i></button>
   </form>
 
   <!-- CATEGORY FILTER -->
   <div class="category-filter mb-4 text-center">
-    <a href="{% url 'dish_list' %}" class="badge all {% if not current_category %}active{% endif %}">All</a>
+    <a href="{% url 'dish_list' %}" class="badge all {% if not current_category %}active{% endif %}" {% if not current_category %}aria-current="true"{% endif %}>All</a>
     {% for category in categories %}
-      <a href="?category={{ category.slug }}" class="badge category {% if current_category and current_category.slug == category.slug %}active{% endif %}">
+      <a href="?category={{ category.slug }}" class="badge category {% if current_category and current_category.slug == category.slug %}active{% endif %}" {% if current_category and current_category.slug == category.slug %}aria-current="true"{% endif %}>
         {{ category.name }}
       </a>
     {% endfor %}
   </div>
 
   <!-- ADVANCED FILTERS (always shown) -->
-  {% with base="" %}
-    {% if current_category %}
-      {% with base='category='|add:current_category.slug %}{% endwith %}
-    {% endif %}
     <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
 
       <!-- PRICE -->
@@ -45,9 +45,9 @@
           Price
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="?{{ base }}&max_price=10">Under $10</a></li>
-          <li><a class="dropdown-item" href="?{{ base }}&min_price=10&max_price=20">$10 – $20</a></li>
-          <li><a class="dropdown-item" href="?{{ base }}&min_price=20">Over $20</a></li>
+          <li><a class="dropdown-item" href="?{% if current_category %}category={{ current_category.slug }}&amp;{% endif %}max_price=10">Under $10</a></li>
+          <li><a class="dropdown-item" href="?{% if current_category %}category={{ current_category.slug }}&amp;{% endif %}min_price=10&amp;max_price=20">$10 – $20</a></li>
+          <li><a class="dropdown-item" href="?{% if current_category %}category={{ current_category.slug }}&amp;{% endif %}min_price=20">Over $20</a></li>
         </ul>
       </div>
 
@@ -58,7 +58,7 @@
         </button>
         <ul class="dropdown-menu">
           {% for option in dietary_choices %}
-            <li><a class="dropdown-item" href="?{{ base }}&dietary={{ option }}">{{ option }}</a></li>
+            <li><a class="dropdown-item" href="?{% if current_category %}category={{ current_category.slug }}&amp;{% endif %}dietary={{ option }}">{{ option }}</a></li>
           {% endfor %}
         </ul>
       </div>
@@ -70,7 +70,7 @@
         </button>
         <ul class="dropdown-menu">
           {% for ing in ingredient_choices %}
-            <li><a class="dropdown-item" href="?{{ base }}&ingredient={{ ing }}">{{ ing|capfirst }}</a></li>
+            <li><a class="dropdown-item" href="?{% if current_category %}category={{ current_category.slug }}&amp;{% endif %}ingredient={{ ing }}">{{ ing|capfirst }}</a></li>
           {% endfor %}
         </ul>
       </div>
@@ -78,7 +78,6 @@
       <!-- RESET -->
       <a href="{% url 'dish_list' %}" class="btn btn-secondary btn-sm px-2 py-1 small">Reset Filters</a>
     </div>
-  {% endwith %}
 
   <!-- DISH GRID -->
   <div class="row g-4">
@@ -119,14 +118,16 @@
 
             <!-- Quantity Controls -->
             <div class="d-flex align-items-center gap-2 mb-2 justify-content-center">
-              <button type="button" class="btn btn-outline-secondary dish-qty-decrement">-</button>
+              <button type="button" class="btn btn-outline-secondary dish-qty-decrement" aria-label="Decrease quantity of {{ dish.name }}">-</button>
+              <label for="qty-{{ dish.id }}" class="visually-hidden">Quantity of {{ dish.name }}</label>
               <input type="number"
+                     id="qty-{{ dish.id }}"
                      class="form-control dish-qty"
                      value="1"
                      min="1"
                      style="width: 70px;"
                      data-portion-id="{% if dish.portions.exists %}{{ dish.portions.first.id }}{% else %}{{ dish.id }}{% endif %}" />
-              <button type="button" class="btn btn-outline-secondary dish-qty-increment">+</button>
+              <button type="button" class="btn btn-outline-secondary dish-qty-increment" aria-label="Increase quantity of {{ dish.name }}">+</button>
             </div>
 
             <!-- Add to Bag -->
@@ -156,7 +157,7 @@
         {% for num in dishes.paginator.page_range %}
           {% with base=request.GET|remove_keys:'page' %}
             <li class="page-item {% if dishes.number == num %}active{% endif %}">
-              <a class="page-link" href="?{{ base }}{% if base %}&{% endif %}page={{ num }}">
+              <a class="page-link" href="?{{ base }}{% if base %}&amp;{% endif %}page={{ num }}" {% if dishes.number == num %}aria-current="page"{% endif %}>
                 {{ num }}
               </a>
             </li>

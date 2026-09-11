@@ -1,7 +1,7 @@
 {% load static %}
 {% load dishes_extras %}
 <!-- MOBILE NAVBAR -->
-<div class="d-lg-none bg-white shadow-sm">
+<nav class="d-lg-none bg-white shadow-sm" aria-label="Mobile navigation">
   <div class="d-flex justify-content-between align-items-center px-3 py-2">
     <!-- Brand / Logo -->
     <a href="{% url 'home' %}" class="brand-logo text-decoration-none" aria-label="Go to homepage" title="Tarh Tastyhub home">
@@ -12,17 +12,17 @@
     <!-- Shopping bag and Hamburger -->
     <div class="d-flex align-items-center gap-2">
       <!-- Shopping bag -->
-      <a href="{% url 'bag' %}" class="mobile-bag position-relative text-dark" aria-label="View shopping bag" title="Shopping Bag">
-        <i class="fa-solid fa-shopping-bag fs-5"></i>
+      <a href="{% url 'bag' %}" class="mobile-bag position-relative text-dark" aria-label="Shopping bag with {{ bag_count|default:'0' }} items" title="Shopping Bag">
+        <i class="fa-solid fa-shopping-bag fs-5" aria-hidden="true"></i>
         <span id="bag-count-mobile" class="bag-count" aria-hidden="true">{{ bag_count|default:'0' }}</span>
       </a>
       <!-- Hamburger button to open offcanvas menu -->
-      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" title="Open menu"><i class="fa-solid fa-bars"></i></button>
+      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open menu" title="Open menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
     </div>
   </div>
   <!-- Delivery banner -->
-  <div id="delivery-banner-mobile" class="text-center bg-warning text-black py-1">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</div>
-</div>
+  <p id="delivery-banner-mobile" class="text-center bg-warning text-black py-1 m-0" role="status">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</p>
+</nav>
 <!-- OFFCANVAS MENU -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
   <div class="offcanvas-header">
@@ -84,7 +84,7 @@
           <a href="{% url 'account_login' %}" aria-label="Login to your account" title="Login">Login</a>
         </li>
         <li>
-          <a href="{% url 'account_signup' %}" aria-label="Sign Up" title="Signup">signup</a>
+          <a href="{% url 'account_signup' %}" aria-label="Sign Up" title="Sign Up">Sign Up</a>
         </li>
       {% endif %}
     </ul>

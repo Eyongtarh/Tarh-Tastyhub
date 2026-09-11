@@ -26,7 +26,7 @@
   <div class="container py-5">
     <!-- HEADER -->
     <div class="text-center mb-5">
-      <h2 class="fw-bold text-success mb-2"><i class="bi bi-receipt text-warning"></i></h2>
+      <h1 class="fw-bold text-success mb-2"><i class="bi bi-receipt text-warning" aria-hidden="true"></i> Order Receipt</h1>
       <p class="text-muted">
         Order <strong>#{{ order.order_number }}</strong> for <strong>{{ order.full_name }}</strong>
       </p>
@@ -62,7 +62,7 @@
     <!-- ORDER STATUS -->
     <div class="mb-4">
       <div class="progress" style="height: 30px;">
-        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;">{{ order.status }}</div>
+        <div class="progress-bar {{ order.progress_color }} progress-bar-striped" role="progressbar" style="width: {{ order.progress_percent }}%;" aria-valuenow="{{ order.progress_percent|default:0 }}" aria-valuemin="0" aria-valuemax="100">{{ order.status }}</div>
       </div>
     </div>
 
@@ -133,8 +133,22 @@
 
     <!-- ACTION BUTTONS -->
     <div class="text-center mt-4 no-print">
-      <button onclick="window.print()" class="btn btn-secondary fw-bold me-2">Print Order</button>
+      <button type="button" id="print-order-btn" class="btn btn-secondary fw-bold me-2">Print Order</button>
       <a href="{% url 'admin_dashboard' %}" class="btn btn-primary fw-bold">Back to Dashboard</a>
     </div>
   </div>
+{% endblock %}
+
+{% block postloadjs %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const printButton = document.getElementById('print-order-btn');
+      if (printButton) {
+        printButton.addEventListener('click', function () {
+          window.print();
+        });
+      }
+    });
+  </script>
 {% endblock %}
