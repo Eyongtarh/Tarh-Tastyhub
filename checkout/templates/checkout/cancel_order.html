@@ -15,7 +15,7 @@
     <!-- HEADER -->
     <div class="text-center mb-4">
       <h1 class="fw-bold text-danger">
-        <i class="fa-solid fa-triangle-exclamation me-2" aria-hidden="true"></i>
+        <svg class="icon me-2" aria-hidden="true"><use href="#icon-triangle-exclamation"></use></svg>
         Cancel Order
       </h1>
     </div>
@@ -24,7 +24,7 @@
       {% if order and order.pk %}
         <!-- WARNING -->
         <div class="alert alert-danger text-center">
-          <i class="fa-solid fa-trash me-2" aria-hidden="true"></i>
+          <svg class="icon me-2" aria-hidden="true"><use href="#icon-trash"></use></svg>
           You are about to cancel
           <strong>Order #{{ order.order_number }}</strong>
           placed by

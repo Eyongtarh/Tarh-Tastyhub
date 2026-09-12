@@ -11,12 +11,12 @@
 {% block content %}
   <div class="container my-5">
     <div class="text-center mb-4">
-      <h1 class="section-title"><i class="fa-solid fa-trash me-2" aria-hidden="true"></i> Delete Dish</h1>
+      <h1 class="section-title"><svg class="icon me-2" aria-hidden="true"><use href="#icon-trash"></use></svg> Delete Dish</h1>
     </div>
     <div class="form-container mx-auto" style="max-width: 700px;">
       {% if dish and dish.pk %}
         <div class="warning-box">
-          <i class="fa-solid fa-triangle-exclamation fa-icon" aria-hidden="true"></i>
+          <svg class="icon fa-icon" aria-hidden="true"><use href="#icon-triangle-exclamation"></use></svg>
           Are you sure you want to delete the dish <span class="dish-name"><strong>{{ dish.name }}</strong></span>?
         </div>
         <form method="post">

@@ -114,6 +114,17 @@ main {
     font-size: x-large;
     padding: 0 5px;
 }
+/* Self-hosted icon sprite (includes/icons.html): sized off the element's
+   own font-size like a font-icon would be, so existing font-size/colour
+   rules above (and Bootstrap's fs-* utilities) still control each icon. */
+.icon {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    display: inline-block;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+}
 /* Dropdowns */
 .dropdown-menu {
     background-color: var(--colour-white);

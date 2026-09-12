@@ -16,7 +16,7 @@
         </p>
 
         <!-- Delete Button triggers modal -->
-        <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><i class="fa-solid fa-trash me-1" aria-hidden="true"></i> Yes, delete my account</button>
+        <button type="button" class="btn btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"><svg class="icon me-1" aria-hidden="true"><use href="#icon-trash"></use></svg> Yes, delete my account</button>
 
         <a href="{% url 'profile' %}" class="btn btn-secondary ms-2">Cancel</a>
       </div>
@@ -39,7 +39,7 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <form method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger fw-bold"><i class="fa-solid fa-trash me-1" aria-hidden="true"></i> Delete Permanently</button>
+            <button type="submit" class="btn btn-danger fw-bold"><svg class="icon me-1" aria-hidden="true"><use href="#icon-trash"></use></svg> Delete Permanently</button>
           </form>
         </div>
       </div>

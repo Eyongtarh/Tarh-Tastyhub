@@ -5,7 +5,7 @@
   <div class="d-flex justify-content-between align-items-center px-3 py-2">
     <!-- Brand / Logo -->
     <a href="{% url 'home' %}" class="brand-logo text-decoration-none" aria-label="Tarh Tastyhub home" title="Tarh Tastyhub home">
-      <i class="fa-solid fa-utensils brand-icon" aria-hidden="true"></i>
+      <svg class="icon brand-icon" aria-hidden="true"><use href="#icon-utensils"></use></svg>
       <span class="brand-accent">Tarh</span>
       <span class="brand-main">Tastyhub</span>
     </a>
@@ -13,11 +13,11 @@
     <div class="d-flex align-items-center gap-2">
       <!-- Shopping bag -->
       <a href="{% url 'bag' %}" class="mobile-bag position-relative text-dark" aria-label="Shopping bag with {{ bag_count|default:'0' }} items" title="Shopping Bag">
-        <i class="fa-solid fa-shopping-bag fs-5" aria-hidden="true"></i>
+        <svg class="icon fs-5" aria-hidden="true"><use href="#icon-shopping-bag"></use></svg>
         <span id="bag-count-mobile" class="bag-count" aria-hidden="true">{{ bag_count|default:'0' }}</span>
       </a>
       <!-- Hamburger button to open offcanvas menu -->
-      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open menu" title="Open menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+      <button class="btn btn-hamburger" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open menu" title="Open menu"><svg class="icon" aria-hidden="true"><use href="#icon-bars"></use></svg></button>
     </div>
   </div>
   <!-- Delivery banner -->

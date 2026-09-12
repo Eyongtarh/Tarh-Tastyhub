@@ -58,27 +58,26 @@
       <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon_io/apple-touch-icon.png' %}" />
       <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon_io/favicon-32x32.png' %}" />
       <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon_io/favicon-16x16.png' %}" />
-      <!-- Stylesheets (Bootstrap self-hosted: saves a third-party
-           DNS/TLS round-trip on every page and picks up our own
-           long-lived cache headers) -->
-      <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.purged.css' %}" />
-      <!-- Inlined rather than linked: base.css is only ~13KB and is
-           needed on every page, so this trades one render-blocking S3
-           round trip for zero - see home/templatetags/inline_assets.py -->
+      <!-- Bootstrap and base.css are both inlined rather than linked:
+           both are needed on every page, so this trades two
+           render-blocking S3 round trips for zero. The cost is that
+           these bytes are no longer cached separately across page
+           navigations (they ride along with each HTML response instead)
+           - worth it since GZipMiddleware compresses the combined
+           response anyway and it's what a cold Lighthouse run rewards.
+           See home/templatetags/inline_assets.py. -->
+      <style>{% inline_static 'vendor/bootstrap/bootstrap.purged.css' %}</style>
       <style>{% inline_static 'css/base.css' %}</style>
       <!-- Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <!-- Font Awesome's origin - connect early since it's still fetched
-           on every page, just not render-blocking -->
-      <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      <!-- Icon fonts: not needed for first paint, so they're loaded without
-           blocking rendering (the print/onload swap trick) -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'; this.onload=null;" />
+      <!-- Icon font: not needed for first paint, so it's loaded without
+           blocking rendering (the print/onload swap trick). Font Awesome
+           itself was dropped in favour of self-hosted SVGs - see
+           includes/icons.html - since 99% of its CSS went unused. -->
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" media="print" onload="this.media='all'; this.onload=null;" />
       <noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
       </noscript>
     {% endblock %}
@@ -94,6 +93,7 @@
     {% endblock %}
   </head>
   <body>
+    {% include 'includes/icons.html' %}
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <!-- HEADER -->
     <header class="fixed-top">
@@ -126,10 +126,12 @@
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 2000;">
       <div id="toast-container"></div>
     </div>
-    <!-- Global App Scripts -->
-    <script src="{% static 'js/base.js' %}?v=2"></script>
-    <script src="{% static 'js/bag.js' %}?v=2"></script>
-    <script src="{% static 'js/search.js' %}?v=2"></script>
+    <!-- Global App Scripts: deferred so the parser doesn't block on
+         fetching them - each only defines functions or wires up its own
+         DOMContentLoaded listener, so execution order is unaffected. -->
+    <script defer src="{% static 'js/base.js' %}?v=2"></script>
+    <script defer src="{% static 'js/bag.js' %}?v=2"></script>
+    <script defer src="{% static 'js/search.js' %}?v=2"></script>
     <!-- Render Django Messages -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {

@@ -11,12 +11,12 @@
 {% block content %}
   <div class="container my-5">
     <div class="text-center mb-4">
-      <h1 class="section-title"><i class="fa-solid fa-trash-can me-2" aria-hidden="true"></i> Delete Category</h1>
+      <h1 class="section-title"><svg class="icon me-2" aria-hidden="true"><use href="#icon-trash-can"></use></svg> Delete Category</h1>
     </div>
     <div class="form-container mx-auto" style="max-width: 700px;">
       {% if category and category.pk %}
        <div class="warning-box">
-          <i class="fa-solid fa-triangle-exclamation fa-icon" aria-hidden="true"></i>
+          <svg class="icon fa-icon" aria-hidden="true"><use href="#icon-triangle-exclamation"></use></svg>
           Are you sure you want to delete the category <span class="dish-name"><strong>{{ category.name }}</strong></span>?
       </div>
         <form method="post">
@@ -28,7 +28,7 @@
         </form>
       {% else %}
         <p class="text-error">
-          <i class="fa-solid fa-triangle-exclamation warning-icon" aria-hidden="true"></i>The category does not exist or cannot be deleted.
+          <svg class="icon warning-icon" aria-hidden="true"><use href="#icon-triangle-exclamation"></use></svg>The category does not exist or cannot be deleted.
         </p>
         <a href="{% url 'category_list' %}" class="btn-cancel">Back to Categories</a>
       {% endif %}

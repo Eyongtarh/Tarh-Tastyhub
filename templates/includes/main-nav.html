@@ -5,7 +5,7 @@
   <div class="container">
     <!-- Brand / Logo -->
     <a href="{% url 'home' %}" class="brand-logo text-decoration-none" aria-label="Tarh Tastyhub Home" title="Tarh Tastyhub Home">
-      <i class="fa-solid fa-utensils brand-icon" aria-hidden="true"></i>
+      <svg class="icon brand-icon" aria-hidden="true"><use href="#icon-utensils"></use></svg>
       <span class="brand-accent">Tarh</span>
       <span class="brand-main">Tastyhub</span>
     </a>
@@ -58,7 +58,7 @@
         {% if user.is_authenticated %}
           <!-- User Dropdown -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User menu for {{ user.username }}" title="User menu"><i class="fa-solid fa-user me-1" aria-hidden="true"></i>{{ user.username }}</a>
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User menu for {{ user.username }}" title="User menu"><svg class="icon me-1" aria-hidden="true"><use href="#icon-user"></use></svg>{{ user.username }}</a>
 
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
               {% if user.is_superuser %}
@@ -87,7 +87,7 @@
         <!-- Bag Icon -->
         <li class="nav-item ms-3 position-relative">
           <a class="nav-link position-relative" href="{% url 'bag' %}" aria-label="Shopping bag with {{ bag_count|default:'0' }} items" title="Shopping Bag">
-            <i class="fa-solid fa-shopping-bag fs-4" aria-hidden="true"></i>
+            <svg class="icon fs-4" aria-hidden="true"><use href="#icon-shopping-bag"></use></svg>
             <span id="bag-count" class="bag-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size: 0.75rem;" aria-hidden="true">{{ bag_count|default:'0' }}</span>
           </a>
         </li>

@@ -128,6 +128,17 @@ class Dish(models.Model):
         blank=True,
         null=True
     )
+    # Auto-generated from `image` on save (see _generate_card_image) -
+    # a smaller variant for the grid-card contexts (home page, dish
+    # list) that never display the dish anywhere near full size, so
+    # those pages don't have to transfer the larger image `image` is
+    # sized for (the dish detail page's up-to-660px column).
+    image_card = models.ImageField(
+        upload_to='dishes/',
+        blank=True,
+        null=True,
+        editable=False,
+    )
     available = models.BooleanField(default=True)
     is_special = models.BooleanField(default=False)
     available_from = models.TimeField(blank=True, null=True)
@@ -180,29 +191,54 @@ class Dish(models.Model):
         self,
         field_name,
         max_size=(1200, 1200),
-        quality=75
+        quality=75,
+        card_max_size=(700, 700),
+        card_quality=70,
     ):
         """
-        Compress image stored in ImageField named field_name.
+        Compress the image stored in ImageField named field_name, and
+        (for the main `image` field) derive a smaller `image_card`
+        variant from the same decoded image for grid-card display
+        contexts (home page, dish list) - those never show the dish
+        anywhere near the size the dish detail page needs, so they
+        shouldn't have to transfer an image sized for it. Both variants
+        come from one decode/open of the original upload rather than
+        re-opening the compressed result afterwards, which would mean
+        an extra round trip to fetch it back from S3 in production.
         """
         img_field = getattr(self, field_name)
         if not img_field:
             return
         try:
             img_field.open()
-            img = Image.open(img_field)
+            original = Image.open(img_field)
+            original.load()
         except (FileNotFoundError, UnidentifiedImageError, ValueError):
             return
-        if img.mode in ("RGBA", "P"):
-            img = img.convert("RGB")
-        img.thumbnail(max_size, Image.LANCZOS)
-        buffer = BytesIO()
-        img.save(buffer, format='JPEG', quality=quality, optimize=True)
-        buffer.seek(0)
+        if original.mode in ("RGBA", "P"):
+            original = original.convert("RGB")
         filename = img_field.name.rsplit('/', 1)[-1]
-        img_field.save(filename, ContentFile(buffer.read()), save=False)
-        buffer.close()
-        super(Dish, self).save(update_fields=[field_name])
+
+        full = original.copy()
+        full.thumbnail(max_size, Image.LANCZOS)
+        full_buffer = BytesIO()
+        full.save(full_buffer, format='JPEG', quality=quality, optimize=True)
+        full_buffer.seek(0)
+        img_field.save(filename, ContentFile(full_buffer.read()), save=False)
+        full_buffer.close()
+
+        update_fields = [field_name]
+        if field_name == 'image':
+            card = original.copy()
+            card.thumbnail(card_max_size, Image.LANCZOS)
+            card_buffer = BytesIO()
+            card.save(card_buffer, format='JPEG', quality=card_quality, optimize=True)
+            card_buffer.seek(0)
+            self.image_card.save(filename, ContentFile(card_buffer.read()), save=False)
+            card_buffer.close()
+            update_fields.append('image_card')
+
+        super(Dish, self).save(update_fields=update_fields)
 
     def get_absolute_url(self):
         return reverse('dish_detail', args=[self.slug])
