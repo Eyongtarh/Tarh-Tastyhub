@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 {% load dishes_extras %}
+{% load inline_assets %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}" />
+  <!-- Inlined: checkout.css is only ~2KB and needed on every checkout-app
+       page, so this trades one render-blocking S3 round trip for zero -
+       see home/templatetags/inline_assets.py. -->
+  <style>{% inline_static 'checkout/css/checkout.css' %}</style>
 {% endblock extra_css %}
 
 {% block title %}
