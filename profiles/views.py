@@ -6,66 +6,17 @@ and order history.
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 import logging
 from django.contrib.auth.models import User
 from checkout.models import Order
 from .models import UserProfile
-from .forms import UserProfileForm, UserRegisterForm
+from .forms import UserProfileForm
 from .utils import send_verification_email, email_verification_token
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 
 logger = logging.getLogger(__name__)
-
-
-def register(request):
-    """Register a new user with email verification."""
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
-            send_verification_email(request, user)
-            messages.success(
-                request,
-                "Account created! Please verify your email before logging in."
-            )
-            return redirect('login')
-        else:
-            messages.error(
-                request,
-                "There were errors in your form. Please fix them."
-            )
-    else:
-        form = UserRegisterForm()
-    return render(request, 'profiles/register.html', {'form': form})
-
-
-def login_view(request):
-    """Login view with email activation check."""
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            if not user.is_active:
-                messages.warning(
-                    request,
-                    "Your email is not verified. Please check your inbox."
-                )
-                return redirect('resend_verification')
-            login(request, user)
-            messages.success(
-                request,
-                f"Welcome back, {user.username}!"
-            )
-            return redirect('profile')
-        messages.error(request, "Invalid username or password.")
-    else:
-        form = AuthenticationForm()
-    return render(request, 'profiles/login.html', {'form': form})
 
 
 def activate_account(request, uidb64, token):
@@ -76,7 +27,7 @@ def activate_account(request, uidb64, token):
     except Exception as e:
         logger.warning(f"Activation failed: {e}")
         messages.error(request, "Invalid activation link.")
-        return redirect('login')
+        return redirect('account_login')
     if user.is_active:
         messages.info(request, "Your email is already verified.")
         login(request, user)
@@ -91,7 +42,7 @@ def activate_account(request, uidb64, token):
         )
         return redirect('profile')
     messages.error(request, "Activation link expired or invalid.")
-    return redirect('login')
+    return redirect('account_login')
 
 
 def resend_verification(request):
@@ -111,7 +62,7 @@ def resend_verification(request):
             "If an account exists for that email, "
             "a verification message has been sent."
         )
-        return redirect('login')
+        return redirect('account_login')
     return render(request, 'profiles/resend_verification.html')
 
 
