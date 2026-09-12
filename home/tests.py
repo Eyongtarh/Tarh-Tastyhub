@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from home.templatetags.inline_assets import inline_static
 
@@ -22,3 +22,25 @@ class InlineStaticTests(TestCase):
         content = inline_static("css/base.css")
         self.assertIn("url('/static/images/feedback_pic.jpg')", content)
         self.assertIn('url("/static/images/banner_error.jpg")', content)
+
+    @override_settings(
+        STATIC_URL="https://cdn.example.com/static/",
+        STATICFILES_STORAGE=(
+            "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+        ),
+    )
+    def test_root_absolute_url_strips_static_prefix_even_when_STATIC_URL_differs(self):
+        """
+        In production STATIC_URL is the full S3 URL, not "/static/" - a
+        version of this code that matched settings.STATIC_URL (rather
+        than the literal "/static/" prefix source CSS actually writes)
+        never matched there, passed "/static/images/feedback_pic.jpg"
+        (untouched) to staticfiles_storage.url(), and 500'd every page.
+        ManifestStaticFilesStorage raises on a path with no manifest
+        entry - used here just to observe which path was actually
+        requested, without needing a real manifest built.
+        """
+        with self.assertRaises(ValueError) as ctx:
+            inline_static("css/base.css")
+        self.assertIn("images/feedback_pic.jpg", str(ctx.exception))
+        self.assertNotIn("/static/images/feedback_pic.jpg", str(ctx.exception))

@@ -9,7 +9,6 @@ import posixpath
 import re
 
 from django import template
-from django.conf import settings
 from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.utils.safestring import mark_safe
@@ -36,8 +35,15 @@ def _rewrite_css_urls(content, css_path):
         quote, url = match.group(1), match.group(2)
         if url.startswith(("data:", "http://", "https://", "//")):
             return match.group(0)
-        if url.startswith(settings.STATIC_URL):
-            static_path = url[len(settings.STATIC_URL):]
+        # Source CSS always writes root-relative static references as
+        # "/static/...", the local-dev convention, regardless of what
+        # STATIC_URL actually resolves to in this environment (in
+        # production it's a full S3 URL, which "/static/..." never
+        # starts with) - so match that literal prefix, not STATIC_URL.
+        if url.startswith("/static/"):
+            static_path = url[len("/static/"):]
+        elif url.startswith("/"):
+            return match.group(0)
         else:
             static_path = posixpath.normpath(posixpath.join(base_dir, url))
         resolved_url = staticfiles_storage.url(static_path)
