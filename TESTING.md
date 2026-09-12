@@ -523,6 +523,8 @@ The reports below were regenerated against the live production site after this p
 
 Order history and Track order are not included here, as both need a real order to load against, and production currently has none to test with.
 
+**A note on the SEO scores below:** the Bag, Checkout, Profile, Admin Dashboard, and every admin form (add/edit/delete dish and category) score 66-69 on SEO rather than 100. This is expected, not a bug. In each case, Lighthouse's `is-crawlable` audit is the only SEO check that fails, because `robots.txt` deliberately disallows crawling `/bag/`, `/checkout/`, `/profiles/`, and the `/dishes/add/`, `/dishes/edit/`, `/dishes/delete/`, and `/dishes/category/` paths. That is the correct, standard choice for a shopping bag, checkout flow, customer profile, and admin forms only staff should reach - none of them should be indexed by search engines. Lighthouse has no way to know a block is intentional, so it scores every disallowed page the same way whether the block is a mistake or, as here, deliberate. Raising these scores to 100 would mean removing that protection, which was confirmed not worth doing for a cosmetic score.
+
 ### Home page Lighthouse report
 
 - ![Home page Lighthouse report](documentation/validation/home_lighthouse_report.png)
