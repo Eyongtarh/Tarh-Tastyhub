@@ -140,6 +140,7 @@ TEMPLATES = [
                 "bag.context_processors.bag_contents",
                 "dishes.context_processors.menu_dishes",
                 "dishes.context_processors.categories_nav",
+                "tarh_tastyhub.context_processors.static_origin",
             ],
             "builtins": [
                 "crispy_forms.templatetags.crispy_forms_tags",

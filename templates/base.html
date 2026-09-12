@@ -3,6 +3,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {% if static_origin %}
+      <!-- Static/media files are served from a different origin (S3) -
+           connect to it as early as possible so images/CSS/JS there
+           don't pay a fresh DNS+TLS round trip once discovered. -->
+      <link rel="preconnect" href="{{ static_origin }}" crossorigin />
+      <link rel="dns-prefetch" href="{{ static_origin }}" />
+    {% endif %}
     {% block meta %}
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
