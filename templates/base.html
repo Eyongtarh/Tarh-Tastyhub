@@ -1,4 +1,5 @@
 {% load static %}
+{% load inline_assets %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,10 +62,16 @@
            DNS/TLS round-trip on every page and picks up our own
            long-lived cache headers) -->
       <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.purged.css' %}" />
-      <link rel="stylesheet" href="{% static 'css/base.css' %}?v=2" />
+      <!-- Inlined rather than linked: base.css is only ~13KB and is
+           needed on every page, so this trades one render-blocking S3
+           round trip for zero - see home/templatetags/inline_assets.py -->
+      <style>{% inline_static 'css/base.css' %}</style>
       <!-- Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <!-- Font Awesome's origin - connect early since it's still fetched
+           on every page, just not render-blocking -->
+      <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       <!-- Icon fonts: not needed for first paint, so they're loaded without
            blocking rendering (the print/onload swap trick) -->

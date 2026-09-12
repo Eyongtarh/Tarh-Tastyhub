@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load inline_assets %}
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+  <!-- Inlined for the same reason as base.css: it's tiny (~1KB) and
+       only needed on this one page, so there's no caching benefit to
+       lose by not fetching it as a separate render-blocking request. -->
+  <style>{% inline_static 'css/index.css' %}</style>
   <!-- This is the page's LCP element - preload it directly rather than
        waiting for the HTML parser to reach the <img> tag in the body.
        Matches the WebP source most browsers will actually use (see the

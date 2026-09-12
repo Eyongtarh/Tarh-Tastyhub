@@ -76,15 +76,28 @@
   </div>
 </footer>
 
-<!-- Mailchimp validation script -->
-<script src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+<!-- Mailchimp validation script: 140KB the vast majority of visitors
+     never need, since it only enhances a form that already has native
+     HTML5 validation (required/type="email"). Loaded on first
+     interaction with the form instead of on every page load. -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('mc-embedded-subscribe-form')
     const emailInput = document.getElementById('mce-EMAIL')
     const message = document.getElementById('mc-message')
-  
+
     if (!form || !emailInput || !message) return
+
+    let mcValidateLoaded = false
+    function loadMcValidateOnce() {
+      if (mcValidateLoaded) return
+      mcValidateLoaded = true
+      const script = document.createElement('script')
+      script.src = '//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'
+      document.body.appendChild(script)
+    }
+    emailInput.addEventListener('focus', loadMcValidateOnce, { once: true })
+    form.addEventListener('submit', loadMcValidateOnce, { once: true })
   
     message.style.transition = 'all 0.5s ease'
     message.style.opacity = 0
