@@ -36,7 +36,9 @@
 }
 
 .warning-box {
-  background-color: #f87171;
+  /* #f87171 with white text was ~2.8:1 against WCAG AA's 4.5:1 -
+     darkened to the same red already used for .btn-danger nearby. */
+  background-color: #dc2626;
   color: #fff;
   padding: 1rem 1.5rem;
   border-radius: 0.375rem;
@@ -77,8 +79,11 @@
   background-color: #4b5563;
 }
 
+/* #f87171 (text-error) and #fbbf24 (warning-icon) were both under
+   1.5:1 against this box's #deb94d background - nowhere close to
+   WCAG AA. Darkened to a red dark enough to clear 4.5:1 here. */
 p.text-error {
-  color: #f87171;
+  color: #7f1d1d;
 }
 
 p.text-normal {
@@ -86,13 +91,16 @@ p.text-normal {
 }
 
 .warning-icon {
-  color: #fbbf24;
+  color: #7f1d1d;
   margin-right: 0.5rem;
 }
 
 /* Add Edit Dish */
+/* #f9fafb (near-white) was ~1.85:1 against this box's #deb94d
+   background on every form label site-wide - darkened to the same
+   navy already used for .dish-name, which clears 4.5:1 comfortably. */
 .form-container label {
-  color: #f9fafb;
+  color: #1f2937;
   font-weight: 500;
 }
 
@@ -118,8 +126,11 @@ p.text-normal {
   color: #374151;
 }
 
+/* Same #f87171-on-#deb94d contrast failure as .text-error above -
+   this drives every form validation error message on the add/edit
+   dish and category pages. */
 .form-container .text-red-600 {
-  color: #f87171;
+  color: #7f1d1d;
 }
 
 .current-image,
