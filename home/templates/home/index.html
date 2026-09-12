@@ -12,6 +12,10 @@
 {% block content %}
   <!-- HERO SECTION -->
   <section class="py-5 hero-section">
+    <picture>
+      <source srcset="{% static 'images/food-hero.webp' %}" type="image/webp" />
+      <img src="{% static 'images/food-hero.jpg' %}" alt="" class="hero-bg-img" fetchpriority="high" />
+    </picture>
     <div class="container text-center hero-overlay">
       <h1 class="display-5 fw-bold text-white">Fresh Home Style Meals Ready For Fast Delivery OR Pickup</h1>
       <p class="lead mt-3 text-white">Choose from our delicious menu and enjoy the taste of home.</p>

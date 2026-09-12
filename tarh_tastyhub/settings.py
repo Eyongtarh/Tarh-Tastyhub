@@ -106,6 +106,11 @@ MESSAGE_TAGS = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Near the top of the list so it runs last on the way out and
+    # compresses the final response body (HTML/JSON) before it's sent -
+    # nothing here compressed responses before, and Heroku's router
+    # doesn't do it for you.
+    "django.middleware.gzip.GZipMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -210,6 +215,10 @@ if USE_AWS:
     # classes in custom_storages.py - the S3Boto3Storage backend used here
     # doesn't read AWS_HEADERS at all, so that legacy (boto2-era) setting
     # was a no-op.
+    # Gzip-compress CSS/JS/SVG on upload and set Content-Encoding: gzip -
+    # nothing serves compressed static assets otherwise, since S3 doesn't
+    # compress on the fly the way a typical web server does.
+    AWS_IS_GZIPPED = True
 
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")

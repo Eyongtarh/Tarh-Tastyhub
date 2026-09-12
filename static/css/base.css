@@ -225,7 +225,15 @@ main {
 .remove-from-bag:hover { background-color: #d32f2f; }
 /* Feedback Section */
 .feedback_back {
-    background: url('/static/images/feedback_pic.jpg') center center / cover no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('/static/images/feedback_pic.jpg');
+    /* Modern browsers use the smaller WebP; others keep the JPEG above. */
+    background-image: image-set(
+        url('/static/images/feedback_pic.webp') type('image/webp'),
+        url('/static/images/feedback_pic.jpg') type('image/jpeg')
+    );
     display: flex;
     justify-content: center;
     align-items: center;
@@ -345,6 +353,11 @@ main {
 /* Errors Image */
 .banner404 {
     background-image: url("../images/banner_error.jpg");
+    /* Modern browsers use the smaller WebP; others keep the JPEG above. */
+    background-image: image-set(
+        url("../images/banner_error.webp") type("image/webp"),
+        url("../images/banner_error.jpg") type("image/jpeg")
+    );
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

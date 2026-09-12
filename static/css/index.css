@@ -2,24 +2,43 @@
 
 .hero-section,
 .testimonials-section {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  position: relative;
   display: flex;
   align-items: center;
   border-radius: 12px;
   margin: 2%;
+  overflow: hidden;
 }
 
-.hero-section {
-  background-image: url("../images/food-hero.jpg");
+/* The hero image is a real <img fetchpriority="high"> in the template
+   (not a CSS background) so the browser's preload scanner can discover
+   and prioritise it while parsing the HTML, instead of waiting for this
+   stylesheet to be parsed first - it was the page's LCP element and that
+   discovery delay was costing several seconds. */
+.hero-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
 
 .testimonials-section {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   background-image: url("../images/testimonials_pic.jpg");
+  /* Modern browsers use the smaller WebP; others keep the JPEG above. */
+  background-image: image-set(
+    url("../images/testimonials_pic.webp") type("image/webp"),
+    url("../images/testimonials_pic.jpg") type("image/jpeg")
+  );
 }
 
 .hero-overlay {
+  position: relative;
+  z-index: 1;
   background-color: var(--colour-body-overlay);
   padding: 2rem;
   border-radius: 12px;
