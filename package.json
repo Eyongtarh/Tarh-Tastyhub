@@ -4,10 +4,12 @@
   "version": "1.0.0",
   "description": "Jest tests for Tarh Tastyhub's static JavaScript (no build step - these files are loaded directly via <script> tags, see DEPLOYMENT.md).",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "purge-css": "purgecss --config purgecss.config.js -o static/vendor/bootstrap/bootstrap.purged.css"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest-environment-jsdom": "^29.7.0",
+    "purgecss": "^8.0.0"
   }
 }
