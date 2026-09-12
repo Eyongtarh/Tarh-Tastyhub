@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /bag/
+Disallow: /checkout/
+Disallow: /profiles/
+Disallow: /dishes/add/
+Disallow: /dishes/edit/
+Disallow: /dishes/delete/
+Disallow: /dishes/category/
+
+Sitemap: {{ sitemap_url }}
