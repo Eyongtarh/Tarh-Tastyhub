@@ -68,10 +68,10 @@
            See home/templatetags/inline_assets.py. -->
       <style>{% inline_static 'vendor/bootstrap/bootstrap.purged.css' %}</style>
       <style>{% inline_static 'css/base.css' %}</style>
-      <!-- Fonts -->
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <!-- Fonts: self-hosted (see the @font-face rules at the top of
+           base.css) rather than linked from Google Fonts, which was a
+           render-blocking request on every page just to learn the
+           actual font file URLs. -->
     {% endblock %}
     {% block extra_css %}
 

@@ -20,123 +20,123 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ### Navbar page
 
-| Page                | User Actions                 | Expected Results                   | Y/N | Comments               |
-| ------------------- | ----------------------------- | ----------------------------------- | --- | ----------------------- |
-| Navbar              | Click on Logo                 | Redirects to Home page              | Y   |                         |
-| Navbar              | Click Home link                | Redirects to Home page              | Y   |                         |
-| Navbar              | Click Dish Category link       | Redirects to Dishes Category page   | Y   |                         |
-| Navbar              | Click Browse Dishes link       | Redirects to Browse Dishes page     | Y   |                         |
-| Navbar              | Click Checkout link            | Redirects to Checkout page          | Y   |                         |
-| Navbar              | Click Contact link             | Redirects to Customer Feedback page | Y   |                         |
-| Navbar (Logged In)  | Click Profile button           | Redirects to Profile page           | Y   |                         |
-| Navbar (Logged In)  | Click Logout button            | Redirects to Sign Out page          | Y   |                         |
-| Navbar (Logged Out) | Click Login button             | Redirects to Sign In page           | Y   |                         |
-| Navbar (Logged Out) | Click Sign Up button           | Redirects to Sign Up page           | Y   |                         |
-| Navbar (Staff)      | Click Admin Dashboard button   | Redirects to Admin Dashboard page   | Y   | Visible only to staff   |
-| Navbar              | View delivery information banner | Free delivery discount message displays | Y   | Visible to all users    |
+| Page                | User Actions                     | Expected Results                        | Y/N | Comments              |
+| ------------------- | -------------------------------- | --------------------------------------- | --- | --------------------- |
+| Navbar              | Click on Logo                    | Redirects to Home page                  | Y   |                       |
+| Navbar              | Click Home link                  | Redirects to Home page                  | Y   |                       |
+| Navbar              | Click Dish Category link         | Redirects to Dishes Category page       | Y   |                       |
+| Navbar              | Click Browse Dishes link         | Redirects to Browse Dishes page         | Y   |                       |
+| Navbar              | Click Checkout link              | Redirects to Checkout page              | Y   |                       |
+| Navbar              | Click Contact link               | Redirects to Customer Feedback page     | Y   |                       |
+| Navbar (Logged In)  | Click Profile button             | Redirects to Profile page               | Y   |                       |
+| Navbar (Logged In)  | Click Logout button              | Redirects to Sign Out page              | Y   |                       |
+| Navbar (Logged Out) | Click Login button               | Redirects to Sign In page               | Y   |                       |
+| Navbar (Logged Out) | Click Sign Up button             | Redirects to Sign Up page               | Y   |                       |
+| Navbar (Staff)      | Click Admin Dashboard button     | Redirects to Admin Dashboard page       | Y   | Visible only to staff |
+| Navbar              | View delivery information banner | Free delivery discount message displays | Y   | Visible to all users  |
 
 ---
 
 ### Footer page
 
-| Page   | User Actions               | Expected Results                     | Y/N | Comments |
-| ------ | -------------------------- | ------------------------------------ | --- | -------- |
-| Footer | Click Home                 | Redirects to Home page               | Y   |          |
-| Footer | Click Dish Category link   | Redirects to Dishes Category page    | Y   |          |
-| Footer | Click Browse Dishes link   | Redirects to Browse Dishes page      | Y   |          |
-| Footer | Click Contact button       | Redirects to Customer Feedback page  | Y   |          |
-| Footer | Click Privacy Policy       | Redirects to Privacy Policy page     | Y   |          |
-| Footer | Click Terms and Conditions | Redirects to Terms and Conditions page | Y   |        |
-| Footer | Click Facebook button      | Opens Facebook page                  | Y   |          |
-| Footer | Subscribe via email        | Subscribes user to mailing list      | Y   |          |
+| Page   | User Actions               | Expected Results                       | Y/N | Comments |
+| ------ | -------------------------- | -------------------------------------- | --- | -------- |
+| Footer | Click Home                 | Redirects to Home page                 | Y   |          |
+| Footer | Click Dish Category link   | Redirects to Dishes Category page      | Y   |          |
+| Footer | Click Browse Dishes link   | Redirects to Browse Dishes page        | Y   |          |
+| Footer | Click Contact button       | Redirects to Customer Feedback page    | Y   |          |
+| Footer | Click Privacy Policy       | Redirects to Privacy Policy page       | Y   |          |
+| Footer | Click Terms and Conditions | Redirects to Terms and Conditions page | Y   |          |
+| Footer | Click Facebook button      | Opens Facebook page                    | Y   |          |
+| Footer | Subscribe via email        | Subscribes user to mailing list        | Y   |          |
 
 ---
 
 ### Home Page
 
 | Page | User Actions                       | Expected Results                   | Y/N | Comments |
-| ---- | ----------------------------------- | ------------------------------------ | --- | -------- |
-| Home | Click Order button in Hero section  | Redirects to Dishes page             | Y   |          |
-| Home | Scroll to Featured Dishes           | Featured dishes displayed in cards   | Y   |          |
-| Home | Click View dish                     | Redirects to Dish Detail page        | Y   |          |
-| Home | Scroll to Testimonials              | Testimonials displayed               | Y   |          |
+| ---- | ---------------------------------- | ---------------------------------- | --- | -------- |
+| Home | Click Order button in Hero section | Redirects to Dishes page           | Y   |          |
+| Home | Scroll to Featured Dishes          | Featured dishes displayed in cards | Y   |          |
+| Home | Click View dish                    | Redirects to Dish Detail page      | Y   |          |
+| Home | Scroll to Testimonials             | Testimonials displayed             | Y   |          |
 
 ---
 
 ### Dishes Category and Browse Dishes Pages
 
-| Page             | User Actions             | Expected Results                          | Y/N | Comments                        |
-| ---------------- | ------------------------- | ------------------------------------------- | --- | --------------------------------- |
-| Category/Browse  | Type in search bar         | Search results displayed                    | Y   |                                    |
-| Category/Browse  | Filter by category         | Relevant dishes displayed                   | Y   |                                    |
-| Category/Browse  | Filter by price            | Relevant dishes displayed                   | Y   |                                    |
-| Category/Browse  | Filter by dietary type     | Relevant dishes displayed                   | Y   |                                    |
-| Category/Browse  | Filter by ingredients      | Relevant dishes displayed                   | Y   |                                    |
-| Category/Browse  | Click dish view detail     | Redirects to Dish Detail page               | Y   |                                    |
-| Category/Browse  | Click All                  | All dishes displayed                        | Y   |                                    |
-| Category/Browse  | Click Add to Bag button    | Dish added to bag, notification displayed   | Y   | If logged out, prompt to log in   |
-| Category/Browse  | Click quantity + / -       | Quantity updated                            | Y   | If logged out, prompt to log in   |
-| Category/Browse  | Click bag icon              | Redirects to your bag page                  | Y   | If logged out, prompt to log in   |
-| Category/Browse  | Click Remove from Bag      | Dish removed from bag, notification displayed | Y |                                    |
+| Page            | User Actions            | Expected Results                              | Y/N | Comments                        |
+| --------------- | ----------------------- | --------------------------------------------- | --- | ------------------------------- |
+| Category/Browse | Type in search bar      | Search results displayed                      | Y   |                                 |
+| Category/Browse | Filter by category      | Relevant dishes displayed                     | Y   |                                 |
+| Category/Browse | Filter by price         | Relevant dishes displayed                     | Y   |                                 |
+| Category/Browse | Filter by dietary type  | Relevant dishes displayed                     | Y   |                                 |
+| Category/Browse | Filter by ingredients   | Relevant dishes displayed                     | Y   |                                 |
+| Category/Browse | Click dish view detail  | Redirects to Dish Detail page                 | Y   |                                 |
+| Category/Browse | Click All               | All dishes displayed                          | Y   |                                 |
+| Category/Browse | Click Add to Bag button | Dish added to bag, notification displayed     | Y   | If logged out, prompt to log in |
+| Category/Browse | Click quantity + / -    | Quantity updated                              | Y   | If logged out, prompt to log in |
+| Category/Browse | Click bag icon          | Redirects to your bag page                    | Y   | If logged out, prompt to log in |
+| Category/Browse | Click Remove from Bag   | Dish removed from bag, notification displayed | Y   |                                 |
 
 ---
 
 ### Dish Detail Page
 
-| Page        | User Actions              | Expected Results                         | Y/N | Comments                        |
-| ----------- | -------------------------- | ------------------------------------------- | --- | --------------------------------- |
-| Dish Detail | Click Add to Bag button    | Dish added to bag, notification displayed  | Y   | If logged out, prompt to log in   |
-| Dish Detail | Click quantity + / -       | Quantity updated                           | Y   | If logged out, prompt to log in   |
-| Dish Detail | View Ingredients           | Ingredients displayed                      | Y   |                                    |
-| Dish Detail | View Dietary info          | Dietary info displayed                     | Y   |                                    |
-| Dish Detail | Click Browse Dishes        | Redirects to previous page, dishes page    | Y   |                                    |
-| Dish Detail | Click size dropdown        | Dish sizes displayed                       | Y   |                                    |
-| Dish Detail | Click desired dish size    | Dish size displayed                        | Y   |                                    |
+| Page        | User Actions            | Expected Results                          | Y/N | Comments                        |
+| ----------- | ----------------------- | ----------------------------------------- | --- | ------------------------------- |
+| Dish Detail | Click Add to Bag button | Dish added to bag, notification displayed | Y   | If logged out, prompt to log in |
+| Dish Detail | Click quantity + / -    | Quantity updated                          | Y   | If logged out, prompt to log in |
+| Dish Detail | View Ingredients        | Ingredients displayed                     | Y   |                                 |
+| Dish Detail | View Dietary info       | Dietary info displayed                    | Y   |                                 |
+| Dish Detail | Click Browse Dishes     | Redirects to previous page, dishes page   | Y   |                                 |
+| Dish Detail | Click size dropdown     | Dish sizes displayed                      | Y   |                                 |
+| Dish Detail | Click desired dish size | Dish size displayed                       | Y   |                                 |
 
 ---
 
 ### Your Bag and Checkout Pages
 
-| Page     | User Actions                  | Expected Results                            | Y/N | Comments                            |
-| -------- | ------------------------------- | ---------------------------------------------- | --- | -------------------------------------- |
-| Bag      | Click Remove item                | Item removed, totals updated                   | Y   |                                        |
-| Bag      | Change quantity + / -            | Quantity updated, totals updated               | Y   |                                        |
-| Bag      | Click Checkout                   | Redirects to Checkout page                     | Y   |                                        |
-| Checkout | Fill in Name, Address, Phone     | Fields accept input                            | Y   |                                        |
-| Checkout | Select delivery type             | Delivery type selectable                       | Y   |                                        |
-| Checkout | Click Pay Now button              | Order processed, redirects to Success page     | Y   | Success page displays order summary   |
-| Checkout | Invalid/missing info             | Error message displayed                        | Y   | Form validation                       |
+| Page     | User Actions                 | Expected Results                           | Y/N | Comments                            |
+| -------- | ---------------------------- | ------------------------------------------ | --- | ----------------------------------- |
+| Bag      | Click Remove item            | Item removed, totals updated               | Y   |                                     |
+| Bag      | Change quantity + / -        | Quantity updated, totals updated           | Y   |                                     |
+| Bag      | Click Checkout               | Redirects to Checkout page                 | Y   |                                     |
+| Checkout | Fill in Name, Address, Phone | Fields accept input                        | Y   |                                     |
+| Checkout | Select delivery type         | Delivery type selectable                   | Y   |                                     |
+| Checkout | Click Pay Now button         | Order processed, redirects to Success page | Y   | Success page displays order summary |
+| Checkout | Invalid/missing info         | Error message displayed                    | Y   | Form validation                     |
 
 ---
 
 ### Success Page
 
-| Page    | User Actions             | Expected Results          | Y/N | Comments |
-| ------- | -------------------------- | ---------------------------- | --- | -------- |
-| Success | Click go to my profile     | Redirects to profile page   | Y   |          |
-| Success | Click continue shopping    | Redirects to dishes page    | Y   |          |
+| Page    | User Actions            | Expected Results          | Y/N | Comments |
+| ------- | ----------------------- | ------------------------- | --- | -------- |
+| Success | Click go to my profile  | Redirects to profile page | Y   |          |
+| Success | Click continue shopping | Redirects to dishes page  | Y   |          |
 
 ---
 
 ### Feedback Page
 
-| Page     | User Actions                        | Expected Results               | Y/N | Comments         |
-| -------- | ------------------------------------- | --------------------------------- | --- | ------------------ |
-| Feedback | Enter Name, Email, subject, Message   | Fields accept input               | Y   | Logged out user    |
-| Feedback | Enter subject, Message                | Fields accept input               | Y   | Logged in user     |
-| Feedback | Click Submit Feedback                 | Confirmation message displayed    | Y   |                     |
-| Feedback | Leave field empty                     | Error message displayed           | Y   | Form validation    |
+| Page     | User Actions                        | Expected Results               | Y/N | Comments        |
+| -------- | ----------------------------------- | ------------------------------ | --- | --------------- |
+| Feedback | Enter Name, Email, subject, Message | Fields accept input            | Y   | Logged out user |
+| Feedback | Enter subject, Message              | Fields accept input            | Y   | Logged in user  |
+| Feedback | Click Submit Feedback               | Confirmation message displayed | Y   |                 |
+| Feedback | Leave field empty                   | Error message displayed        | Y   | Form validation |
 
 ---
 
 ### My Profile Page
 
-| Page    | User Actions                  | Expected Results                  | Y/N | Comments                     |
-| ------- | -------------------------------- | ------------------------------------ | --- | -------------------------------- |
-| Profile | Update telephone, address        | Fields accept input                  | Y   |                                   |
-| Profile | Click Update profile              | Changes saved                        | Y   | Success message displayed        |
-| Profile | Invalid input                    | Error message displayed              | Y   |                                   |
-| Profile | View Order History                | Orders listed                        | Y   | Click to view order details      |
+| Page    | User Actions              | Expected Results        | Y/N | Comments                    |
+| ------- | ------------------------- | ----------------------- | --- | --------------------------- |
+| Profile | Update telephone, address | Fields accept input     | Y   |                             |
+| Profile | Click Update profile      | Changes saved           | Y   | Success message displayed   |
+| Profile | Invalid input             | Error message displayed | Y   |                             |
+| Profile | View Order History        | Orders listed           | Y   | Click to view order details |
 
 ---
 
@@ -144,72 +144,72 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 #### Orders Management
 
-| Page         | User Actions          | Expected Results                       | Y/N | Comments |
-| ------------ | ------------------------ | ------------------------------------------ | --- | -------- |
-| Admin Orders | View all orders          | Orders displayed                           | Y   |          |
-| Admin Orders | Click view details       | Opens order details modal                  | Y   |          |
-| Admin Orders | Update order status      | Status updated, confirmation message       | Y   |          |
-| Admin Orders | Click Cancel              | Redirects to cancel confirmation page      | Y   |          |
-| Admin Orders | Click Print               | Redirects to printable order receipt       | Y   |          |
+| Page         | User Actions        | Expected Results                      | Y/N | Comments |
+| ------------ | ------------------- | ------------------------------------- | --- | -------- |
+| Admin Orders | View all orders     | Orders displayed                      | Y   |          |
+| Admin Orders | Click view details  | Opens order details modal             | Y   |          |
+| Admin Orders | Update order status | Status updated, confirmation message  | Y   |          |
+| Admin Orders | Click Cancel        | Redirects to cancel confirmation page | Y   |          |
+| Admin Orders | Click Print         | Redirects to printable order receipt  | Y   |          |
 
 #### Dishes Management
 
-| Page         | User Actions | Expected Results                                     | Y/N | Comments                  |
-| ------------ | --------------- | -------------------------------------------------------- | --- | ---------------------------- |
-| Admin Dishes | Add Dish        | Redirects to add dish page; dish created successfully    | Y   | Success message displayed    |
-| Admin Dishes | Edit Dish       | Redirects to edit dish page; dish updated successfully   | Y   | Success message displayed    |
-| Admin Dishes | Delete Dish     | Redirects to delete dish confirmation page                | Y   | Success message displayed    |
+| Page         | User Actions | Expected Results                                       | Y/N | Comments                  |
+| ------------ | ------------ | ------------------------------------------------------ | --- | ------------------------- |
+| Admin Dishes | Add Dish     | Redirects to add dish page; dish created successfully  | Y   | Success message displayed |
+| Admin Dishes | Edit Dish    | Redirects to edit dish page; dish updated successfully | Y   | Success message displayed |
+| Admin Dishes | Delete Dish  | Redirects to delete dish confirmation page             | Y   | Success message displayed |
 
 #### Categories Management
 
-| Page              | User Actions   | Expected Results                                           | Y/N | Comments                  |
-| ------------------ | ---------------- | -------------------------------------------------------------- | --- | ---------------------------- |
-| Admin Categories   | Add Category     | Redirects to add category page; category created successfully | Y   | Success message displayed    |
-| Admin Categories   | Edit Category    | Redirects to edit category page; category updated successfully| Y   | Success message displayed    |
-| Admin Categories   | Delete Category  | Redirects to delete category confirmation page                 | Y   | Success message displayed    |
+| Page             | User Actions    | Expected Results                                               | Y/N | Comments                  |
+| ---------------- | --------------- | -------------------------------------------------------------- | --- | ------------------------- |
+| Admin Categories | Add Category    | Redirects to add category page; category created successfully  | Y   | Success message displayed |
+| Admin Categories | Edit Category   | Redirects to edit category page; category updated successfully | Y   | Success message displayed |
+| Admin Categories | Delete Category | Redirects to delete category confirmation page                 | Y   | Success message displayed |
 
 #### Feedback
 
-| Page     | User Actions                | Expected Results                     | Y/N | Comments |
-| -------- | ------------------------------ | ----------------------------------------- | --- | -------- |
-| Feedback | Select Unread, Apply           | All unread messages display               | Y   |          |
-| Feedback | Select Handled, Apply          | All handled messages display              | Y   |          |
-| Feedback | Click Mark as Handled button   | Feedback status updates to Handled        | Y   |          |
+| Page     | User Actions                 | Expected Results                   | Y/N | Comments |
+| -------- | ---------------------------- | ---------------------------------- | --- | -------- |
+| Feedback | Select Unread, Apply         | All unread messages display        | Y   |          |
+| Feedback | Select Handled, Apply        | All handled messages display       | Y   |          |
+| Feedback | Click Mark as Handled button | Feedback status updates to Handled | Y   |          |
 
 ---
 
 ## Testing User Stories
 
-| User Story ID | User Story | Requirement Met |
-| ------------- | ---------- | --------------- |
-| US01 | As a Customer, I want to view a list of dishes, so that I can select some to order. | Y |
-| US02 | As a Customer, I want to view dishes by category (e.g., Breakfast, Dinner, Lunch), so that I can quickly find what I want. | Y |
-| US03 | As a Customer, I want to view details of a dish, so that I can see description, ingredients, image, portion size, and price. | Y |
-| US04 | As a Customer, I want to identify featured dishes, so that I can take advantage of offers. | Y |
-| US05 | As a Customer, I want to view my total order cost at any time, so that I can manage my budget. | Y |
-| US06 | As a Site User, I want to register an account, so that I can save my details and order history. | Y |
-| US07 | As a Site User, I want to log in and log out, so that my account is secure. | Y |
-| US08 | As a Site User, I want to recover my password, so that I can regain access if I forget it. | Y |
-| US09 | As a Site User, I want to receive email confirmation after registering, so that I know my account is created. | Y |
-| US10 | As a Site User, I want a personalised profile, so that I can view order history, saved addresses, and preferences. | Y |
-| US11 | As a Customer, I want to sort dishes by price, so that I can find the best options. | Y |
-| US12 | As a Customer, I want to sort dishes within a category, so that I can find dishes in that category. | Y |
-| US13 | As a Customer, I want to search for dishes by name or ingredients, so that I can quickly find what I want. | Y |
-| US14 | As a Customer, I want to view search results clearly, so that I can decide whether the dish I want is available. | Y |
-| US15 | As a Customer, I want to select portion size and quantity for each dish, so that I order exactly what I want. | Y |
-| US16 | As a Customer, I want to view all dishes in my bag, so that I can confirm my selections. | Y |
-| US17 | As a Customer, I want to adjust quantities or remove dishes in my bag, so that I can change my order easily. | Y |
-| US18 | As a Customer, I want to enter payment information securely, so that I can complete my order safely. | Y |
-| US19 | As a Customer, I want to see order confirmation after checkout, so that I know my order was successful. | Y |
-| US20 | As a Customer, I want to receive an email confirmation after checkout, so that I can keep a record of my order. | Y |
-| US21 | As an Admin, I want to add new dishes, so that I can expand my menu. | Y |
-| US22 | As an Admin, I want to edit dish details, so that I can update pricing, images, descriptions, or availability. | Y |
-| US23 | As an Admin, I want to delete dishes, so that I can remove items no longer offered. | Y |
-| US24 | As a Customer, I want to submit feedback on dishes, so that I can share my opinion or report issues. | Y |
-| US25 | As a Site User, I want to update my profile, so that my personal information and delivery preferences are current. | Y |
-| US26 | As a Site User, I want to view past orders, so that I can reference previous dishes I liked. | Y |
-| US27 | As a User (Customer), I want to delete my account, so that my personal data and order history are removed. | Y |
-| US28 | As a Site User, I want to change my password, so that I can maintain account security. | Y |
+| User Story ID | User Story                                                                                                                   | Requirement Met |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| US01          | As a Customer, I want to view a list of dishes, so that I can select some to order.                                          | Y               |
+| US02          | As a Customer, I want to view dishes by category (e.g., Breakfast, Dinner, Lunch), so that I can quickly find what I want.   | Y               |
+| US03          | As a Customer, I want to view details of a dish, so that I can see description, ingredients, image, portion size, and price. | Y               |
+| US04          | As a Customer, I want to identify featured dishes, so that I can take advantage of offers.                                   | Y               |
+| US05          | As a Customer, I want to view my total order cost at any time, so that I can manage my budget.                               | Y               |
+| US06          | As a Site User, I want to register an account, so that I can save my details and order history.                              | Y               |
+| US07          | As a Site User, I want to log in and log out, so that my account is secure.                                                  | Y               |
+| US08          | As a Site User, I want to recover my password, so that I can regain access if I forget it.                                   | Y               |
+| US09          | As a Site User, I want to receive email confirmation after registering, so that I know my account is created.                | Y               |
+| US10          | As a Site User, I want a personalised profile, so that I can view order history, saved addresses, and preferences.           | Y               |
+| US11          | As a Customer, I want to sort dishes by price, so that I can find the best options.                                          | Y               |
+| US12          | As a Customer, I want to sort dishes within a category, so that I can find dishes in that category.                          | Y               |
+| US13          | As a Customer, I want to search for dishes by name or ingredients, so that I can quickly find what I want.                   | Y               |
+| US14          | As a Customer, I want to view search results clearly, so that I can decide whether the dish I want is available.             | Y               |
+| US15          | As a Customer, I want to select portion size and quantity for each dish, so that I order exactly what I want.                | Y               |
+| US16          | As a Customer, I want to view all dishes in my bag, so that I can confirm my selections.                                     | Y               |
+| US17          | As a Customer, I want to adjust quantities or remove dishes in my bag, so that I can change my order easily.                 | Y               |
+| US18          | As a Customer, I want to enter payment information securely, so that I can complete my order safely.                         | Y               |
+| US19          | As a Customer, I want to see order confirmation after checkout, so that I know my order was successful.                      | Y               |
+| US20          | As a Customer, I want to receive an email confirmation after checkout, so that I can keep a record of my order.              | Y               |
+| US21          | As an Admin, I want to add new dishes, so that I can expand my menu.                                                         | Y               |
+| US22          | As an Admin, I want to edit dish details, so that I can update pricing, images, descriptions, or availability.               | Y               |
+| US23          | As an Admin, I want to delete dishes, so that I can remove items no longer offered.                                          | Y               |
+| US24          | As a Customer, I want to submit feedback on dishes, so that I can share my opinion or report issues.                         | Y               |
+| US25          | As a Site User, I want to update my profile, so that my personal information and delivery preferences are current.           | Y               |
+| US26          | As a Site User, I want to view past orders, so that I can reference previous dishes I liked.                                 | Y               |
+| US27          | As a User (Customer), I want to delete my account, so that my personal data and order history are removed.                   | Y               |
+| US28          | As a Site User, I want to change my password, so that I can maintain account security.                                       | Y               |
 
 ---
 
@@ -222,14 +222,14 @@ During the development process, several issues were encountered that required a 
 1. Django Version Compatibility Issues:
 
 - Problem:
-The project was initially developed using Django 5, which caused compatibility issues with AWS S3 code used. Downgrading to Django 4.2.11 resolved the S3 issue, but introduced new compatibility problems with the recently installed version of django-allauth.
+  The project was initially developed using Django 5, which caused compatibility issues with AWS S3 code used. Downgrading to Django 4.2.11 resolved the S3 issue, but introduced new compatibility problems with the recently installed version of django-allauth.
 
 - Solution:
-The issue was resolved by upgrading Django to 4.2.16, which is compatible with django-allauth==65.13.1. After updating Django, a command was used to upgrade and reinstall all other project dependencies to ensure they were compatible with Django 4.2.16.
-    ```bash
-    pip install django==4.2.16
-    pip install --upgrade -r requirements.txt
-    ```
+  The issue was resolved by upgrading Django to 4.2.16, which is compatible with django-allauth==65.13.1. After updating Django, a command was used to upgrade and reinstall all other project dependencies to ensure they were compatible with Django 4.2.16.
+  `bash
+  pip install django==4.2.16
+  pip install --upgrade -r requirements.txt
+  `
 
 **Unsolved bugs:**
 

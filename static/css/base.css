@@ -1,3 +1,42 @@
+/* Self-hosted Poppins (latin subset only - the site is English-only) -
+   replaces the Google Fonts CSS link, which was itself a render-blocking
+   request before the browser could even start fetching the font files.
+   Weights match what the site actually uses: 300/400/500/600/700. */
+@font-face {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url("/static/fonts/poppins-300.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/static/fonts/poppins-400.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("/static/fonts/poppins-500.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("/static/fonts/poppins-600.woff2") format("woff2");
+}
+@font-face {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/static/fonts/poppins-700.woff2") format("woff2");
+}
 /* Design tokens */
 :root {
     --colour-white: #fff;

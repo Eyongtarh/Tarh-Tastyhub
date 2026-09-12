@@ -45,7 +45,7 @@
               {% if dish.image %}
                 <img
                   src="{{ dish.image_card.url|default:dish.image.url }}"
-                  srcset="{{ dish.image_card.url|default:dish.image.url }} 550w, {{ dish.image.url }} 1200w"
+                  srcset="{{ dish.image_card.url|default:dish.image.url }} 800w, {{ dish.image.url }} 1200w"
                   sizes="(max-width: 767.98px) 100vw, (max-width: 991.98px) 33vw, 25vw"
                   class="card-img-top"
                   alt="{{ dish.name }}"
