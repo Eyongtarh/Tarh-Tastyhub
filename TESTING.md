@@ -1,4 +1,16 @@
-# TESTING
+# Testing
+
+## Table of Contents
+
+- [Manual Testing](#manual-testing)
+- [Testing User Stories](#testing-user-stories)
+- [Bugs](#bugs)
+- [Validation](#validation)
+- [Lighthouse Report](#lighthouse-report)
+- [Compatibility](#compatibility)
+- [Responsiveness](#responsiveness)
+
+---
 
 ## Manual Testing
 
@@ -6,166 +18,163 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 
 ---
 
-## Navbar page
+### Navbar page
 
-| Page                | User Actions                    | Expected Results                  | Y/N | Comments              |
-| ------------------- | ------------------------------- | --------------------------------- | --- | --------------------- |
-| Navbar              | Click on Logo                   | Redirects to Home page            | Y   |                       |
-| Navbar              | Click Home link                 | Redirects to Home page            | Y   |                       |
-| Navbar              | Click Dish Category link        | Redirects to Dishes Category page | Y   |                       |
-| Navbar              | Click Browse Dishes link        | Redirects to Browse Dishes page   | Y   |                       |
-| Navbar              | Click Checkout link             | Redirects to Checkout page        | Y   |                       |
-| Navbar              | Click Contact link              | Redirects to Customer Feedback page| Y   |                       |
-| Navbar (Logged In)  | Click Profile button            | Redirects to Profile page         | Y   |                       |
-| Navbar (Logged In)  | Click Logout button             | Redirects to Signout page         | Y   |                       |
-| Navbar (Logged Out) | Click Login button              | Redirects to Signin page          | Y   |                       |
-| Navbar (Logged Out) | Click SignUp button             | Redirects to SignUp page          | Y   |                       |
-| Navbar (Staff)      | Click Admin Dashboard button    | Redirects to Admin Dashboard page | Y   | Visible only to staff |
-| Navbar              | Delivery Information            | Discount message displays        | Y   | Visible to all users  |
+| Page                | User Actions                 | Expected Results                   | Y/N | Comments               |
+| ------------------- | ----------------------------- | ----------------------------------- | --- | ----------------------- |
+| Navbar              | Click on Logo                 | Redirects to Home page              | Y   |                         |
+| Navbar              | Click Home link                | Redirects to Home page              | Y   |                         |
+| Navbar              | Click Dish Category link       | Redirects to Dishes Category page   | Y   |                         |
+| Navbar              | Click Browse Dishes link       | Redirects to Browse Dishes page     | Y   |                         |
+| Navbar              | Click Checkout link            | Redirects to Checkout page          | Y   |                         |
+| Navbar              | Click Contact link             | Redirects to Customer Feedback page | Y   |                         |
+| Navbar (Logged In)  | Click Profile button           | Redirects to Profile page           | Y   |                         |
+| Navbar (Logged In)  | Click Logout button            | Redirects to Sign Out page          | Y   |                         |
+| Navbar (Logged Out) | Click Login button             | Redirects to Sign In page           | Y   |                         |
+| Navbar (Logged Out) | Click Sign Up button           | Redirects to Sign Up page           | Y   |                         |
+| Navbar (Staff)      | Click Admin Dashboard button   | Redirects to Admin Dashboard page   | Y   | Visible only to staff   |
+| Navbar              | View delivery information banner | Free delivery discount message displays | Y   | Visible to all users    |
 
 ---
 
-## Footer page
+### Footer page
 
 | Page   | User Actions               | Expected Results                     | Y/N | Comments |
 | ------ | -------------------------- | ------------------------------------ | --- | -------- |
 | Footer | Click Home                 | Redirects to Home page               | Y   |          |
 | Footer | Click Dish Category link   | Redirects to Dishes Category page    | Y   |          |
 | Footer | Click Browse Dishes link   | Redirects to Browse Dishes page      | Y   |          |
-| Footer | Click Contact button       | Redirects to Custome Feedback page   | Y   |          |
+| Footer | Click Contact button       | Redirects to Customer Feedback page  | Y   |          |
 | Footer | Click Privacy Policy       | Redirects to Privacy Policy page     | Y   |          |
-| Footer | Click Terms and Conditions | Redirects to Terms & Conditions page | Y   |          |
+| Footer | Click Terms and Conditions | Redirects to Terms and Conditions page | Y   |        |
 | Footer | Click Facebook button      | Opens Facebook page                  | Y   |          |
 | Footer | Subscribe via email        | Subscribes user to mailing list      | Y   |          |
 
 ---
 
-## Home Page
+### Home Page
 
-| Page | User Actions                       | Expected Results                      | Y/N | Comments |
-| ---- | ---------------------------------- | ------------------------------------- | --- | -------- |
-| Home | Click Order button in Hero section | Redirects to Dishes page              | Y   |          |
-| Home | Scroll to Featured Dishes          | Featured dishes displayed in cards    | Y   |          |
-| Home | Click View dish                    | Redirects to Dish Detail page         | Y   |          |
-| Home | Scroll to Testimonials             | Testimonials displayed                | Y   |          |
-
----
-
-## Dishes Category and Browse Dishes Pages
-
-| Page            | User Actions            | Expected Results                                   | Y/N | Comments   |
-| --------------- | ----------------------- | -------------------------------------------------- | ----| ------------
-| Category/Browse | Type in search bar      | Search results displayed                           | Y   |             |
-| Category/Browse | Filter by category      | Relevant dishes displayed                          | Y   |             |
-| Category/Browse | Filter by price         | Relevant dishes displayed                          | Y   |             |
-| Category/Browse | Filter by dietary type  | Relevant dishes displayed                          | Y   |             |
-| Category/Browse | Filter by ingredients   | Relevant dishes displayed                          | Y   |             |
-| Category/Browse | Click dish view detail  | Redirects to Dish Detail page                      | Y   |             |
-| Category/Browse | Click All.              | All dishes displayed                               | Y   |             |
-| Category/Browse | Click Add to Bag button | Dish added to bag, notification displayed          | Y   | If logged out, prompt to login |
-| Category/Browse | Click quantity + / -    | Quantity updated                                   | Y   | If logged out, prompt to login |
-| Category/Browse | Click bag icon          | Redirects to your bag page                         | Y   | If logged out, prompt to login |
-| Category/Browse | Click Remove from Bag   | Dish removed from bag, notification displayed      | Y   |             |
+| Page | User Actions                       | Expected Results                   | Y/N | Comments |
+| ---- | ----------------------------------- | ------------------------------------ | --- | -------- |
+| Home | Click Order button in Hero section  | Redirects to Dishes page             | Y   |          |
+| Home | Scroll to Featured Dishes           | Featured dishes displayed in cards   | Y   |          |
+| Home | Click View dish                     | Redirects to Dish Detail page        | Y   |          |
+| Home | Scroll to Testimonials              | Testimonials displayed               | Y   |          |
 
 ---
 
-## Dish Detail Page
+### Dishes Category and Browse Dishes Pages
 
-| Page        | User Actions            | Expected Results                          | Y/N | Comments |
-| ----------- | ----------------------- | ----------------------------------------- | ----- | ------
-| Dish Detail | Click Add to Bag button | Dish added to bag, notification displayed | Y   | If logged out, prompt to login |
-| Dish Detail | Click quantity + / -    | Quantity updated                          | Y   | If logged out, prompt to login |
-| Dish Detail | View Ingredients        | Ingredients displayed                     | Y   |          |
-| Dish Detail | View Dietary info       | Dietary info displayed                    | Y   |          |
-| Dish Detail | Click Browse Dishes     | Redirects to previous page, dishes page   | Y   |          |
-| Dish Detail | Click size dropdown.    | Dish sizes displayed.                     | Y   |          |
-| Dish Detail | Click desired dish size | Dish size displayed.                      | Y   |          |
-
----
-
-## Your Bag and Checkout Pages
-
-| Page     | User Actions                 | Expected Results                           | Y/N | Comments |
-| -------- | ---------------------------- | ------------------------------------------ | --- | ---------|
-| Bag      | Click Remove item            | Item removed, totals updated               | Y   |          |
-| Bag      | Change quantity + / -        | Quantity updated, totals updated           | Y   |          |
-| Bag      | Click Checkout               | Redirects to Checkout page                 | Y   |          |
-| Checkout | Fill in Name, Address, Phone | Fields accept input                        | Y   |          |
-| Checkout | Select delivery type.        | Delivery type selectable                   | Y   |          |
-| Checkout | Click pay now.               | Order processed, redirects to Success page | Y   | Success page displays order summary |
-| Checkout | Invalid/missing info         | Error message displayed                    | Y   | Form validation |
+| Page             | User Actions             | Expected Results                          | Y/N | Comments                        |
+| ---------------- | ------------------------- | ------------------------------------------- | --- | --------------------------------- |
+| Category/Browse  | Type in search bar         | Search results displayed                    | Y   |                                    |
+| Category/Browse  | Filter by category         | Relevant dishes displayed                   | Y   |                                    |
+| Category/Browse  | Filter by price            | Relevant dishes displayed                   | Y   |                                    |
+| Category/Browse  | Filter by dietary type     | Relevant dishes displayed                   | Y   |                                    |
+| Category/Browse  | Filter by ingredients      | Relevant dishes displayed                   | Y   |                                    |
+| Category/Browse  | Click dish view detail     | Redirects to Dish Detail page               | Y   |                                    |
+| Category/Browse  | Click All                  | All dishes displayed                        | Y   |                                    |
+| Category/Browse  | Click Add to Bag button    | Dish added to bag, notification displayed   | Y   | If logged out, prompt to log in   |
+| Category/Browse  | Click quantity + / -       | Quantity updated                            | Y   | If logged out, prompt to log in   |
+| Category/Browse  | Click bag icon              | Redirects to your bag page                  | Y   | If logged out, prompt to log in   |
+| Category/Browse  | Click Remove from Bag      | Dish removed from bag, notification displayed | Y |                                    |
 
 ---
 
-## Success Page
+### Dish Detail Page
 
-| Page    | User Actions               | Expected Results          | Y/N | Comments |
-| ------- | -------------------------- | ------------------------- | --- | -------- |
-| Success | Click go to my profile     | Redirects to profile page | Y   |          |
-| Success | Click continue shopping    | Redirects to dishes page  | Y   |          |
-
----
-
-## Feedback Page
-
-| Page     | User Actions                        | Expected Results               | Y/N | Comments        |
-| -------- | ----------------------------------- | ------------------------------ | --- | --------------- |
-| Feedback | Enter Name, Email, subject, Message | Fields accept input            | Y   | logged out user |
-| Feedback | Enter subject, Message              | Fields accept input            | Y   | logged in user  |
-| Feedback | Click Submit Feedback               | Confirmation message displayed | Y   |                 |
-| Feedback | Leave field empty                   | Error message displayed        | Y   | Form validation |
+| Page        | User Actions              | Expected Results                         | Y/N | Comments                        |
+| ----------- | -------------------------- | ------------------------------------------- | --- | --------------------------------- |
+| Dish Detail | Click Add to Bag button    | Dish added to bag, notification displayed  | Y   | If logged out, prompt to log in   |
+| Dish Detail | Click quantity + / -       | Quantity updated                           | Y   | If logged out, prompt to log in   |
+| Dish Detail | View Ingredients           | Ingredients displayed                      | Y   |                                    |
+| Dish Detail | View Dietary info          | Dietary info displayed                     | Y   |                                    |
+| Dish Detail | Click Browse Dishes        | Redirects to previous page, dishes page    | Y   |                                    |
+| Dish Detail | Click size dropdown        | Dish sizes displayed                       | Y   |                                    |
+| Dish Detail | Click desired dish size    | Dish size displayed                        | Y   |                                    |
 
 ---
 
-## My Profile Page
+### Your Bag and Checkout Pages
 
-| Page    | User Actions                 | Expected Results                   | Y/N | Comments                    |
-| ------- | ---------------------------- | ---------------------------------- | --- | --------------------------- |
-| Profile | Update telephone, address    | Fields accept input                | Y   |                             |
-| Profile | Click Update profile         | Changes saved                      | Y   | Success message displayed   |
-| Profile | Invalid input                | Error message displayed            | Y   |                             |
-| Profile | View Order History           | Orders listed                      | Y   | Click to view order details |
-
+| Page     | User Actions                  | Expected Results                            | Y/N | Comments                            |
+| -------- | ------------------------------- | ---------------------------------------------- | --- | -------------------------------------- |
+| Bag      | Click Remove item                | Item removed, totals updated                   | Y   |                                        |
+| Bag      | Change quantity + / -            | Quantity updated, totals updated               | Y   |                                        |
+| Bag      | Click Checkout                   | Redirects to Checkout page                     | Y   |                                        |
+| Checkout | Fill in Name, Address, Phone     | Fields accept input                            | Y   |                                        |
+| Checkout | Select delivery type             | Delivery type selectable                       | Y   |                                        |
+| Checkout | Click Pay Now button              | Order processed, redirects to Success page     | Y   | Success page displays order summary   |
+| Checkout | Invalid/missing info             | Error message displayed                        | Y   | Form validation                       |
 
 ---
 
-## Admin Dashboard
+### Success Page
 
-### Orders Management
+| Page    | User Actions             | Expected Results          | Y/N | Comments |
+| ------- | -------------------------- | ---------------------------- | --- | -------- |
+| Success | Click go to my profile     | Redirects to profile page   | Y   |          |
+| Success | Click continue shopping    | Redirects to dishes page    | Y   |          |
 
-| Page         | User Actions        | Expected Results                     | Y/N | Comments |
-| ------------ | ------------------- | ------------------------------------ | --- | -------- |
-| Admin Orders | View all orders     | Orders displayed                     | Y   |          |
-| Admin Orders | Click view details  | Opens order details modal            | Y   |          |
-| Admin Orders | Update order status | Status updated, confirmation message | Y   |          |
-| Admin Orders | Click cancel        | cancel page opens, confirm.          | Y   |          |
-| Admin Orders | Click print         | print page opens, print.             | Y   |          |
+---
 
-### Dishes Management
+### Feedback Page
 
-| Page         | User Actions | Expected Results                            | Y/N | Comments                  |
-| ------------ | ------------ | ------------------------------------------- | --- | ------------------------- |
-| Admin Dishes | Add Dish     | add dish page opens, add dish, successful   | Y   | Success message displayed |
-| Admin Dishes | Edit Dish    | edit dish page opens, edit dish, successful | Y   | Success message displayed |
-| Admin Dishes | Delete Dish  | delete dish page opens, delete confirmation | Y   | Success message displayed |
+| Page     | User Actions                        | Expected Results               | Y/N | Comments         |
+| -------- | ------------------------------------- | --------------------------------- | --- | ------------------ |
+| Feedback | Enter Name, Email, subject, Message   | Fields accept input               | Y   | Logged out user    |
+| Feedback | Enter subject, Message                | Fields accept input               | Y   | Logged in user     |
+| Feedback | Click Submit Feedback                 | Confirmation message displayed    | Y   |                     |
+| Feedback | Leave field empty                     | Error message displayed           | Y   | Form validation    |
 
-### Categories 
+---
 
-| Page              | User Actions       | Expected Results                                         | Y/N | Comments                  |
-| ----------------- | ------------------ | -------------------------------------------------------- | --- | --------------------------|
-| Admin Categories  | Add Categories     | add Categories page opens, add Categories , successful   | Y   | Success message displayed |
-| Admin Categories  | Edit Categories    | edit Categories page opens, edit Categories , successful | Y   | Success message displayed |
-| Admin Categories  | Delete Categories  | delete Categories page opens, delete confirmation        | Y   | Success message displayed |
+### My Profile Page
 
-### Feedback
+| Page    | User Actions                  | Expected Results                  | Y/N | Comments                     |
+| ------- | -------------------------------- | ------------------------------------ | --- | -------------------------------- |
+| Profile | Update telephone, address        | Fields accept input                  | Y   |                                   |
+| Profile | Click Update profile              | Changes saved                        | Y   | Success message displayed        |
+| Profile | Invalid input                    | Error message displayed              | Y   |                                   |
+| Profile | View Order History                | Orders listed                        | Y   | Click to view order details      |
 
-| Page     | User Actions                        | Expected Results                    | Y/N | Comments        |
-| -------- | ----------------------------------- | ----------------------------------- | --- | --------------- |
-| Feedback | Select unread, Apply                | All unread messages display         | Y   |                 |
-| Feedback | Select handled , Apply              | All handled messages display        | Y   |                 |
-| Feedback | Click mark as handled               | Message displays as handled         | Y   |                 |
-| Feedback | Click handled                       | Message displays as mark as handled | Y   |                 |
+---
 
+### Admin Dashboard
+
+#### Orders Management
+
+| Page         | User Actions          | Expected Results                       | Y/N | Comments |
+| ------------ | ------------------------ | ------------------------------------------ | --- | -------- |
+| Admin Orders | View all orders          | Orders displayed                           | Y   |          |
+| Admin Orders | Click view details       | Opens order details modal                  | Y   |          |
+| Admin Orders | Update order status      | Status updated, confirmation message       | Y   |          |
+| Admin Orders | Click Cancel              | Redirects to cancel confirmation page      | Y   |          |
+| Admin Orders | Click Print               | Redirects to printable order receipt       | Y   |          |
+
+#### Dishes Management
+
+| Page         | User Actions | Expected Results                                     | Y/N | Comments                  |
+| ------------ | --------------- | -------------------------------------------------------- | --- | ---------------------------- |
+| Admin Dishes | Add Dish        | Redirects to add dish page; dish created successfully    | Y   | Success message displayed    |
+| Admin Dishes | Edit Dish       | Redirects to edit dish page; dish updated successfully   | Y   | Success message displayed    |
+| Admin Dishes | Delete Dish     | Redirects to delete dish confirmation page                | Y   | Success message displayed    |
+
+#### Categories Management
+
+| Page              | User Actions   | Expected Results                                           | Y/N | Comments                  |
+| ------------------ | ---------------- | -------------------------------------------------------------- | --- | ---------------------------- |
+| Admin Categories   | Add Category     | Redirects to add category page; category created successfully | Y   | Success message displayed    |
+| Admin Categories   | Edit Category    | Redirects to edit category page; category updated successfully| Y   | Success message displayed    |
+| Admin Categories   | Delete Category  | Redirects to delete category confirmation page                 | Y   | Success message displayed    |
+
+#### Feedback
+
+| Page     | User Actions                | Expected Results                     | Y/N | Comments |
+| -------- | ------------------------------ | ----------------------------------------- | --- | -------- |
+| Feedback | Select Unread, Apply           | All unread messages display               | Y   |          |
+| Feedback | Select Handled, Apply          | All handled messages display              | Y   |          |
+| Feedback | Click Mark as Handled button   | Feedback status updates to Handled        | Y   |          |
 
 ---
 
@@ -188,8 +197,8 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | US13 | As a Customer, I want to search for dishes by name or ingredients, so that I can quickly find what I want. | Y |
 | US14 | As a Customer, I want to view search results clearly, so that I can decide whether the dish I want is available. | Y |
 | US15 | As a Customer, I want to select portion size and quantity for each dish, so that I order exactly what I want. | Y |
-| US16 | As a Customer, I want to view all dishes in my cart, so that I can confirm my selections. | Y |
-| US17 | As a Customer, I want to adjust quantities or remove dishes in my cart, so that I can change my order easily. | Y |
+| US16 | As a Customer, I want to view all dishes in my bag, so that I can confirm my selections. | Y |
+| US17 | As a Customer, I want to adjust quantities or remove dishes in my bag, so that I can change my order easily. | Y |
 | US18 | As a Customer, I want to enter payment information securely, so that I can complete my order safely. | Y |
 | US19 | As a Customer, I want to see order confirmation after checkout, so that I know my order was successful. | Y |
 | US20 | As a Customer, I want to receive an email confirmation after checkout, so that I can keep a record of my order. | Y |
@@ -199,9 +208,8 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | US24 | As a Customer, I want to submit feedback on dishes, so that I can share my opinion or report issues. | Y |
 | US25 | As a Site User, I want to update my profile, so that my personal information and delivery preferences are current. | Y |
 | US26 | As a Site User, I want to view past orders, so that I can reference previous dishes I liked. | Y |
-| US27 | As a User(customer), I want to delete my account, so that my personal data and order history are removed. | Y |
+| US27 | As a User (Customer), I want to delete my account, so that my personal data and order history are removed. | Y |
 | US28 | As a Site User, I want to change my password, so that I can maintain account security. | Y |
-
 
 ---
 
@@ -214,7 +222,7 @@ During the development process, several issues were encountered that required a 
 1. Django Version Compatibility Issues:
 
 - Problem:
-The project was initially developed using Django 5, which caused compatibility issues with AWS S3 code used. Downgrading to Django 4.2.11 resolved the S3 issue, but introduced new compatibility problems with the installed recent version of django-allauth.
+The project was initially developed using Django 5, which caused compatibility issues with AWS S3 code used. Downgrading to Django 4.2.11 resolved the S3 issue, but introduced new compatibility problems with the recently installed version of django-allauth.
 
 - Solution:
 The issue was resolved by upgrading Django to 4.2.16, which is compatible with django-allauth==65.13.1. After updating Django, a command was used to upgrade and reinstall all other project dependencies to ensure they were compatible with Django 4.2.16.
@@ -222,14 +230,14 @@ The issue was resolved by upgrading Django to 4.2.16, which is compatible with d
     pip install django==4.2.16
     pip install --upgrade -r requirements.txt
     ```
+
 **Unsolved bugs:**
 
-1. This bug from django admin affects my admin dashboard main page
+1. This bug from Django admin affects the admin dashboard's main page:
 
    ![Django admin page HTML validation report](documentation/validation/admin_django_html_validation.png)
 
-
-   Admin Dashboard page HTML validation report inherited the bug
+   Admin Dashboard page HTML validation report inherited the bug:
 
    ![Admin Dashboard page link HTML validation report](documentation/validation/admin_dashboard_html_validation.png)
 
@@ -237,9 +245,9 @@ The issue was resolved by upgrading Django to 4.2.16, which is compatible with d
 
 ## Validation
 
-### HTML Validation:
+### HTML Validation
 
-No errors or warnings were found when passing through the official [W3C](https://validator.w3.org/) validator. This checking was done manually by copying the view page source code  and pasting it into the validator.
+No errors or warnings were found when passing through the official [W3C](https://validator.w3.org/) validator. This checking was done manually by copying the view page source code and pasting it into the validator.
 
 #### Home page HTML validation report
 
@@ -260,7 +268,6 @@ No errors or warnings were found when passing through the official [W3C](https:/
 #### Contact page HTML validation report
 
 - ![Contact page HTML validation report](documentation/validation/Contact_html_validation.png)
-
 
 #### Admin Dashboard add dishes page link HTML validation report
 
@@ -304,83 +311,77 @@ No errors or warnings were found when passing through the official [W3C](https:/
 
 #### Login page link HTML validation report
 
-- ![login page link HTML validation report](documentation/validation/login_html_validation.png)
+- ![Login page link HTML validation report](documentation/validation/login_html_validation.png)
 
+### CSS Validation
 
+No errors or warnings were found when passing through the official [W3C (Jigsaw)](https://jigsaw.w3.org/css-validator/#validate_by_uri) validator. The CSS code works correctly on various devices.
 
-### CSS Validation:
+- Base.css
 
- No errors or warnings were found when passing through the official [W3C (Jigsaw)](https://jigsaw.w3.org/css-validator/#validate_by_uri) validator. The css code works perfectly on various devices.
+![Base.css Validation Report](documentation/validation/base_css_validation.png)
 
- - Base.css
+- Index.css
 
- ![Base.css Validation Report](documentation/validation/base_css_validation.png)
+![Index.css Validation Report](documentation/validation/index_css_validation.png)
 
-  - Index.css
+- Dishes.css
 
- ![Index.css Validation Report](documentation/validation/index_css_validation.png)
+![Dishes.css Validation Report](documentation/validation/dishes_css_validation.png)
 
- - Dishes.css
+- Checkout.css
 
-  ![Dishes.css Validation Report](documentation/validation/dishes_css_validation.png)
+![Checkout.css Validation Report](documentation/validation/checkout_css_validation.png)
 
- - Checkout.css
+### JS Validation
 
- ![Checkout.css Validation Report](documentation/validation/checkout_css_validation.png)
-
-
-
-### JS Validation:
-
-No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate js full, `/* jshint esversion: 11 */ and or /* global bootstrap */ and or /* global Stripe */` was added to the top of the file.
+No errors or warning messages were found when passing through the official [JSHint](https://www.jshint.com/) validator. However, to validate the JS fully, `/* jshint esversion: 11 */ and or /* global bootstrap */ and or /* global Stripe */` was added to the top of the file.
 
 - Base.js
 
- ![Base.js Validation Report](documentation/validation/base_js_validation.png)
+![Base.js Validation Report](documentation/validation/base_js_validation.png)
 
-  - Bag.js
+- Bag.js
 
- ![Bag.js Validation Report](documentation/validation/bag_js_validation.png)
+![Bag.js Validation Report](documentation/validation/bag_js_validation.png)
 
-   - Search.js
+- Search.js
 
- ![Search.js Validation Report](documentation/validation/search_js_validation.png)
+![Search.js Validation Report](documentation/validation/search_js_validation.png)
 
- - Checkout.js
+- Checkout.js
 
- ![Checkout.js Validation Report](documentation/validation/checkout_js_validation.png)
+![Checkout.js Validation Report](documentation/validation/checkout_js_validation.png)
 
+### Python Validation
 
-### Python Validation:
+No errors were found when the code was passed through [CI Python Linter](https://pep8ci.herokuapp.com/). This checking was done manually by copying Python code and pasting it into the validator.
 
-No errors were found when the code was passed through [CI Python Linter](https://pep8ci.herokuapp.com/). This checking was done manually by copying python code and pasting it into the validator.
-
-#### Home app Python Validation:
+#### Home app Python Validation
 
 - Home app urls.py
 
-![Home  Validation Report](documentation/validation/pep8_validation_home_urls.png)
+![Home Validation Report](documentation/validation/pep8_validation_home_urls.png)
 
 - Home app views.py
 
-![Home  Validation Report](documentation/validation/pep8_validation_home_views.png)
+![Home Validation Report](documentation/validation/pep8_validation_home_views.png)
 
-#### Bag app Python Validation:
+#### Bag app Python Validation
 
 - Bag app context_processors.py
 
-![Bag  Validation Report](documentation/validation/pep8_validation_bag_cp_urls.png)
+![Bag Validation Report](documentation/validation/pep8_validation_bag_cp_urls.png)
 
 - Bag app urls.py
 
-![Home  Validation Report](documentation/validation/pep8_validation_bag_urls.png)
+![Bag Validation Report](documentation/validation/pep8_validation_bag_urls.png)
 
 - Bag app views.py
 
-![Bag  Validation Report](documentation/validation/pep8_validation_bag_views.png)
+![Bag Validation Report](documentation/validation/pep8_validation_bag_views.png)
 
-
-#### Checkout app Python Validation:
+#### Checkout app Python Validation
 
 - Checkout app admin_dashboard_view.py
 
@@ -400,7 +401,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 - Checkout app order_tracking_view.py
 
-![Checkout  order tracking view Validation Report](documentation/validation/pep8_validation_checkout_otv.png)
+![Checkout order tracking view Validation Report](documentation/validation/pep8_validation_checkout_otv.png)
 
 - Checkout app routing.py
 
@@ -430,8 +431,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 ![Checkout webhook_handler Validation Report](documentation/validation/pep8_validation_checkout_webhook_handler.png)
 
-
-#### Dishes app Python Validation:
+#### Dishes app Python Validation
 
 - Dishes app admin.py
 
@@ -439,7 +439,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 - Dishes app context_processors.py
 
-![ Dishes context_processors Validation Report](documentation/validation/pep8_validation_dishes_cp_png)
+![Dishes context_processors Validation Report](documentation/validation/pep8_validation_dishes_cp.png)
 
 - Dishes app forms.py
 
@@ -461,7 +461,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 ![Dishes views Validation Report](documentation/validation/pep8_validation_dishes_views.png)
 
-#### Profiles app Python Validation:
+#### Profiles app Python Validation
 
 - Profiles app admin.py
 
@@ -473,11 +473,11 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 - Profiles app models.py
 
-![ Profiles models Validation Report](documentation/validation/pep8_validation_profiles_models.png)
+![Profiles models Validation Report](documentation/validation/pep8_validation_profiles_models.png)
 
 - Profiles app signals.py
 
-![ Profiles signals Validation Report](documentation/validation/pep8_validation_profiles_signals.png)
+![Profiles signals Validation Report](documentation/validation/pep8_validation_profiles_signals.png)
 
 - Profiles app urls.py
 
@@ -485,13 +485,13 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 - Profiles app utils.py
 
-![ Profiles utils Validation Report](documentation/validation/pep8_validation_profiles_utils.png)
+![Profiles utils Validation Report](documentation/validation/pep8_validation_profiles_utils.png)
 
 - Profiles app views.py
 
-![ Profiles views Validation Report](documentation/validation/pep8_validation_profiles_views.png)
+![Profiles views Validation Report](documentation/validation/pep8_validation_profiles_views.png)
 
-#### Feedback app Python Validation:
+#### Feedback app Python Validation
 
 - Feedback app admin.py
 
@@ -503,7 +503,7 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 - Feedback app models.py
 
-![ Feedback models Validation Report](documentation/validation/pep8_validation_feedback_models.png)
+![Feedback models Validation Report](documentation/validation/pep8_validation_feedback_models.png)
 
 - Feedback app urls.py
 
@@ -511,19 +511,23 @@ No errors were found when the code was passed through [CI Python Linter](https:/
 
 - Feedback app views.py
 
-![ Feedback views Validation Report](documentation/validation/pep8_validation_feedback_views.png)
+![Feedback views Validation Report](documentation/validation/pep8_validation_feedback_views.png)
 
 ---
 
 ## Lighthouse Report
 
-LightHouse is a web performance testing tool that can be used to evaluate the performance of a website. The report is generated by Google Chrome.
+Lighthouse is a web performance testing tool used to evaluate the performance, accessibility, best practices, and SEO of a website. The report is generated by Google Chrome.
+
+The reports below were regenerated against the live production site after this project's accessibility and performance pass (icons self hosted as SVGs, inlined critical CSS, responsive dish images, and the earlier accessibility remediation), so the Accessibility, Best Practices, and SEO scores reflect the current build rather than an earlier one.
+
+Order history and Track order are not included here, as both need a real order to load against, and production currently has none to test with.
 
 ### Home page Lighthouse report
 
 - ![Home page Lighthouse report](documentation/validation/home_lighthouse_report.png)
 
-### Dishes/Browse dishes pages Lighthousereport
+### Dishes/Browse dishes pages Lighthouse report
 
 - ![Dishes/Browse dishes pages Lighthouse report](documentation/validation/dishes_browse_lighthouse_report.png)
 
@@ -535,7 +539,7 @@ LightHouse is a web performance testing tool that can be used to evaluate the pe
 
 - ![Checkout page Lighthouse report](documentation/validation/checkout_lighthouse_report.png)
 
-### Contact(feedback) page Lighthouse report
+### Contact (feedback) page Lighthouse report
 
 - ![Contact page Lighthouse report](documentation/validation/contact_lighthouse_report.png)
 
@@ -571,7 +575,7 @@ LightHouse is a web performance testing tool that can be used to evaluate the pe
 
 - ![Profile page Lighthouse report](documentation/validation/profile_lighthouse_report.png)
 
-### Profile order history(checkout_success) page Lighthouse report
+### Profile order history (checkout_success) page Lighthouse report
 
 - ![Profile order history page Lighthouse report](documentation/validation/order_history_lighthouse_report.png)
 
@@ -579,29 +583,29 @@ LightHouse is a web performance testing tool that can be used to evaluate the pe
 
 - ![Track order page Lighthouse report](documentation/validation/order_track_lighthouse_report.png)
 
-
 ---
 
 ## Compatibility
 
-Testing was conducted on the following browsers;
+Testing was conducted on the following browsers:
 
-- Safari;
+- Safari
 
 ![Compatibility Report](documentation/validation/compatibility_safari.png)
 
-- Chrome;
+- Chrome
 
 ![Compatibility Report](documentation/validation/compatibility_chrome.png)
 
-- Firefox;
+- Firefox
 
 ![Compatibility Report](documentation/validation/compatibility_firefox.png)
 
 ---
+
 ## Responsiveness
 
-The responsiveness was checked manually by using devtools (Chrome) throughout the whole development. It was also checked with [Responsive Viewer](https://chrome.google.com/webstore/detail/responsive-viewer/inmopeiepgfljkpkidclfgbgbmfcennb/related?hl=en) Chrome extension.
+The responsiveness was checked manually by using DevTools (Chrome) throughout the whole development. It was also checked with the [Responsive Viewer](https://chrome.google.com/webstore/detail/responsive-viewer/inmopeiepgfljkpkidclfgbgbmfcennb/related?hl=en) Chrome extension.
 
 ### Home page Responsiveness report
 
@@ -635,7 +639,7 @@ The responsiveness was checked manually by using devtools (Chrome) throughout th
 <img src="documentation/responsiveness/checkout_desktop_.png" alt="Responsive Design desktop" height="400">
 </a>
 
-### Contact(feedback) page Responsiveness report
+### Contact (feedback) page Responsiveness report
 
 <a>
 <img src="documentation/responsiveness/contact_mobile.png" alt="Responsive Design mobile" height="400">
