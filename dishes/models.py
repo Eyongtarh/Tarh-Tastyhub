@@ -192,8 +192,8 @@ class Dish(models.Model):
         field_name,
         max_size=(1200, 1200),
         quality=75,
-        card_max_size=(700, 700),
-        card_quality=70,
+        card_max_size=(550, 550),
+        card_quality=62,
     ):
         """
         Compress the image stored in ImageField named field_name, and

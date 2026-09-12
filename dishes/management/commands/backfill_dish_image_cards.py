@@ -13,10 +13,21 @@ from dishes.models import Dish
 class Command(BaseCommand):
     help = "Generate the missing image_card variant for existing dishes."
 
-    def handle(self, *args, **options):
-        dishes = Dish.objects.exclude(image="").filter(
-            Q(image_card="") | Q(image_card__isnull=True)
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--force",
+            action="store_true",
+            help=(
+                "Regenerate image_card for every dish with an image, "
+                "including ones that already have one (e.g. after "
+                "changing card_max_size/card_quality)."
+            ),
         )
+
+    def handle(self, *args, **options):
+        dishes = Dish.objects.exclude(image="")
+        if not options["force"]:
+            dishes = dishes.filter(Q(image_card="") | Q(image_card__isnull=True))
         total = dishes.count()
         updated = 0
         for dish in dishes:

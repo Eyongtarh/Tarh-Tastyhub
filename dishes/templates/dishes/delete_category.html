@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load dishes_extras %}
+{% load inline_assets %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'dishes/css/dishes.css' %}" />
+  <!-- Inlined: dishes.css is only ~4KB and needed on every dishes-app
+       page, so this trades one render-blocking S3 round trip for zero -
+       see home/templatetags/inline_assets.py. -->
+  <style>{% inline_static 'dishes/css/dishes.css' %}</style>
 {% endblock %}
 {% block title %}
   Delete Category | Tarh Tastyhub
