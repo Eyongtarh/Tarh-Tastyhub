@@ -1,16 +1,16 @@
-## Deployment and Payment Setup
+# Deployment and Payment Setup
 
 - The app was deployed to [Heroku](https://heroku.com/).
 
-- SQLite is used as the database during development for simplicity [SQLite](https://www.sqlite.org).
+- SQLite is used as the database during development for simplicity: [SQLite](https://www.sqlite.org).
 
-- PostgreSQL is used in production for reliability and scalability [PostgreSQL](https://www.postgresql.org).
+- PostgreSQL is used in production for reliability and scalability: [PostgreSQL](https://www.postgresql.org).
 
-- Stripe is used to handle payment processing [Stripe](https://stripe.com/).
+- Stripe is used to handle payment processing: [Stripe](https://stripe.com/).
 
-- AWS S3 is used for media and static file storage [AWS Amazon](https://aws.amazon.com/).
+- AWS S3 is used for media and static file storage: [AWS Amazon](https://aws.amazon.com/).
 
-- The app can be reached by the [Tarh Tastyhub](https://tarh-tastyhub-4071346c00af.herokuapp.com/).
+- The app can be reached at [Tarh Tastyhub](https://tarh-tastyhub-4071346c00af.herokuapp.com/).
 
 ---
 
@@ -19,19 +19,18 @@
 - Clone the repository.
     ```bash
     git clone <repository-url>
-    cd tarh_tastyhub
+    cd Tarh-Tastyhub
     ```
 
 - Create and activate a virtual environment.
     ```bash
     python3 -m venv .venv
-    source venv/bin/activate
+    source .venv/bin/activate
     ```
 
 - Install dependencies.
     ```bash
-    git clone <repository-url>
-    cd tarh_tastyhub
+    pip3 install -r requirements.txt
     ```
 - Create an `env.py` file in the project root:
    + Add all required environment variables
@@ -39,10 +38,10 @@
    + Never commit env.py
    + Do not expose Stripe secret keys
 
-- Add env.py variables to settings to `settings.py`:
-    
-- Database Configuration: Use SQLite locally for development.
-    ```settings.py
+- These variables are then read in `settings.py`, for example:
+
+- Database configuration: use SQLite locally for development.
+    ```python
     if "DATABASE_URL" in os.environ:
         DATABASES = {
             "default": dj_database_url.parse(
@@ -73,20 +72,19 @@
 
 ## Stripe Payment Setup
 
-- Create a Stripe Account
-[Stripe Account](https://dashboard.stripe.com/register)
+- Create a Stripe account: [Stripe Account](https://dashboard.stripe.com/register)
 
-- Get API Keys
-    Go to :
+- Get API keys:
+    Go to:
     + Dashboard → Developers → API Keys
     + Publishable key → STRIPE_PUBLIC_KEY
     + Secret key → STRIPE_SECRET_KEY
 
-- Install Stripe SDK
+- Install the Stripe SDK.
     ```bash
     pip3 install stripe
     ```
-- PaymentIntent Creation:
+- PaymentIntent creation:
     ```python
     intent = stripe.PaymentIntent.create(
             amount=int(grand_total * 100),
@@ -99,7 +97,7 @@
             }
         )
     ```
-- Pass Keys to Template (Add the Stripe JavaScript block to the checkout template):
+- Pass keys to the template (add the Stripe JavaScript block to the checkout template):
     ```html
     {{ block.super }}
     <script src="https://js.stripe.com/v3/"></script>
@@ -108,18 +106,18 @@
     <script src="{% static 'checkout/js/checkout.js' %}?v=2"></script>
     {% endblock %}
     ```
-- Stripe Elements mounted in checkout.js
+- Stripe Elements mounted in checkout.js:
     ```javascript
     const stripe = Stripe(stripePublicKey);
     const elements = stripe.elements();
     const card = elements.create("card");
     card.mount("#card-element");
     ```
-    Add div to hold stripe element:
+    Add a div to hold the Stripe element:
     ```html
     <div id="card-element"></div>
     ```
-- Confirm Payment
+- Confirm payment:
     ```javascript
         stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -132,22 +130,22 @@
     ```
 
 ## Stripe Webhooks
-- Install Stripe CLI
-[Stripe](https://stripe.com/docs/stripe-cli)
 
-- Login
+- Install the Stripe CLI: [Stripe](https://stripe.com/docs/stripe-cli)
+
+- Log in.
     ```bash
     stripe login
     ```
 
-- Forward Webhooks Locally
+- Forward webhooks locally.
     ```bash
     stripe listen --forward-to localhost:8000/checkout/webhook/
     ```
 - Create a webhook handler view:
 
     ```python
-        @csrf_exempt
+    @csrf_exempt
     def webhook(request):
         payload = request.body
         sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
@@ -161,34 +159,34 @@
             handle_successful_payment(event)
 
         return HttpResponse(status=200)
-
     ```
-    
--  Add the webhook URL to urls.py:
+
+- Add the webhook URL to urls.py:
 
     ```bash
     path('checkout/webhook/', webhook),
     ```
 
-- Create Webhook in Stripe Dashboard
+- Create a webhook in the Stripe Dashboard:
     Endpoint URL:
     + [Endpoint URL](https://tarh-tastyhub-4071346c00af.herokuapp.com/checkout/webhook/)
     Events:
     + payment_intent.succeeded
     + payment_intent.payment_failed
-    Copy the webhook signing secret and store as:
+    Copy the webhook signing secret and store it as:
     + STRIPE_WH_SECRET
 
-- Use webhooks as the authoritative payment confirmation
+- Use webhooks as the authoritative payment confirmation.
 
+## AWS S3 Setup (Static and Media Files)
 
-## AWS S3 Setup (Static & Media Files)
-- created an S3 bucket via AWS.
-- S3 Bucket Configuration
+- Create an S3 bucket via AWS.
+- S3 bucket configuration:
     + Bucket name must match AWS_STORAGE_BUCKET_NAME
-    + Disable Block all public access
-    + Enable Static website hosting
-    + CORS configuration
+    + Disable "Block all public access"
+    + Enable static website hosting
+    + CORS configuration:
+        ```json
         [
             {
                 "AllowedHeaders": ["*"],
@@ -197,6 +195,7 @@
                 "ExposeHeaders": []
             }
         ]
+        ```
 
 - Set IAM permissions for:
     + s3:GetObject
@@ -208,19 +207,19 @@
 - Static and media files are automatically served from S3 in production using django-storages.
 
 ## Heroku Deployment
-- Create a Heroku account.
-[Heroku](https://heroku.com/)
 
-- Create a new Heroku app.
-    + Go to Heroku Dashboard
+- Create a Heroku account: [Heroku](https://heroku.com/)
+
+- Create a new Heroku app:
+    + Go to the Heroku Dashboard
     + Click New → Create new app
     + Choose a unique app name and region
 
-- Connect Heroku to GitHub
-    + Go to Deploy tab
+- Connect Heroku to GitHub:
+    + Go to the Deploy tab
     + Select GitHub
-    + Search for and connect your repository
-    + Enable Automatic Deployment
+    + Search for and connect the repository
+    + Enable automatic deployment
 
 - Set config vars including:
     + DATABASE_URL
@@ -236,12 +235,13 @@
     + EMAIL_HOST_USER
     + EMAIL_HOST_PASS
     + DEFAULT_FROM_EMAIL
-- Disable DEBUG in production
+- Disable DEBUG in production.
 - Push the project to Heroku.
-- Run migrations automatically via Procfile.
+- Run migrations automatically via the Procfile.
 - Set DEBUG=False in production.
 
-## Order & Payment Flow
+## Order and Payment Flow
+
 - User submits checkout form
 - PaymentIntent is created
 - Stripe Elements handles card input
@@ -253,20 +253,9 @@
 - User redirected to success page
 - Cancelled orders are automatically deleted
 
-## Use Stripe test card numbers to test payments:
+## Stripe test card numbers
+
+Use these to test payments:
 - Successful payment: 4242 4242 4242 4242
 - Authentication required: 4000 0025 0000 3155
 - Payment failure: 4000 0000 0000 9995
-
-
-
-
-
-
-
-
-
-
-
-
-
