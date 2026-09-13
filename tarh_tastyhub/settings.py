@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 
@@ -236,14 +237,39 @@ if USE_AWS:
         "AWS_S3_REGION_NAME"
     )
 
-    # CLOUDFRONT_DOMAIN is optional: once a CloudFront distribution is put
-    # in front of the bucket (see DEPLOYMENT.md), set it in Heroku config
-    # vars to serve static/media over HTTP/2 instead of straight from S3
-    # (which only speaks HTTP/1.1). Falls back to the raw S3 domain.
-    AWS_S3_CUSTOM_DOMAIN = os.environ.get("CLOUDFRONT_DOMAIN") or (
+    _s3_domain = (
         f"{AWS_STORAGE_BUCKET_NAME}."
         f"s3.{AWS_S3_REGION_NAME}.amazonaws.com"
     )
+
+    # CLOUDFRONT_DOMAIN is optional: once a CloudFront distribution is put
+    # in front of the bucket (see DEPLOYMENT.md), set it in Heroku config
+    # vars to serve static/media over HTTP/2 instead of straight from S3
+    # (which only speaks HTTP/1.1). This backs every static/media URL on
+    # the site, so a wrong value (typo, placeholder, distribution that
+    # doesn't exist) takes the whole site down - a pattern can't tell a
+    # real CloudFront domain from a fake one (both just look like
+    # d<id>.cloudfront.net), so actually probe it for the one file every
+    # collectstatic run is guaranteed to upload, once at boot, and fall
+    # back to the raw S3 domain (known-good) if it doesn't answer.
+    _cloudfront_domain = os.environ.get("CLOUDFRONT_DOMAIN", "")
+    AWS_S3_CUSTOM_DOMAIN = _s3_domain
+    if _cloudfront_domain:
+        import urllib.request
+
+        try:
+            urllib.request.urlopen(
+                f"https://{_cloudfront_domain}/static/staticfiles.json",
+                timeout=3,
+            )
+            AWS_S3_CUSTOM_DOMAIN = _cloudfront_domain
+        except Exception:
+            logging.getLogger(__name__).error(
+                "CLOUDFRONT_DOMAIN=%r did not serve "
+                "static/staticfiles.json - ignoring it and falling back "
+                "to the raw S3 domain instead of taking the site down.",
+                _cloudfront_domain,
+            )
 
     STATICFILES_STORAGE = (
         "custom_storages.StaticManifestStorage"
