@@ -156,7 +156,12 @@ WSGI_APPLICATION = "tarh_tastyhub.wsgi.application"
 if "DATABASE_URL" in os.environ:
     DATABASES = {
         "default": dj_database_url.parse(
-            os.environ.get("DATABASE_URL")
+            os.environ.get("DATABASE_URL"),
+            # Without this, Django opens a brand-new TCP+TLS connection
+            # to Postgres on every single request (default conn_max_age=0),
+            # which is a big chunk of the checkout page's slow TTFB.
+            conn_max_age=600,
+            conn_health_checks=True,
         )
     }
 else:
@@ -231,7 +236,11 @@ if USE_AWS:
         "AWS_S3_REGION_NAME"
     )
 
-    AWS_S3_CUSTOM_DOMAIN = (
+    # CLOUDFRONT_DOMAIN is optional: once a CloudFront distribution is put
+    # in front of the bucket (see DEPLOYMENT.md), set it in Heroku config
+    # vars to serve static/media over HTTP/2 instead of straight from S3
+    # (which only speaks HTTP/1.1). Falls back to the raw S3 domain.
+    AWS_S3_CUSTOM_DOMAIN = os.environ.get("CLOUDFRONT_DOMAIN") or (
         f"{AWS_STORAGE_BUCKET_NAME}."
         f"s3.{AWS_S3_REGION_NAME}.amazonaws.com"
     )

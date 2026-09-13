@@ -58,6 +58,40 @@ def cache_checkout_data(request):
         return JsonResponse({"error": str(e)}, status=400)
 
 
+@csrf_exempt
+@require_POST
+def create_payment_intent(request):
+    """
+    Creates the Stripe PaymentIntent the checkout page needs, out of
+    band from rendering that page. Creating it inline in checkout()
+    meant every GET /checkout/ blocked on a live network round trip to
+    Stripe before Django could respond at all - moving it here lets
+    the page render immediately and fetch this once loaded instead.
+    """
+    from bag.context_processors import bag_contents
+
+    bag = request.session.get("bag", {})
+    if not bag:
+        return JsonResponse({"error": "Your bag is empty."}, status=400)
+    ctx = bag_contents(request)
+    delivery_type = request.session.get("delivery_type", "delivery")
+    if delivery_type == "pickup":
+        grand_total = Decimal(str(ctx["bag_total"]))
+    else:
+        grand_total = Decimal(str(ctx["grand_total"]))
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=int(grand_total * 100),
+            currency=settings.STRIPE_CURRENCY,
+            automatic_payment_methods={"enabled": True},
+        )
+    except Exception as e:
+        logger.exception("create_payment_intent failed")
+        return JsonResponse({"error": str(e)}, status=400)
+    request.session["stripe_pid"] = intent.id
+    return JsonResponse({"client_secret": intent.client_secret})
+
+
 def _to_decimal(value, fallback=Decimal("0.00")):
     try:
         return Decimal(str(value)).quantize(
@@ -121,18 +155,11 @@ def checkout(request):
             )
     else:
         form = OrderForm()
-    intent = stripe.PaymentIntent.create(
-        amount=int(grand_total * 100),
-        currency=settings.STRIPE_CURRENCY,
-        automatic_payment_methods={"enabled": True},
-    )
-    request.session["stripe_pid"] = intent.id
     return render(
         request,
         "checkout/checkout.html",
         {
             "form": form,
-            "client_secret": intent.client_secret,
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
             "bag_items": ctx["bag_items"],
             "bag_total": subtotal,

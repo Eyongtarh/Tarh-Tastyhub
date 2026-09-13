@@ -2,36 +2,55 @@
 /* global Stripe */
 document.addEventListener("DOMContentLoaded", () => {
   /*
-     STRIPE SETUP
- */
+     PICKUP TIME TOGGLE - runs immediately, doesn't need Stripe
+  */
+  const deliveryRadios = document.querySelectorAll("input[name='delivery_type']");
+  const pickupContainer = document.getElementById("pickup-time-container");
+  const togglePickup = () => {
+    const selected =
+      document.querySelector("input[name='delivery_type']:checked")?.value;
+    const isPickup = selected === "pickup";
+    pickupContainer.style.display = isPickup ? "block" : "none";
+    pickupContainer.setAttribute("aria-hidden", isPickup ? "false" : "true");
+  };
+  deliveryRadios.forEach((radio) => {
+    radio.addEventListener("change", togglePickup);
+  });
+  togglePickup();
+
+  /*
+     STRIPE SETUP - the PaymentIntent is created on demand here rather
+     than server-side while rendering the page, so loading /checkout/
+     doesn't block on a network round trip to Stripe just to learn a
+     client secret nothing above the payment form needs yet.
+  */
   const stripeKeyEl = document.getElementById("id_stripe_public_key");
-  const clientSecretEl = document.getElementById("id_client_secret");
-  if (!stripeKeyEl || !clientSecretEl) {
+  const cardElementDiv = document.getElementById("card-element");
+  const cardErrorsEl = document.getElementById("card-errors");
+  if (!stripeKeyEl || !cardElementDiv) {
     console.error("Stripe configuration elements are missing from the page.");
     return;
   }
   let stripePublicKey;
-  let clientSecret;
   try {
     stripePublicKey = JSON.parse(stripeKeyEl.textContent);
-    clientSecret = JSON.parse(clientSecretEl.textContent);
   } catch (err) {
     console.error("Failed to parse Stripe configuration:", err);
     return;
   }
   const stripe = Stripe(stripePublicKey);
-  const elements = stripe.elements();
-  const card = elements.create("card");
-  card.mount("#card-element");
-  card.on("change", (event) => {
-    document.getElementById("card-errors").textContent =
-      event.error ? event.error.message : "";
-  });
-  /* 
-     PAYMENT FORM SUBMISSION
+  let clientSecret;
+
+  /*
+     PAYMENT FORM SUBMISSION - attached once the client secret above
+     has actually loaded; clientSecret is read via closure, so this
+     always sees the value by the time a real submit can happen.
   */
-  const form = document.getElementById("payment-form");
-  if (form) {
+  function attachSubmitHandler(card) {
+    const form = document.getElementById("payment-form");
+    if (!form) {
+      return;
+    }
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const submitButton = document.getElementById("submit-button");
@@ -68,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadingOverlay.style.display = "none";
         return;
       }
-      /* 
+      /*
          CONFIRM PAYMENT WITH STRIPE
       */
       try {
@@ -113,21 +132,32 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-  /*
-     PICKUP TIME TOGGLE
- */
-  const deliveryRadios = document.querySelectorAll("input[name='delivery_type']");
-  const pickupContainer = document.getElementById("pickup-time-container");
-  const togglePickup = () => {
-    const selected =
-      document.querySelector("input[name='delivery_type']:checked")?.value;
-    const isPickup = selected === "pickup";
-    pickupContainer.style.display = isPickup ? "block" : "none";
-    pickupContainer.setAttribute("aria-hidden", isPickup ? "false" : "true");
-  };
-  deliveryRadios.forEach((radio) => {
-    radio.addEventListener("change", togglePickup);
-  });
 
-  togglePickup();
+  (async () => {
+    try {
+      const response = await fetch("/checkout/create-payment-intent/", {
+        method: "POST",
+      });
+      const data = await response.json();
+      if (!response.ok || !data.client_secret) {
+        throw new Error(data.error || "Failed to set up payment.");
+      }
+      clientSecret = data.client_secret;
+    } catch (err) {
+      console.error("Failed to create payment intent:", err);
+      if (cardErrorsEl) {
+        cardErrorsEl.textContent =
+          "Unable to load the payment form. Please refresh the page.";
+      }
+      return;
+    }
+
+    const elements = stripe.elements();
+    const card = elements.create("card");
+    card.mount("#card-element");
+    card.on("change", (event) => {
+      cardErrorsEl.textContent = event.error ? event.error.message : "";
+    });
+    attachSubmitHandler(card);
+  })();
 });

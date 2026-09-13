@@ -27,7 +27,7 @@
         <div class="col-12 col-lg-5">
           <div class="card shadow-sm checkout-card">
             <div class="card-header bg-dark text-white">
-              <h5 class="mb-0">Your Order</h5>
+              <h2 class="mb-0 fs-5">Your Order</h2>
             </div>
             <div class="card-body">
               <ul class="list-group mb-3">
@@ -50,7 +50,7 @@
                 <strong>Delivery:</strong> {{ delivery_fee_display }}
               </p>
               <hr />
-              <h5 class="text-end">Total: ${{ grand_total }}</h5>
+              <p class="text-end fw-bold fs-5 mb-0">Total: ${{ grand_total }}</p>
             </div>
             <a href="{% url 'dish_list' %}" class="btn btn-warning fw-bold shop-now-button" aria-label="Continue Shopping" title="Continue shopping for more dishes">Continue Shopping</a>
           </div>
@@ -60,7 +60,7 @@
         <div class="col-12 col-lg-7">
           <div class="card shadow-sm checkout-card position-relative">
             <div class="card-header bg-dark text-white">
-              <h5 class="mb-0">Enter Your Details</h5>
+              <h2 class="mb-0 fs-5">Enter Your Details</h2>
             </div>
             <div class="card-body">
               <form method="post" id="payment-form">
@@ -136,6 +136,5 @@
   {{ block.super }}
   <script src="https://js.stripe.com/v3/"></script>
   {{ stripe_public_key|json_script:'id_stripe_public_key' }}
-  {{ client_secret|json_script:'id_client_secret' }}
   <script src="{% static 'checkout/js/checkout.js' %}?v=2"></script>
 {% endblock %}

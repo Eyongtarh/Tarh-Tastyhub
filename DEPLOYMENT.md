@@ -206,6 +206,33 @@
 
 - Static and media files are automatically served from S3 in production using django-storages.
 
+## CloudFront (optional, HTTP/2 for static/media)
+
+S3 only serves objects over HTTP/1.1. To get HTTP/2 (and a CDN edge cache) in
+front of the bucket, without changing how the bucket already works
+(`custom_storages.py` sets ACL `public-read` per object, so objects are
+already public - no OAC/bucket-policy migration needed):
+
+- Add `cloudfront:CreateDistribution` and `cloudfront:GetDistribution` (or
+  broader) to the IAM user used for this app; it currently has neither.
+- Run `scripts/setup_cloudfront.sh` (needs `AWS_STORAGE_BUCKET_NAME` and
+  `AWS_S3_REGION_NAME` in the environment, matching the Heroku config vars):
+    ```bash
+    AWS_STORAGE_BUCKET_NAME=... AWS_S3_REGION_NAME=... \
+      ./scripts/setup_cloudfront.sh --wait
+    ```
+  It creates the distribution pointed at the bucket's existing public
+  objects and prints the `*.cloudfront.net` domain.
+- Set `CLOUDFRONT_DOMAIN` in Heroku config vars to that domain -
+  `settings.py` picks it up automatically and falls back to the raw S3
+  domain if unset, so this is safe to leave unset until the distribution
+  exists. To roll back, unset it.
+- CloudFront's cache policy (AWS managed `CachingOptimized`) still honors
+  the `Cache-Control` headers already set in `custom_storages.py`, so no
+  further cache-lifetime changes are needed.
+- A custom domain/ACM cert can be attached to the distribution later if
+  preferred over `*.cloudfront.net`.
+
 ## Heroku Deployment
 
 - Create a Heroku account: [Heroku](https://heroku.com/)

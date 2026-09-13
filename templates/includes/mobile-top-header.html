@@ -24,9 +24,9 @@
   <p id="delivery-banner-mobile" class="text-center bg-warning text-black py-1 m-0" role="status">Free delivery on orders over ${{ free_delivery_threshold|default:'50' }}!</p>
 </nav>
 <!-- OFFCANVAS MENU -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Menu</h5>
+    <div class="offcanvas-title" id="mobileMenuLabel">Menu</div>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close menu" title="Close menu"></button>
   </div>
   <div class="offcanvas-body">

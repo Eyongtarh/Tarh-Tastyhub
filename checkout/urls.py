@@ -39,6 +39,10 @@ urlpatterns = [
         views.cache_checkout_data,
         name='cache_checkout_data'),
     path(
+        'create-payment-intent/',
+        views.create_payment_intent,
+        name='create_payment_intent'),
+    path(
         'admin/order/print/<int:order_id>/',
         views.print_order, name='print_order'),
 ]

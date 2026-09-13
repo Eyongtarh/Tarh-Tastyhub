@@ -48,6 +48,20 @@ function basicFormHtml() {
   `;
 }
 
+async function flushMicrotasks() {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+}
+
+function mockCreatePaymentIntent(clientSecret = "pi_abc_secret_xyz") {
+  global.fetch.mockResolvedValueOnce({
+    ok: true,
+    json: async () => ({ client_secret: clientSecret }),
+  });
+}
+
 describe("checkout.js", () => {
   let consoleErrorSpy;
 
@@ -63,7 +77,7 @@ describe("checkout.js", () => {
   });
 
   test("logs an error and does nothing when the Stripe config elements are missing", () => {
-    // No #id_stripe_public_key / #id_client_secret in the DOM at all.
+    // No #id_stripe_public_key in the DOM at all.
     document.body.innerHTML = basicFormHtml();
     window.Stripe = jest.fn();
 
@@ -83,7 +97,6 @@ describe("checkout.js", () => {
     badScript.id = "id_stripe_public_key";
     badScript.textContent = "{not valid json";
     document.body.appendChild(badScript);
-    jsonScript("id_client_secret", "pi_abc_secret_xyz");
     window.Stripe = jest.fn();
 
     loadScript("checkout/static/checkout/js/checkout.js");
@@ -96,34 +109,62 @@ describe("checkout.js", () => {
     );
   });
 
-  test("initialises Stripe Elements and mounts the card element", () => {
+  test("fetches a client secret, then initialises Stripe Elements and mounts the card element", async () => {
     document.body.innerHTML = basicFormHtml();
     jsonScript("id_stripe_public_key", "pk_test_123");
-    jsonScript("id_client_secret", "pi_abc_secret_xyz");
     const card = buildCard();
     const { Stripe, stripeInstance, elements } = buildStripeMock(card);
     window.Stripe = Stripe;
+    mockCreatePaymentIntent();
 
     loadScript("checkout/static/checkout/js/checkout.js");
     fireDomContentLoaded();
+    await flushMicrotasks();
 
     expect(Stripe).toHaveBeenCalledWith("pk_test_123");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/checkout/create-payment-intent/",
+      expect.objectContaining({ method: "POST" })
+    );
     expect(stripeInstance.elements).toHaveBeenCalled();
     expect(elements.create).toHaveBeenCalledWith("card");
     expect(card.mount).toHaveBeenCalledWith("#card-element");
   });
 
+  test("shows an error and never mounts the card when creating the payment intent fails", async () => {
+    document.body.innerHTML = basicFormHtml();
+    jsonScript("id_stripe_public_key", "pk_test_123");
+    const card = buildCard();
+    const { Stripe, elements } = buildStripeMock(card);
+    window.Stripe = Stripe;
+    global.fetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ error: "Your bag is empty." }),
+    });
+
+    loadScript("checkout/static/checkout/js/checkout.js");
+    fireDomContentLoaded();
+    await flushMicrotasks();
+
+    expect(elements.create).not.toHaveBeenCalled();
+    expect(card.mount).not.toHaveBeenCalled();
+    expect(document.getElementById("card-errors").textContent).toContain(
+      "Unable to load the payment form"
+    );
+  });
+
   describe("payment form submission", () => {
-    function setUpForm() {
+    async function setUpForm() {
       document.body.innerHTML = basicFormHtml();
       jsonScript("id_stripe_public_key", "pk_test_123");
-      jsonScript("id_client_secret", "pi_abc_secret_xyz");
       const card = buildCard();
       const { Stripe, stripeInstance } = buildStripeMock(card);
       window.Stripe = Stripe;
+      mockCreatePaymentIntent();
 
       loadScript("checkout/static/checkout/js/checkout.js");
       fireDomContentLoaded();
+      await flushMicrotasks();
 
       const form = document.getElementById("payment-form");
       return { form, stripeInstance };
@@ -135,15 +176,8 @@ describe("checkout.js", () => {
       );
     }
 
-    async function flushMicrotasks() {
-      await Promise.resolve();
-      await Promise.resolve();
-      await Promise.resolve();
-      await Promise.resolve();
-    }
-
     test("caches checkout data, confirms payment, then submits the form on success", async () => {
-      const { form, stripeInstance } = setUpForm();
+      const { form, stripeInstance } = await setUpForm();
       const submitSpy = jest.spyOn(form, "submit").mockImplementation(() => {});
       global.fetch.mockResolvedValueOnce({ ok: true });
       stripeInstance.confirmCardPayment.mockResolvedValueOnce({
@@ -170,7 +204,7 @@ describe("checkout.js", () => {
     });
 
     test("shows an error and restores the UI when cache_checkout_data fails", async () => {
-      const { form, stripeInstance } = setUpForm();
+      const { form, stripeInstance } = await setUpForm();
       global.fetch.mockResolvedValueOnce({ ok: false });
 
       submitForm(form);
@@ -187,7 +221,7 @@ describe("checkout.js", () => {
     });
 
     test("shows the Stripe error message and re-enables the button when payment fails", async () => {
-      const { form, stripeInstance } = setUpForm();
+      const { form, stripeInstance } = await setUpForm();
       global.fetch.mockResolvedValueOnce({ ok: true });
       stripeInstance.confirmCardPayment.mockResolvedValueOnce({
         error: { message: "Your card was declined." },
@@ -207,7 +241,6 @@ describe("checkout.js", () => {
     test("selecting pickup reveals the pickup-time field and clears aria-hidden", () => {
       document.body.innerHTML = basicFormHtml();
       jsonScript("id_stripe_public_key", "pk_test_123");
-      jsonScript("id_client_secret", "pi_abc_secret_xyz");
       window.Stripe = buildStripeMock(buildCard()).Stripe;
 
       loadScript("checkout/static/checkout/js/checkout.js");
@@ -227,7 +260,6 @@ describe("checkout.js", () => {
     test("selecting delivery hides the pickup-time field and sets aria-hidden", () => {
       document.body.innerHTML = basicFormHtml();
       jsonScript("id_stripe_public_key", "pk_test_123");
-      jsonScript("id_client_secret", "pi_abc_secret_xyz");
       window.Stripe = buildStripeMock(buildCard()).Stripe;
 
       loadScript("checkout/static/checkout/js/checkout.js");
