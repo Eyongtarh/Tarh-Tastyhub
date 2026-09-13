@@ -227,9 +227,9 @@ During the development process, several issues were encountered that required a 
 - Solution:
   The issue was resolved by upgrading Django to 4.2.16, which is compatible with django-allauth==65.13.1. After updating Django, a command was used to upgrade and reinstall all other project dependencies to ensure they were compatible with Django 4.2.16.
   `bash
-  pip install django==4.2.16
-  pip install --upgrade -r requirements.txt
-  `
+pip install django==4.2.16
+pip install --upgrade -r requirements.txt
+`
 
 **Unsolved bugs:**
 
@@ -544,46 +544,6 @@ Order history and Track order are not included here, as both need a real order t
 ### Contact (feedback) page Lighthouse report
 
 - ![Contact page Lighthouse report](documentation/validation/contact_lighthouse_report.png)
-
-### Admin Dashboard page Lighthouse report
-
-- ![Admin Dashboard page Lighthouse report](documentation/validation/admin_dashboard_lighthouse_report.png)
-
-### Admin Dashboard add dishes page Lighthouse report
-
-- ![Admin Dashboard add dishes page Lighthouse report](documentation/validation/admin_add_dishes_lighthouse_report.png)
-
-### Admin Dashboard edit dishes page Lighthouse report
-
-- ![Admin Dashboard edit dishes page Lighthouse report](documentation/validation/admin_edit_dishes_lighthouse_report.png)
-
-### Admin Dashboard delete dishes page Lighthouse report
-
-- ![Admin Dashboard delete dishes page Lighthouse report](documentation/validation/admin_delete_dishes_lighthouse_report.png)
-
-### Admin Dashboard add category page Lighthouse report
-
-- ![Admin Dashboard add category page Lighthouse report](documentation/validation/admin_add_category_lighthouse_report.png)
-
-### Admin Dashboard edit category page Lighthouse report
-
-- ![Admin Dashboard edit category page Lighthouse report](documentation/validation/admin_edit_category_lighthouse_report.png)
-
-### Admin Dashboard delete category page Lighthouse report
-
-- ![Admin Dashboard delete category page Lighthouse report](documentation/validation/admin_delete_category_lighthouse_report.png)
-
-### Profile page Lighthouse report
-
-- ![Profile page Lighthouse report](documentation/validation/profile_lighthouse_report.png)
-
-### Profile order history (checkout_success) page Lighthouse report
-
-- ![Profile order history page Lighthouse report](documentation/validation/order_history_lighthouse_report.png)
-
-### Track order page Lighthouse report
-
-- ![Track order page Lighthouse report](documentation/validation/order_track_lighthouse_report.png)
 
 ---
 
