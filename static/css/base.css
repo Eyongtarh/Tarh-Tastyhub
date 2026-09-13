@@ -333,7 +333,7 @@ main {
        WCAG AA (4.5:1). */
     background-color: #1c7a37; color: #fff; border-color: #fff; text-decoration: none; list-style: none;
 }
-.btn-login:hover, .btn-login:focus-visible { transform: translateY(-2px); color: var(--colour-white); }
+.btn-login:hover, .btn-login:focus-visible { background-color: #15612c; transform: translateY(-2px); color: var(--colour-white); }
 
 /* Forms */
 .form-control {
