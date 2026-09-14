@@ -181,9 +181,19 @@ def checkout_success(request, order_number):
             "checkout/confirmation_emails/confirmation_email_body.txt",
             {"order": order, "current_site": current_site},
         )
-        send_mail(subject, body, settings.DEFAULT_FROM_EMAIL, [order.email])
-        order.email_sent = True
-        order.save(update_fields=["email_sent"])
+        try:
+            send_mail(
+                subject, body, settings.DEFAULT_FROM_EMAIL, [order.email]
+            )
+            order.email_sent = True
+            order.save(update_fields=["email_sent"])
+        except Exception:
+            # The order is already paid for and created at this point -
+            # a broken SMTP config shouldn't turn a successful purchase
+            # into a 500 error page for the customer.
+            logger.exception(
+                "Confirmation email failed for order %s", order.order_number
+            )
     if order.delivery_type == "pickup" or order.delivery_fee == 0:
         delivery_display = "Free"
     else:
