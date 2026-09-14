@@ -543,7 +543,7 @@ Order history and Track order are not included here, as both need a real order t
 
 ### Contact (feedback) page Lighthouse report
 
-- ![Contact page Lighthouse report](documentation/validation/contact_lighthouse_report.png)
+- ![Contact page Lighthouse report](documentation/validation/Contact_lighthouse_report.png)
 
 ---
 
