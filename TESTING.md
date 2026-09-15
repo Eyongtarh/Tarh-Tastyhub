@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Manual Testing](#manual-testing)
+- [Automated Testing](#automated-testing)
 - [Testing User Stories](#testing-user-stories)
 - [Bugs](#bugs)
 - [Validation](#validation)
@@ -175,6 +176,63 @@ This is a comprehensive manual testing file, covering all pages, user actions, c
 | Feedback | Select Unread, Apply         | All unread messages display        | Y   |          |
 | Feedback | Select Handled, Apply        | All handled messages display       | Y   |          |
 | Feedback | Click Mark as Handled button | Feedback status updates to Handled | Y   |          |
+
+---
+
+## Automated Testing
+
+In addition to the manual testing above, the project has an automated test suite covering both the Django backend and the static JavaScript that runs in the browser.
+
+### Python (Django) tests
+
+Each app has its own `tests.py`, run with Django's test runner:
+
+```
+python manage.py test
+```
+
+| App       | Tests | Covers                                                                 |
+| --------- | ----- | ----------------------------------------------------------------------- |
+| home      | 3     | Inline CSS static-URL rewriting (relative/absolute paths)               |
+| bag       | 9     | Anonymous access rules, add/adjust/remove quantity, daily item limit    |
+| checkout  | 12    | Stripe webhook handling, PaymentIntent/session binding, order creation  |
+| dishes    | 8     | Dish/category image upload size limits, staff-only add-dish access      |
+| feedback  | 9     | Feedback form submission, honeypot spam rejection, rate limiting        |
+| profiles  | 7     | Order history access control (IDOR fix), profile page, account deletion |
+
+Running the full suite:
+
+```
+Found 48 test(s).
+...
+----------------------------------------------------------------------
+Ran 48 tests in 5.593s
+
+OK
+```
+
+### JavaScript (Jest) tests
+
+The static JS loaded via `<script>` tags (no build step, see DEPLOYMENT.md) is tested with Jest and jsdom:
+
+```
+npm test
+```
+
+| Suite                                             | Covers                                        |
+| -------------------------------------------------- | ---------------------------------------------- |
+| `static/js/__tests__/base.test.js`                 | CSRF cookie parsing, toast notifications (incl. XSS guarding) |
+| `static/js/__tests__/bag.test.js`                  | Bag quantity controls, AJAX add/update/remove |
+| `static/js/__tests__/search.test.js`               | Search-form Enter-key submit, portion/price selector update |
+| `checkout/static/checkout/js/__tests__/checkout.test.js` | Checkout form/Stripe Elements behaviour |
+
+Running the full suite:
+
+```
+Test Suites: 4 passed, 4 total
+Tests:       26 passed, 26 total
+Snapshots:   0 total
+```
 
 ---
 
