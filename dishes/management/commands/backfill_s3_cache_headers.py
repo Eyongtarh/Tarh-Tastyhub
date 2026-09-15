@@ -45,9 +45,14 @@ class Command(BaseCommand):
                     skipped += 1
                     continue
 
-                self.stdout.write(f"{'Would update' if options['dry_run'] else 'Updating'}: {key}")
+                action = (
+                    "Would update" if options["dry_run"] else "Updating"
+                )
+                self.stdout.write(f"{action}: {key}")
                 if not options["dry_run"]:
-                    content_type = head.get("ContentType", "binary/octet-stream")
+                    content_type = head.get(
+                        "ContentType", "binary/octet-stream"
+                    )
                     s3.copy_object(
                         Bucket=bucket_name,
                         Key=key,

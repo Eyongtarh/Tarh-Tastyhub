@@ -7,7 +7,7 @@ from decimal import Decimal
 from unittest.mock import MagicMock, patch
 
 from django.contrib.auth.models import User
-from django.test import Client, TestCase, override_settings
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from dishes.models import Category, Dish, DishPortion
@@ -159,7 +159,10 @@ class CacheCheckoutDataSessionBindingTests(TestCase):
 
         response = self.client.post(
             reverse("cache_checkout_data"),
-            {"stripe_pid": "pi_attacker_supplied", "delivery_type": "delivery"},
+            {
+                "stripe_pid": "pi_attacker_supplied",
+                "delivery_type": "delivery",
+            },
         )
         self.assertEqual(response.status_code, 403)
 

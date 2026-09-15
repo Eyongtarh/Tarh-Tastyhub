@@ -27,7 +27,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         dishes = Dish.objects.exclude(image="")
         if not options["force"]:
-            dishes = dishes.filter(Q(image_card="") | Q(image_card__isnull=True))
+            dishes = dishes.filter(
+                Q(image_card="") | Q(image_card__isnull=True)
+            )
         total = dishes.count()
         updated = 0
         for dish in dishes:

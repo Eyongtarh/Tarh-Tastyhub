@@ -29,7 +29,7 @@ class InlineStaticTests(TestCase):
             "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
         ),
     )
-    def test_root_absolute_url_strips_static_prefix_even_when_STATIC_URL_differs(self):
+    def test_root_absolute_url_strips_prefix_when_static_url_differs(self):
         """
         In production STATIC_URL is the full S3 URL, not "/static/" - a
         version of this code that matched settings.STATIC_URL (rather

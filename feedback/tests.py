@@ -75,4 +75,5 @@ class FeedbackViewTests(TestCase):
                 "honeypot": "filled",
             },
         )
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(Feedback.objects.count(), 0)

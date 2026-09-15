@@ -1,5 +1,4 @@
 from django import template
-from dishes.models import Category
 
 register = template.Library()
 

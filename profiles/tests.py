@@ -2,14 +2,11 @@
 Tests for profiles: the order_history IDOR fix, profile page access,
 and account deletion.
 """
-from decimal import Decimal
-
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
 from checkout.models import Order
-from dishes.models import Category, Dish, DishPortion
 from .models import UserProfile
 
 

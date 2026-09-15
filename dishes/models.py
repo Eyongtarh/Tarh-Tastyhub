@@ -232,9 +232,14 @@ class Dish(models.Model):
             card = original.copy()
             card.thumbnail(card_max_size, Image.LANCZOS)
             card_buffer = BytesIO()
-            card.save(card_buffer, format='JPEG', quality=card_quality, optimize=True)
+            card.save(
+                card_buffer, format='JPEG', quality=card_quality,
+                optimize=True,
+            )
             card_buffer.seek(0)
-            self.image_card.save(filename, ContentFile(card_buffer.read()), save=False)
+            self.image_card.save(
+                filename, ContentFile(card_buffer.read()), save=False
+            )
             card_buffer.close()
             update_fields.append('image_card')
 

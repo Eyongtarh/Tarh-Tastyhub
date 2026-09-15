@@ -20,7 +20,10 @@ django_asgi_app = get_asgi_application()
 websocket_urlpatterns = []
 try:
     import notifications.routing as notifications_routing
-    websocket_urlpatterns = checkout_routing.websocket_urlpatterns + notifications_routing.websocket_urlpatterns
+    websocket_urlpatterns = (
+        checkout_routing.websocket_urlpatterns
+        + notifications_routing.websocket_urlpatterns
+    )
 except Exception:
     websocket_urlpatterns = checkout_routing.websocket_urlpatterns
 
