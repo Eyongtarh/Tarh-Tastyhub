@@ -31,7 +31,7 @@
                   {% endif %}
 
                   <div class="card-body">
-                    <h5 class="card-title">{{ item.portion.dish.name }}</h5>
+                    <h2 class="card-title fs-5">{{ item.portion.dish.name }}</h2>
                     <p class="text-muted small mb-1">
                       Portion: <strong>{{ item.portion.size }}</strong>
                     </p>
@@ -65,7 +65,7 @@
         <!-- Order Summary -->
         <div class="col-md-4">
           <div class="card p-3 shadow-sm">
-            <h5 class="fw-bold">Order Summary</h5>
+            <h2 class="fw-bold fs-5">Order Summary</h2>
             <p class="mb-1">
               Subtotal: <span id="bag-subtotal">${{ bag_total }}</span>
             </p>
@@ -74,7 +74,7 @@
             </p>
 
             <hr />
-            <h5>Total: <span id="grand-total">${{ grand_total }}</span></h5>
+            <h3 class="fs-5">Total: <span id="grand-total">${{ grand_total }}</span></h3>
 
             <a href="{% url 'checkout' %}" class="btn btn-warning w-100 mt-3 fw-bold">Proceed to Checkout</a>
           </div>
