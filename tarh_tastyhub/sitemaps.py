@@ -1,6 +1,5 @@
 """
 Sitemap definitions for the public, indexable pages of the site.
-
 Account, bag, checkout and admin pages are deliberately left out - they
 require a session/login, have no content of their own to rank on, and
 have nothing to do with search visibility (see robots.txt for the
@@ -8,7 +7,6 @@ matching Disallow rules).
 """
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-
 from dishes.models import Dish
 
 
