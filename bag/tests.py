@@ -3,11 +3,9 @@ Tests for the shopping bag: auth gating, add/adjust/remove behaviour,
 and the per-dish daily quantity limit.
 """
 from decimal import Decimal
-
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-
 from dishes.models import Category, Dish, DishPortion
 
 

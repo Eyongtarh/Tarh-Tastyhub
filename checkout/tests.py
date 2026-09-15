@@ -5,11 +5,9 @@ binding, and the removal of the unauthenticated status-update endpoint.
 import json
 from decimal import Decimal
 from unittest.mock import MagicMock, patch
-
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 from django.urls import reverse
-
 from dishes.models import Category, Dish, DishPortion
 from .models import Order
 from .webhook_handler import StripeWH_Handler

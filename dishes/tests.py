@@ -4,13 +4,11 @@ DishForm/DishImageForm/CategoryForm, and basic view access control.
 """
 from decimal import Decimal
 from io import BytesIO
-
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 from PIL import Image
-
 from .forms import CategoryForm, DishForm, DishImageForm
 from .models import Category, Dish, DishPortion
 
