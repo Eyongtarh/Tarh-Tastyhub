@@ -185,6 +185,12 @@ class CacheCheckoutDataSessionBindingTests(TestCase):
 
 
 class CheckoutViewCreatesSessionBoundPaymentIntentTests(TestCase):
+    """
+    Payment intent creation was moved out of the GET checkout() view
+    into create_payment_intent() (see that view's docstring) so the
+    page can render without blocking on a live Stripe call - these
+    cover that split instead of the old moved-out behaviour.
+    """
     def setUp(self):
         self.user = User.objects.create_user(
             username="shopper", password="testpass12345"
@@ -192,7 +198,9 @@ class CheckoutViewCreatesSessionBoundPaymentIntentTests(TestCase):
         self.portion = make_dish_portion()
 
     @patch("stripe.PaymentIntent.create")
-    def test_checkout_get_stores_new_pid_in_session(self, mock_create):
+    def test_create_payment_intent_stores_new_pid_in_session(
+        self, mock_create
+    ):
         mock_intent = MagicMock()
         mock_intent.id = "pi_new_one"
         mock_intent.client_secret = "pi_new_one_secret_xyz"
@@ -203,10 +211,22 @@ class CheckoutViewCreatesSessionBoundPaymentIntentTests(TestCase):
         session["bag"] = {str(self.portion.id): 1}
         session.save()
 
-        response = self.client.get(reverse("checkout"))
+        response = self.client.post(reverse("create_payment_intent"))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.client.session.get("stripe_pid"), "pi_new_one")
+
+    @patch("stripe.PaymentIntent.create")
+    def test_checkout_get_does_not_create_payment_intent(self, mock_create):
+        self.client.login(username="shopper", password="testpass12345")
+        session = self.client.session
+        session["bag"] = {str(self.portion.id): 1}
+        session.save()
+
+        response = self.client.get(reverse("checkout"))
+
+        self.assertEqual(response.status_code, 200)
+        mock_create.assert_not_called()
 
 
 class UpdateOrderStatusEndpointRemovedTests(TestCase):
