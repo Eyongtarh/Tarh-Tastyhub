@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.conf import settings
@@ -9,6 +11,8 @@ from django.views.decorators.http import require_POST
 from .models import Order
 from dishes.models import Dish, Category
 from feedback.models import Feedback
+
+logger = logging.getLogger(__name__)
 
 
 STATUS_COLORS = {
@@ -135,13 +139,20 @@ def update_order_status(request, order_id):
         "Bon appétit!\n"
         "The Tarh Tastyhub Team"
     )
-    send_mail(
-        subject,
-        message,
-        settings.DEFAULT_FROM_EMAIL,
-        [order.email],
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [order.email],
+            fail_silently=False,
+        )
+    except Exception:
+        # The status change is already saved above - a broken SMTP
+        # config shouldn't turn that into a 500 for the staff member.
+        logger.exception(
+            "Status-update email failed for order %s", order.order_number
+        )
     return redirect("admin_dashboard")
 
 

@@ -57,6 +57,11 @@ def resend_verification(request):
                 send_verification_email(request, user)
         except User.DoesNotExist:
             pass
+        except Exception:
+            # Don't let a broken SMTP config 500 this page - the
+            # response to the user is the same generic message either
+            # way, so a failed send is invisible to them regardless.
+            logger.exception("Resend verification email failed")
         messages.success(
             request,
             "If an account exists for that email, "
